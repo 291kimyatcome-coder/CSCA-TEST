@@ -7,10 +7,15 @@
 % =====================================================================
 \documentclass[12pt,a4paper]{article}
 
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb}
 \usepackage{fontspec}
-\usepackage[margin=2.5cm]{geometry}
+\usepackage[a4paper,top=2.6cm,bottom=2.4cm,left=2.3cm,right=2.3cm,headheight=16pt]{geometry}
 \usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
 
 % ---- Fonts: Latin text in Latin Modern, Khmer text in Noto Serif Khmer ----
 % (change "Noto Serif Khmer" to e.g. "Khmer OS Siemreap" if needed)
@@ -20,33 +25,124 @@
 \setTransitionsFor{Khmer}{\khmerfont}{\rmfamily}
 \linespread{1.35}
 
-% ---- Theorem environments (Khmer labels) ----
-\theoremstyle{definition}
-\newtheorem{definition}{និយមន័យ}
-\newtheorem{theorem}{ទ្រឹស្តីបទ}
-\newtheorem{lemma}{លេម៉ា}
-\newtheorem{corollary}{ផលវិបាក}
-\renewcommand{\proofname}{សម្រាយបញ្ជាក់}
+% ---- Colour palette ----
+\definecolor{navy}{HTML}{14325C}
+\definecolor{teal}{HTML}{0E7C86}
+\definecolor{gold}{HTML}{C9962B}
+\definecolor{crimson}{HTML}{B3263A}
+\definecolor{forest}{HTML}{2E7D4F}
+\definecolor{paper}{HTML}{F5F8FC}
+\definecolor{softteal}{HTML}{E6F4F5}
+\definecolor{softgold}{HTML}{FBF4E4}
+\definecolor{softred}{HTML}{FBECEE}
+\definecolor{softgreen}{HTML}{E9F5EE}
+\definecolor{inkgray}{HTML}{4A5563}
 
-\title{\textbf{គ្រប់សំណុំបូកខ្លួនឯង ស្មើសូន្យជានិច្ច}\\[4pt]
-       \large $\forall A,\quad A + A = \varnothing$}
-\author{ដោះស្រាយដោយ៖ \textbf{ពៅ គឹមយ៉ាត}\\ Science Master Academic}
-\date{}
+% ---- Section headings ----
+\titleformat{\section}
+  {\Large\bfseries\color{navy}}
+  {\tikz[baseline=(n.base)]\node[fill=teal,text=white,rounded corners=3pt,
+     inner sep=4pt,minimum width=1.6em](n){\thesection};}
+  {0.6em}{}[{\color{gold}\titlerule[1.2pt]}]
+\titleformat{name=\section,numberless}
+  {\Large\bfseries\color{navy}}{}{0pt}{}[{\color{gold}\titlerule[1.2pt]}]
+\titlespacing*{\section}{0pt}{1.4em}{0.9em}
+
+% ---- Header / footer ----
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{navy}\textbf{Science Master Academic}}
+\fancyhead[R]{\small\color{teal}ពៅ គឹមយ៉ាត}
+\fancyfoot[C]{\tikz\node[fill=navy,text=white,circle,inner sep=2.5pt,
+  minimum size=1.5em,font=\small\bfseries]{\thepage};}
+\fancyfoot[R]{\scriptsize\color{inkgray}$A+A=\varnothing$}
+\renewcommand{\headrulewidth}{0.8pt}
+\renewcommand{\headrule}{{\color{gold}\hrule height\headrulewidth width\headwidth}}
+
+% ---- Coloured boxes ----
+\tcbset{
+  base/.style={enhanced,breakable,arc=3pt,boxrule=0pt,left=10pt,right=10pt,
+    top=6pt,bottom=6pt,fonttitle=\bfseries,coltitle=white,
+    before skip=10pt,after skip=10pt}
+}
+\newcounter{defn}
+\newcounter{thm}
+\newtcolorbox{definition}[1][]{base,colback=softteal,colframe=teal,
+  borderline west={4pt}{0pt}{teal},
+  title={\stepcounter{defn}និយមន័យ \thedefn\ifx\relax#1\relax\else\ ៖ #1\fi},
+  attach boxed title to top left={xshift=8pt,yshift=-2mm},
+  boxed title style={colback=teal,arc=2pt,boxrule=0pt}}
+\newtcolorbox{theorem}[1][]{base,colback=paper,colframe=navy,boxrule=1pt,
+  title={\stepcounter{thm}ទ្រឹស្តីបទ \thethm\ifx\relax#1\relax\else\ ៖ #1\fi},
+  attach boxed title to top left={xshift=8pt,yshift=-2mm},
+  boxed title style={colback=navy,arc=2pt,boxrule=0pt}}
+\newtcolorbox{lemma}[1][]{base,colback=softgold,colframe=gold,
+  borderline west={4pt}{0pt}{gold},
+  title={\stepcounter{thm}លេម៉ា \thethm\ifx\relax#1\relax\else\ ៖ #1\fi},
+  attach boxed title to top left={xshift=8pt,yshift=-2mm},
+  boxed title style={colback=gold,arc=2pt,boxrule=0pt}}
+\newtcolorbox{corollary}[1][]{base,colback=softgreen,colframe=forest,
+  borderline west={4pt}{0pt}{forest},
+  title={\stepcounter{thm}ផលវិបាក \thethm\ifx\relax#1\relax\else\ ៖ #1\fi},
+  attach boxed title to top left={xshift=8pt,yshift=-2mm},
+  boxed title style={colback=forest,arc=2pt,boxrule=0pt}}
+\newtcolorbox{proofbox}[1][]{enhanced,breakable,arc=0pt,boxrule=0pt,
+  colback=white,colframe=white,left=12pt,right=8pt,top=4pt,bottom=4pt,
+  borderline west={2pt}{0pt}{teal!70},before skip=8pt,after skip=12pt,
+  before upper={{\color{teal}\bfseries សម្រាយបញ្ជាក់\ifx\relax#1\relax\else\ (#1)\fi.}\ },
+  after upper={\par\hfill{\color{teal}$\blacksquare$}}}
+\newtcolorbox{statement}{base,colback=softred,colframe=crimson,boxrule=1pt,
+  title={សំណើ},attach boxed title to top center={yshift=-2mm},
+  boxed title style={colback=crimson,arc=2pt,boxrule=0pt}}
+\newtcolorbox{conclusion}{base,colback=softgold,colframe=gold,boxrule=1.2pt,
+  title={សេចក្តីសន្និដ្ឋាន},attach boxed title to top center={yshift=-2mm},
+  boxed title style={colback=gold,arc=2pt,boxrule=0pt}}
+
+% highlighted key formula
+\newcommand{\keyformula}[1]{%
+  \begin{center}\tcbox[enhanced,colback=white,colframe=crimson,boxrule=1.2pt,
+    arc=4pt,left=10pt,right=10pt,top=4pt,bottom=4pt]{$\displaystyle #1$}\end{center}}
 
 \begin{document}
-\maketitle
+
+% =====================================================================
+%  TITLE BANNER
+% =====================================================================
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[navy] (current page.north west) rectangle ([yshift=-7.2cm]current page.north east);
+  \fill[teal] ([yshift=-7.2cm]current page.north west) rectangle ([yshift=-7.6cm]current page.north east);
+  \fill[gold] ([yshift=-7.6cm]current page.north west) rectangle ([yshift=-7.75cm]current page.north east);
+  \node[text=gold,font=\small\bfseries,anchor=north]
+     at ([yshift=-1.4cm]current page.north) {SCIENCE MASTER ACADEMIC};
+  \node[text=white,font=\huge\bfseries,anchor=north]
+     at ([yshift=-2.3cm]current page.north) {គ្រប់សំណុំបូកខ្លួនឯង ស្មើសូន្យជានិច្ច};
+  \node[text=white,font=\Large,anchor=north]
+     at ([yshift=-3.9cm]current page.north) {$\forall A,\qquad A + A = \varnothing$};
+  \node[text=white!80!teal,font=\normalsize,anchor=north]
+     at ([yshift=-5.3cm]current page.north) {សម្រាយបញ្ជាក់ ៖ ទ្រឹស្តីសំណុំ និងចិញ្ចៀនប៊ូល};
+\end{tikzpicture}
+\vspace*{5.6cm}
+
+\begin{center}
+\begin{tcolorbox}[enhanced,width=0.62\linewidth,colback=paper,colframe=navy,
+  boxrule=0.8pt,arc=4pt,halign=center]
+  {\color{inkgray}ដោះស្រាយដោយ}\\[2pt]
+  {\Large\bfseries\color{navy}ពៅ គឹមយ៉ាត}\\[2pt]
+  {\small\color{teal}Science Master Academic}
+\end{tcolorbox}
+\end{center}
 
 % ---------------------------------------------------------------------
-\section*{សំណើ}
+\begin{statement}
 \textbf{«គ្រប់សំណុំ បូកខ្លួនឯង ស្មើសូន្យជានិច្ច»} ។
-នេះជា\textbf{សំណើពិត} ។
+នេះជា\textbf{\color{crimson}សំណើពិត} ។
 
 ក្នុងទ្រឹស្តីសំណុំ «ប្រមាណវិធីបូក» នៃសំណុំពីរ គឺជា
 \textbf{ផលសងស៊ីមេទ្រី} (symmetric difference) ហើយ «សូន្យ» គឺជា
 \textbf{សំណុំទទេ} $\varnothing$ ។ ដូច្នេះ សំណើខាងលើសរសេរជាភាសាគណិតវិទ្យាថា៖
-\[
-  \boxed{\;\forall A\subseteq U,\qquad A + A = A \,\triangle\, A = \varnothing\;}
-\]
+\keyformula{\forall A\subseteq U,\qquad A + A = A \,\triangle\, A = \varnothing}
+\end{statement}
 
 % ---------------------------------------------------------------------
 \section{និយមន័យ}
@@ -80,13 +176,11 @@
 
 \begin{theorem}
 ចំពោះគ្រប់សំណុំ $A$ យើងបាន
-\[
-  A + A = \varnothing .
-\]
+\keyformula{A + A = \varnothing}
 \end{theorem}
 
 % ---------- Method 1 ----------
-\begin{proof}[សម្រាយបញ្ជាក់ (វិធីទី១ ៖ តាមនិយមន័យ)]
+\begin{proofbox}[វិធីទី១ ៖ តាមនិយមន័យ]
 តាមនិយមន័យនៃផលបូកសំណុំ៖
 \[
   A + A = (A\setminus A)\,\cup\,(A\setminus A).
@@ -95,20 +189,17 @@
 \[
   A\setminus A = \{\, x \mid x\in A \ \text{និង}\ x\notin A \,\}.
 \]
-លក្ខខណ្ឌ «$x\in A$ និង $x\notin A$» គឺជា\textbf{ភាពផ្ទុយគ្នា}
+លក្ខខណ្ឌ «$x\in A$ និង $x\notin A$» គឺជា\textbf{\color{crimson}ភាពផ្ទុយគ្នា}
 (contradiction) ដែលមិនពិតសម្រាប់ធាតុ $x$ ណាមួយឡើយ ។
 ដូច្នេះគ្មានធាតុណាមួយនៅក្នុង $A\setminus A$ ទេ ពោលគឺ
+$A\setminus A = \varnothing$ ។ ហេតុនេះ
 \[
-  A\setminus A = \varnothing .
+  A + A = \varnothing\cup\varnothing = \varnothing .
 \]
-ហេតុនេះ
-\[
-  A + A = \varnothing\cup\varnothing = \varnothing . \qedhere
-\]
-\end{proof}
+\end{proofbox}
 
 % ---------- Method 2 ----------
-\begin{proof}[សម្រាយបញ្ជាក់ (វិធីទី២ ៖ ដោយភាពផ្ទុយ)]
+\begin{proofbox}[វិធីទី២ ៖ ដោយភាពផ្ទុយ]
 ឧបមាថា $A + A \neq \varnothing$ ។ នោះមានធាតុ $x$ មួយយ៉ាងតិចដែល
 $x\in A + A$ ។ តាមនិយមន័យ
 \[
@@ -116,10 +207,10 @@ $x\in A + A$ ។ តាមនិយមន័យ
   \;\Longrightarrow\; x\in A \ \text{និង}\ x\notin A ,
 \]
 ដែលជាការផ្ទុយគ្នា ។ ដូច្នេះការឧបមាខុស ហើយ $A + A = \varnothing$ ។
-\end{proof}
+\end{proofbox}
 
 % ---------- Method 3 ----------
-\begin{proof}[សម្រាយបញ្ជាក់ (វិធីទី៣ ៖ អនុគមន៍លក្ខណៈ)]
+\begin{proofbox}[វិធីទី៣ ៖ អនុគមន៍លក្ខណៈ]
 ចំពោះ $A\subseteq U$ កំណត់អនុគមន៍លក្ខណៈ
 \[
   \chi_A(x)=\begin{cases}1, & x\in A\\ 0, & x\notin A\end{cases}
@@ -134,20 +225,21 @@ $x\in A + A$ ។ តាមនិយមន័យ
 \]
 មានន័យថា $\chi_{A+A}\equiv 0 = \chi_{\varnothing}$ ហេតុនេះ
 $A + A = \varnothing$ ។
-\end{proof}
+\end{proofbox}
 
 % ---------------------------------------------------------------------
 \section{ករណីទូទៅ ៖ ចិញ្ចៀនប៊ូល (Boolean Ring)}
 
 សំណុំ $\mathcal{P}(U)$ (សំណុំនៃគ្រប់សំណុំរងរបស់ $U$) រួមជាមួយ
-ប្រមាណវិធី $+=\triangle$ និង $\cdot=\cap$ បង្កើតបានជា\textbf{ចិញ្ចៀនប៊ូល}
-គឺជាចិញ្ចៀនដែល $x^2=x$ ចំពោះគ្រប់ $x$ (ព្រោះ $A\cap A=A$) ។
+ប្រមាណវិធី $+=\triangle$ និង $\cdot=\cap$ បង្កើតបានជា
+\textbf{\color{teal}ចិញ្ចៀនប៊ូល} គឺជាចិញ្ចៀនដែល $x^2=x$ ចំពោះគ្រប់ $x$
+(ព្រោះ $A\cap A=A$) ។
 
 \begin{lemma}
 ក្នុងចិញ្ចៀនប៊ូល $R$ ណាមួយ យើងបាន $x + x = 0$ ចំពោះគ្រប់ $x\in R$ ។
 \end{lemma}
 
-\begin{proof}
+\begin{proofbox}
 ដោយ $(x+x)^2 = x+x$ ហើយពន្លាតអង្គខាងឆ្វេង៖
 \[
   (x+x)^2 = x^2 + x^2 + x^2 + x^2 = x + x + x + x .
@@ -158,7 +250,7 @@ $A + A = \varnothing$ ។
   \;\Longrightarrow\; x + x = 0
 \]
 (ដោយបូកអង្គទាំងពីរនឹងធាតុផ្ទុយ $-(x+x)$) ។
-\end{proof}
+\end{proofbox}
 
 \begin{corollary}
 យក $R=\mathcal{P}(U)$ និង $x=A$ យើងទទួលបានម្តងទៀតថា
@@ -168,27 +260,33 @@ $A + A = A\triangle A = \varnothing$ ចំពោះគ្រប់សំណុ�
 
 % ---------------------------------------------------------------------
 \section{ឧទាហរណ៍}
-\begin{enumerate}[label=\arabic*.]
+\newcommand{\goldnum}[1]{\tikz[baseline=(c.base)]\node[fill=gold,text=white,
+  circle,inner sep=1.5pt,minimum size=1.3em,font=\small\bfseries](c){#1};}
+\begin{enumerate}[label=\protect\goldnum{\arabic*},leftmargin=2.4em,itemsep=6pt]
   \item $A=\{1,2,3\}$ ៖
         $A + A = (\{1,2,3\}\setminus\{1,2,3\})\cup(\{1,2,3\}\setminus\{1,2,3\})
-        = \varnothing\cup\varnothing=\varnothing$ ។
+        = \varnothing$ ។
   \item $A=\mathbb{N}$ ៖ $\mathbb{N}+\mathbb{N}=\mathbb{N}\setminus\mathbb{N}=\varnothing$ ។
   \item $A=\varnothing$ ៖ $\varnothing+\varnothing=\varnothing$ ។
 \end{enumerate}
 
 % ---------------------------------------------------------------------
-\section*{សេចក្តីសន្និដ្ឋាន}
+\vspace{0.8em}
+\begin{conclusion}
 តាមវិធីទាំងបី យើងបានស្រាយបញ្ជាក់ថា
-\[
-  \boxed{\;\forall A,\qquad A + A = \varnothing \;}
-\]
+\keyformula{\forall A,\qquad A + A = \varnothing}
 ពោលគឺ \textbf{គ្រប់សំណុំបូកខ្លួនឯង ស្មើសូន្យ (សំណុំទទេ) ជានិច្ច} ។
-ដូច្នេះសំណើនេះ\textbf{ពិត} ។ \hfill $\blacksquare$
+ដូច្នេះសំណើនេះ\textbf{\color{crimson}ពិត} ។ \hfill{\color{gold}$\blacksquare$}
+\end{conclusion}
 
-\vspace{1cm}
+\vspace{1.2cm}
 \begin{flushright}
-ដោះស្រាយដោយ៖ \textbf{ពៅ គឹមយ៉ាត}\\
-Science Master Academic
+\begin{tabular}{r}
+{\color{inkgray}ដោះស្រាយដោយ}\\
+{\large\bfseries\color{navy}ពៅ គឹមយ៉ាត}\\
+{\color{gold}\rule{4.5cm}{1pt}}\\
+{\small\color{teal}Science Master Academic}
+\end{tabular}
 \end{flushright}
 
 \end{document}
