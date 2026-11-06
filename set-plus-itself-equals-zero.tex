@@ -1,0 +1,191 @@
+% =====================================================================
+%  គ្រប់សំណុំបូកខ្លួនឯងស្មើសូន្យជានិច្ច  (A + A = \varnothing)
+%  ដោះស្រាយដោយ៖ ពៅ គឹមយ៉ាត — Science Master Academic
+%
+%  Compile with XeLaTeX (e.g. Overleaf: Menu -> Compiler -> XeLaTeX).
+%  Requires a Khmer font such as "Noto Serif Khmer" or "Khmer OS Siemreap".
+% =====================================================================
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fontspec}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+
+% ---- Khmer font (change the name if your system has a different one) ----
+\setmainfont[Script=Khmer]{Noto Serif Khmer}
+\linespread{1.35}
+
+% ---- Theorem environments (Khmer labels) ----
+\theoremstyle{definition}
+\newtheorem{definition}{និយមន័យ}
+\theoremstyle{plain}
+\newtheorem{theorem}{ទ្រឹស្តីបទ}
+\newtheorem{lemma}{លេម៉ា}
+\newtheorem{corollary}{ផលវិបាក}
+\renewcommand{\proofname}{សម្រាយបញ្ជាក់}
+
+\title{\textbf{គ្រប់សំណុំបូកខ្លួនឯង ស្មើសូន្យជានិច្ច}\\[4pt]
+       \large $\forall A,\quad A + A = \varnothing$}
+\author{ដោះស្រាយដោយ៖ \textbf{ពៅ គឹមយ៉ាត}\\ Science Master Academic}
+\date{}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------------------------------
+\section*{សំណើ}
+\textbf{«គ្រប់សំណុំ បូកខ្លួនឯង ស្មើសូន្យជានិច្ច»} ។
+នេះជា\textbf{សំណើពិត} ។
+
+ក្នុងទ្រឹស្តីសំណុំ «ប្រមាណវិធីបូក» នៃសំណុំពីរ គឺជា
+\textbf{ផលសងស៊ីមេទ្រី} (symmetric difference) ហើយ «សូន្យ» គឺជា
+\textbf{សំណុំទទេ} $\varnothing$ ។ ដូច្នេះ សំណើខាងលើសរសេរជាភាសាគណិតវិទ្យាថា៖
+\[
+  \boxed{\;\forall A\subseteq U,\qquad A + A = A \,\triangle\, A = \varnothing\;}
+\]
+
+% ---------------------------------------------------------------------
+\section{និយមន័យ}
+
+\begin{definition}[ផលដកសំណុំ]
+ចំពោះសំណុំ $A$ និង $B$ ៖
+\[
+  A \setminus B = \{\, x \mid x \in A \ \text{និង}\ x \notin B \,\}.
+\]
+\end{definition}
+
+\begin{definition}[ផលបូកសំណុំ / ផលសងស៊ីមេទ្រី]
+ចំពោះសំណុំ $A$ និង $B$ ក្នុងសកលសំណុំ $U$ យើងកំណត់៖
+\[
+  A + B \;:=\; A \,\triangle\, B \;=\; (A\setminus B)\,\cup\,(B\setminus A).
+\]
+មានន័យថា $x\in A+B$ លុះត្រាតែ $x$ ស្ថិតនៅក្នុង\textbf{សំណុំមួយគត់}
+ក្នុងចំណោម $A$ និង $B$ ។
+\end{definition}
+
+\begin{definition}[សូន្យ]
+ធាតុសូន្យនៃប្រមាណវិធីបូកនេះ គឺសំណុំទទេ $\varnothing$ ព្រោះ
+\[
+  A + \varnothing = (A\setminus\varnothing)\cup(\varnothing\setminus A)
+  = A\cup\varnothing = A, \qquad \forall A .
+\]
+\end{definition}
+
+% ---------------------------------------------------------------------
+\section{ទ្រឹស្តីបទ និងសម្រាយបញ្ជាក់}
+
+\begin{theorem}
+ចំពោះគ្រប់សំណុំ $A$ យើងបាន
+\[
+  A + A = \varnothing .
+\]
+\end{theorem}
+
+% ---------- Method 1 ----------
+\begin{proof}[សម្រាយបញ្ជាក់ (វិធីទី១ ៖ តាមនិយមន័យ)]
+តាមនិយមន័យនៃផលបូកសំណុំ៖
+\[
+  A + A = (A\setminus A)\,\cup\,(A\setminus A).
+\]
+ឥឡូវយើងគណនា $A\setminus A$ ៖
+\[
+  A\setminus A = \{\, x \mid x\in A \ \text{និង}\ x\notin A \,\}.
+\]
+លក្ខខណ្ឌ «$x\in A$ និង $x\notin A$» គឺជា\textbf{ភាពផ្ទុយគ្នា}
+(contradiction) ដែលមិនពិតសម្រាប់ធាតុ $x$ ណាមួយឡើយ ។
+ដូច្នេះគ្មានធាតុណាមួយនៅក្នុង $A\setminus A$ ទេ ពោលគឺ
+\[
+  A\setminus A = \varnothing .
+\]
+ហេតុនេះ
+\[
+  A + A = \varnothing\cup\varnothing = \varnothing . \qedhere
+\]
+\end{proof}
+
+% ---------- Method 2 ----------
+\begin{proof}[សម្រាយបញ្ជាក់ (វិធីទី២ ៖ ដោយភាពផ្ទុយ)]
+ឧបមាថា $A + A \neq \varnothing$ ។ នោះមានធាតុ $x$ មួយយ៉ាងតិចដែល
+$x\in A + A$ ។ តាមនិយមន័យ
+\[
+  x\in (A\setminus A)\cup(A\setminus A) = A\setminus A
+  \;\Longrightarrow\; x\in A \ \text{និង}\ x\notin A ,
+\]
+ដែលជាការផ្ទុយគ្នា ។ ដូច្នេះការឧបមាខុស ហើយ $A + A = \varnothing$ ។
+\end{proof}
+
+% ---------- Method 3 ----------
+\begin{proof}[សម្រាយបញ្ជាក់ (វិធីទី៣ ៖ អនុគមន៍លក្ខណៈ)]
+ចំពោះ $A\subseteq U$ កំណត់អនុគមន៍លក្ខណៈ
+\[
+  \chi_A(x)=\begin{cases}1, & x\in A\\ 0, & x\notin A\end{cases}
+\]
+គេដឹងថា ផលសងស៊ីមេទ្រីត្រូវនឹងការបូកម៉ូឌុល $2$ ៖
+\[
+  \chi_{A+B}(x) \equiv \chi_A(x)+\chi_B(x) \pmod 2 .
+\]
+ដូច្នេះ ចំពោះគ្រប់ $x\in U$ ៖
+\[
+  \chi_{A+A}(x) \equiv \chi_A(x)+\chi_A(x) = 2\,\chi_A(x) \equiv 0 \pmod 2 .
+\]
+មានន័យថា $\chi_{A+A}\equiv 0 = \chi_{\varnothing}$ ហេតុនេះ
+$A + A = \varnothing$ ។
+\end{proof}
+
+% ---------------------------------------------------------------------
+\section{ករណីទូទៅ ៖ ចិញ្ចៀនប៊ូល (Boolean Ring)}
+
+សំណុំ $\mathcal{P}(U)$ (សំណុំនៃគ្រប់សំណុំរងរបស់ $U$) រួមជាមួយ
+ប្រមាណវិធី $+=\triangle$ និង $\cdot=\cap$ បង្កើតបានជា\textbf{ចិញ្ចៀនប៊ូល}
+គឺជាចិញ្ចៀនដែល $x^2=x$ ចំពោះគ្រប់ $x$ (ព្រោះ $A\cap A=A$) ។
+
+\begin{lemma}
+ក្នុងចិញ្ចៀនប៊ូល $R$ ណាមួយ យើងបាន $x + x = 0$ ចំពោះគ្រប់ $x\in R$ ។
+\end{lemma}
+
+\begin{proof}
+ដោយ $(x+x)^2 = x+x$ ហើយពន្លាតអង្គខាងឆ្វេង៖
+\[
+  (x+x)^2 = x^2 + x^2 + x^2 + x^2 = x + x + x + x .
+\]
+ដូច្នេះ
+\[
+  x + x + x + x = x + x
+  \;\Longrightarrow\; x + x = 0
+\]
+(ដោយបូកអង្គទាំងពីរនឹងធាតុផ្ទុយ $-(x+x)$) ។
+\end{proof}
+
+\begin{corollary}
+យក $R=\mathcal{P}(U)$ និង $x=A$ យើងទទួលបានម្តងទៀតថា
+$A + A = A\triangle A = \varnothing$ ចំពោះគ្រប់សំណុំ $A$ ។
+ម្យ៉ាងទៀត $-A = A$ មានន័យថា សំណុំនីមួយៗជា\textbf{ធាតុផ្ទុយ}នៃខ្លួនឯង ។
+\end{corollary}
+
+% ---------------------------------------------------------------------
+\section{ឧទាហរណ៍}
+\begin{enumerate}[label=\arabic*.]
+  \item $A=\{1,2,3\}$ ៖
+        $A + A = (\{1,2,3\}\setminus\{1,2,3\})\cup(\{1,2,3\}\setminus\{1,2,3\})
+        = \varnothing\cup\varnothing=\varnothing$ ។
+  \item $A=\mathbb{N}$ ៖ $\mathbb{N}+\mathbb{N}=\mathbb{N}\setminus\mathbb{N}=\varnothing$ ។
+  \item $A=\varnothing$ ៖ $\varnothing+\varnothing=\varnothing$ ។
+\end{enumerate}
+
+% ---------------------------------------------------------------------
+\section*{សេចក្តីសន្និដ្ឋាន}
+តាមវិធីទាំងបី យើងបានស្រាយបញ្ជាក់ថា
+\[
+  \boxed{\;\forall A,\qquad A + A = \varnothing \;}
+\]
+ពោលគឺ \textbf{គ្រប់សំណុំបូកខ្លួនឯង ស្មើសូន្យ (សំណុំទទេ) ជានិច្ច} ។
+ដូច្នេះសំណើនេះ\textbf{ពិត} ។ \hfill $\blacksquare$
+
+\vspace{1cm}
+\begin{flushright}
+ដោះស្រាយដោយ៖ \textbf{ពៅ គឹមយ៉ាត}\\
+Science Master Academic
+\end{flushright}
+
+\end{document}
