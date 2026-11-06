@@ -12,14 +12,17 @@
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{enumitem}
 
-% ---- Khmer font (change the name if your system has a different one) ----
-\setmainfont[Script=Khmer]{Noto Serif Khmer}
+% ---- Fonts: Latin text in Latin Modern, Khmer text in Noto Serif Khmer ----
+% (change "Noto Serif Khmer" to e.g. "Khmer OS Siemreap" if needed)
+\setmainfont{Latin Modern Roman}
+\newfontfamily\khmerfont[Script=Khmer]{Noto Serif Khmer}
+\usepackage[Latin,Khmer]{ucharclasses}
+\setTransitionsFor{Khmer}{\khmerfont}{\rmfamily}
 \linespread{1.35}
 
 % ---- Theorem environments (Khmer labels) ----
 \theoremstyle{definition}
 \newtheorem{definition}{និយមន័យ}
-\theoremstyle{plain}
 \newtheorem{theorem}{ទ្រឹស្តីបទ}
 \newtheorem{lemma}{លេម៉ា}
 \newtheorem{corollary}{ផលវិបាក}
