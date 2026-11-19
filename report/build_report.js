@@ -9,12 +9,13 @@ const DATA = {
   school: 'Science Master Academic',
   student: 'ឡុង',
   className: 'ថ្នាក់សិស្សពូកែ ត្រៀមថ្នាក់ទី១២',
+  format: 'ថ្នាក់ឯកជន ១ ទល់ ១',
   subject: 'គណិតវិទ្យា',
   year: '២០២៦-២០២៧',
   period: 'ខែសីហា ដល់ខែវិច្ឆិកា ឆ្នាំ២០២៦',
   issued: 'ថ្ងៃទី១៩ ខែវិច្ឆិកា ឆ្នាំ២០២៦',
   attendance: 96,
-  rank: [7, 24],
+  hours: 48, // total 1:1 study hours in the period
   topics: [
     ['លីមីត និងភាពជាប់នៃអនុគមន៍', 85, 'យល់គោលគំនិតច្បាស់ អនុវត្តត្រឹមត្រូវ'],
     ['ដេរីវេ និងការសិក្សាអនុគមន៍', 86, 'ចំណុចខ្លាំងបំផុត សិក្សាអថេរភាពបានល្អ'],
@@ -30,7 +31,7 @@ const DATA = {
   behaviour: [
     ['វត្តមាន និងភាពទៀងទាត់', 5, 'ល្អប្រសើរ'],
     ['វិន័យ និងសីលធម៌', 5, 'ល្អប្រសើរ'],
-    ['ការចូលរួមក្នុងថ្នាក់', 4, 'ល្អណាស់'],
+    ['ការចូលរួម និងការសួរសំណួរពេលរៀន', 4, 'ល្អណាស់'],
     ['ការធ្វើកិច្ចការផ្ទះ', 4, 'ល្អណាស់'],
     ['ការគ្រប់គ្រងពេលវេលាពេលប្រឡង', 3, 'ល្អ'],
   ],
@@ -54,7 +55,7 @@ const DATA = {
   comment:
     'ឡុង គឺជាសិស្សដែលមានសមត្ថភាពល្អ និងមានឆន្ទៈខ្ពស់ក្នុងការសិក្សា។ ក្នុងរយៈពេលកន្លងមក ឡុង បានបង្ហាញការរីកចម្រើនគួរឲ្យកត់សម្គាល់ ជាពិសេសផ្នែកដេរីវេ និងការសិក្សាអនុគមន៍។ ' +
     'ចំណុចខ្វះខាតមួយចំនួនតូច ដូចជាប្រូបាប៊ីលីតេ និងធរណីមាត្រក្នុងលំហ អាចកែលម្អបានយ៉ាងងាយ ប្រសិនបើបន្តហ្វឹកហាត់ឲ្យបានទៀងទាត់។ ' +
-    'លោកគ្រូ អ្នកគ្រូ ជឿជាក់ថា ឡុង នឹងទទួលបានលទ្ធផលល្អប្រសើរក្នុងការប្រឡងថ្នាក់ទី១២ ខាងមុខ។ សូមបន្តខិតខំប្រឹងប្រែង!',
+    'ក្នុងនាមជាគ្រូបង្រៀនផ្ទាល់ គ្រូជឿជាក់ថា ឡុង នឹងទទួលបានលទ្ធផលល្អប្រសើរក្នុងការប្រឡងថ្នាក់ទី១២ ខាងមុខ។ សូមបន្តខិតខំប្រឹងប្រែង!',
 };
 
 // ---------------------------------------------------------------------------
@@ -200,22 +201,24 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 </div>
 
 <h1>របាយការណ៍វាយតម្លៃលទ្ធផលសិក្សា</h1>
-<p class="subt">${DATA.className} | មុខវិជ្ជា${DATA.subject}</p>
+<p class="subt">${DATA.className} | ${DATA.format} | មុខវិជ្ជា${DATA.subject}</p>
 
 <div class="info">
   <div><span>ឈ្មោះសិស្ស</span>៖ <b>${DATA.student}</b></div>
   <div><span>មុខវិជ្ជា</span>៖ <b>${DATA.subject}</b></div>
   <div><span>ថ្នាក់</span>៖ <b>${DATA.className}</b></div>
+  <div><span>ទម្រង់សិក្សា</span>៖ <b>${DATA.format}</b></div>
   <div><span>ឆ្នាំសិក្សា</span>៖ <b>${DATA.year}</b></div>
   <div><span>រយៈពេលវាយតម្លៃ</span>៖ <b>${DATA.period}</b></div>
   <div><span>ថ្ងៃចេញរបាយការណ៍</span>៖ <b>${DATA.issued}</b></div>
+  <div><span>គ្រូបង្រៀន</span>៖ <b>.....................................</b></div>
 </div>
 
 <div class="cards">
   <div class="card"><div class="k">ពិន្ទុមធ្យមភាគ</div><div class="v">${avgStr}<small> / ១០០</small></div></div>
   <div class="card"><div class="k">និទ្ទេសរួម</div><div class="v" style="color:${avgColor}">${avgLetter} <small>(${avgLabel})</small></div></div>
   <div class="card"><div class="k">វត្តមាន</div><div class="v">${kh(DATA.attendance)}%</div></div>
-  <div class="card"><div class="k">ចំណាត់ថ្នាក់</div><div class="v">${kh(DATA.rank[0])}<small> / ${kh(DATA.rank[1])} នាក់</small></div></div>
+  <div class="card"><div class="k">ម៉ោងសិក្សា ១ ទល់ ១</div><div class="v">${kh(DATA.hours)}<small> ម៉ោង</small></div></div>
 </div>
 
 <h2>១. លទ្ធផលពិន្ទុតាមជំពូក</h2>
@@ -254,7 +257,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 <div class="date">ធ្វើនៅ ................................ ${DATA.issued}</div>
 <div class="sign avoid">
   <div><b>បានឃើញ និងឯកភាព</b><br>នាយកសាលា<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
-  <div><b>គ្រូបង្រៀនមុខវិជ្ជា</b><br>គណិតវិទ្យា<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
+  <div><b>គ្រូបង្រៀនផ្ទាល់ (១ ទល់ ១)</b><br>មុខវិជ្ជាគណិតវិទ្យា<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
   <div><b>មាតាបិតា ឬអាណាព្យាបាល</b><br>បានទទួលជ្រាប<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
 </div>
 
