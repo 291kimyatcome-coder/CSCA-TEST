@@ -13,7 +13,7 @@ const DATA = {
   subject: 'គណិតវិទ្យា',
   year: '២០២៦-២០២៧',
   period: 'ខែសីហា ដល់ខែវិច្ឆិកា ឆ្នាំ២០២៦',
-  issued: 'ថ្ងៃទី១៩ ខែវិច្ឆិកា ឆ្នាំ២០២៦',
+  issued: null, // null = today's date (Cambodia time); or set e.g. 'ថ្ងៃទី១៩ ខែវិច្ឆិកា ឆ្នាំ២០២៦'
   absences: 4,
   hours: 48, // total 1:1 study hours in the period
   topics: [
@@ -62,6 +62,12 @@ const DATA = {
 // ---------------------------------------------------------------------------
 const KH = '០១២៣៤៥៦៧៨៩';
 const kh = (v) => String(v).replace(/[0-9]/g, (d) => KH[d]);
+const KH_MONTHS = ['មករា', 'កុម្ភៈ', 'មីនា', 'មេសា', 'ឧសភា', 'មិថុនា', 'កក្កដា', 'សីហា', 'កញ្ញា', 'តុលា', 'វិច្ឆិកា', 'ធ្នូ'];
+function todayKh() {
+  const [y, m, d] = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Phnom_Penh' }).format(new Date()).split('-').map(Number);
+  return `ថ្ងៃទី${kh(d)} ខែ${KH_MONTHS[m - 1]} ឆ្នាំ${kh(y)}`;
+}
+DATA.issued = DATA.issued || todayKh();
 
 const GRADES = [
   [90, 'A', 'ល្អប្រសើរ', '#1b7a4b'],
@@ -255,7 +261,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 <h2>៦. មតិរបស់គ្រូបង្រៀន</h2>
 <div class="comment">${DATA.comment}</div>
 
-<div class="date">ធ្វើនៅ ................................ ${DATA.issued}</div>
+<div class="date">ធ្វើនៅ ${DATA.issued}</div>
 <div class="sign avoid">
   <div><b>បានឃើញ និងឯកភាព</b><br>នាយកសាលា<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
   <div><b>គ្រូបង្រៀនផ្ទាល់ (១ ទល់ ១)</b><br>មុខវិជ្ជាគណិតវិទ្យា<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
