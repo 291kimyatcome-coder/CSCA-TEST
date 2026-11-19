@@ -10,8 +10,8 @@ const DATA = {
   student: 'ឡុង',
   className: 'ថ្នាក់សិស្សពូកែ ត្រៀមថ្នាក់ទី១២',
   subject: 'គណិតវិទ្យា',
-  year: '២០២៦ – ២០២៧',
-  period: 'ខែសីហា – ខែវិច្ឆិកា ឆ្នាំ២០២៦',
+  year: '២០២៦-២០២៧',
+  period: 'ខែសីហា ដល់ខែវិច្ឆិកា ឆ្នាំ២០២៦',
   issued: 'ថ្ងៃទី១៩ ខែវិច្ឆិកា ឆ្នាំ២០២៦',
   attendance: 96,
   rank: [7, 24],
@@ -43,7 +43,7 @@ const DATA = {
   weaknesses: [
     'ប្រូបាប៊ីលីតេ និងវិភាគបន្សំ៖ ពេលខ្លះច្រឡំរវាងចំណាត់ធ្នាក់ និងបន្សំ។',
     'ធរណីមាត្រក្នុងលំហ៖ ការប្រើវ៉ិចទ័រដើម្បីគណនាចម្ងាយ និងមុំ នៅមិនទាន់ស្ទាត់ជំនាញ។',
-    'កំហុសដោយការធ្វេសប្រហែសតិចតួច (ដូចជាសញ្ញា + / −) នៅពេលប្រញាប់។',
+    'កំហុសដោយការធ្វេសប្រហែសតិចតួច (ដូចជាសញ្ញា + និង -) នៅពេលប្រញាប់។',
   ],
   advice: [
     'ធ្វើលំហាត់ប្រូបាប៊ីលីតេ ៥ ទៅ ១០ លំហាត់ក្នុងមួយសប្តាហ៍ ដោយកំណត់ប្រភេទបញ្ហាឲ្យច្បាស់មុនពេលដោះស្រាយ។',
@@ -84,7 +84,7 @@ const topicRows = DATA.topics
       <td>${name}</td>
       <td class="c b">${kh(s)}</td>
       <td><div class="bar"><span style="width:${s}%;background:${color}"></span></div></td>
-      <td class="c"><span class="pill" style="color:${color};border-color:${color}">${L} · ${label}</span></td>
+      <td class="c"><span class="pill" style="color:${color};border-color:${color}">${L} (${label})</span></td>
       <td class="note">${note}</td>
     </tr>`;
   })
@@ -140,52 +140,55 @@ ${ff('MoulKh', 'moul-khmer-400-normal.woff2', 400)}
 ${ff('MoulLa', 'moul-latin-400-normal.woff2', 400)}
 @page{size:A4;margin:12mm 13mm 14mm}
 *{box-sizing:border-box}
-body{margin:0;font-family:BtbLa,BtbKh,sans-serif;font-size:10.4pt;color:#1d2733;line-height:1.6}
-.moul{font-family:MoulLa,MoulKh,serif;font-weight:400}
+:root{--body:BtbLa,BtbKh,sans-serif;--head:MoulLa,MoulKh,serif;
+  --fs-title:17pt;--fs-h2:10.5pt;--fs-h3:10.5pt;--fs-body:10pt;--fs-small:9pt;--fs-tiny:8.3pt;--lh:1.7}
+body{margin:0;font-family:var(--body);font-size:var(--fs-body);color:#1d2733;line-height:var(--lh);font-synthesis:none;font-kerning:normal}
+h1,h2{font-family:var(--head);font-weight:400}
+b,th,h3,.b{font-weight:700}
 .head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #173a64;padding-bottom:10px}
 .logo{width:62px;height:62px;border-radius:50%;background:#173a64;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14pt;letter-spacing:0.5px;flex:none;border:3px solid #d4a531}
 .head .sch{font-size:15pt;font-weight:700;color:#173a64;line-height:1.3}
-.head .sub{font-size:9.5pt;color:#5a6878}
-.head .meta{margin-left:auto;text-align:right;font-size:9pt;color:#5a6878;line-height:1.6}
-h1{text-align:center;color:#173a64;font-size:16pt;margin:10px 0 0;line-height:1.8}
-.subt{text-align:center;color:#5a6878;margin:0 0 12px}
-h2{font-size:11.5pt;color:#173a64;margin:12px 0 5px;padding-left:9px;border-left:4px solid #d4a531;line-height:1.6}
+.head .sub{font-size:var(--fs-small);color:#5a6878}
+.head .meta{margin-left:auto;text-align:right;font-size:var(--fs-small);color:#5a6878;line-height:1.6}
+h1{text-align:center;color:#173a64;font-size:var(--fs-title);margin:10px 0 0;line-height:1.9}
+.subt{text-align:center;color:#5a6878;margin:0 0 10px}
+h2{font-size:var(--fs-h2);color:#173a64;margin:12px 0 5px;padding-left:9px;border-left:4px solid #d4a531;line-height:1.9}
 .info{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;background:#f4f7fb;border:1px solid #dfe6ef;border-radius:8px;padding:8px 14px}
 .info div span{color:#5a6878;display:inline-block;min-width:122px}
 .info b{color:#173a64}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
 .card{border:1px solid #dfe6ef;border-radius:8px;padding:8px 10px;text-align:center}
-.card .k{font-size:8.8pt;color:#5a6878}
+.card .k{font-size:var(--fs-small);color:#5a6878}
 .card .v{font-size:17pt;font-weight:700;color:#173a64;line-height:1.5}
-.card .v small{font-size:9pt;color:#5a6878;font-weight:400}
+.card .v small{font-size:var(--fs-small);color:#5a6878;font-weight:400}
 table{width:100%;border-collapse:collapse}
-th{background:#173a64;color:#fff;font-weight:700;font-size:9.4pt;padding:4px 6px}
-td{border-bottom:1px solid #e3e8ef;padding:1px 6px;vertical-align:middle}
+th{background:#173a64;color:#fff;font-size:var(--fs-small);padding:3px 6px}
+td{border-bottom:1px solid #e3e8ef;padding:1px 6px;vertical-align:middle;line-height:1.65}
 tr:nth-child(even) td{background:#fafbfd}
 .c{text-align:center}.b{font-weight:700}
-.note{font-size:8.6pt;color:#4a5866;white-space:nowrap}
+.note{font-size:var(--fs-small);color:#4a5866;white-space:nowrap}
 .bar{height:8px;background:#eef1f5;border-radius:4px;overflow:hidden;width:100%}
 .bar span{display:block;height:100%;border-radius:4px}
-.pill{display:inline-block;border:1px solid;border-radius:10px;padding:0 7px;font-size:8.4pt;white-space:nowrap;line-height:1.7}
+.pill{display:inline-block;border:1px solid;border-radius:10px;padding:0 7px;font-size:var(--fs-tiny);white-space:nowrap;line-height:1.7}
 .tfoot td{background:#eef3fa!important;font-weight:700;color:#173a64}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .box{border:1px solid #dfe6ef;border-radius:8px;padding:8px 12px}
-.box h3{margin:0 0 4px;font-size:10.5pt;line-height:1.6}
+.box h3{margin:0 0 4px;font-size:var(--fs-h3);line-height:1.7}
 .box ul{margin:0;padding-left:18px}.box li{margin:2px 0}
 .good{border-top:4px solid #1b7a4b}.good h3{color:#1b7a4b}
 .weak{border-top:4px solid #c98a1b}.weak h3{color:#a5700f}
-.ax{font-size:9px;fill:#6b7886;font-family:BtbLa,BtbKh}
-.val{font-size:10px;font-weight:700;fill:#173a64;font-family:BtbLa,BtbKh}
+.ax{font-size:9px;fill:#6b7886;font-family:var(--body)}
+.val{font-size:10px;font-weight:700;fill:#173a64;font-family:var(--body)}
 .dots i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e3e8ef;margin-right:4px}
 .dots i.on{background:#2a6fb0}
-.trendnote{font-size:9.2pt;color:#1b7a4b;margin-top:2px;text-align:center}
+.trendnote{font-size:var(--fs-small);color:#1b7a4b;margin-top:2px;text-align:center}
 .comment{background:#fbf7ec;border:1px solid #ecdcb0;border-radius:8px;padding:10px 14px;}
 ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;margin-top:10px}
 .sign .ln{height:58px}
-.sign .nm{border-top:1px dotted #8592a0;padding-top:2px;font-size:9.2pt;color:#5a6878}
-.date{text-align:right;margin-top:14px;font-size:9.6pt}
-.scale{margin-top:14px;font-size:8.4pt;color:#5a6878;border-top:1px solid #dfe6ef;padding-top:6px;text-align:center}
+.sign .nm{border-top:1px dotted #8592a0;padding-top:2px;font-size:var(--fs-small);color:#5a6878}
+.date{text-align:right;margin-top:14px}
+.scale{margin-top:14px;font-size:var(--fs-tiny);color:#5a6878;border-top:1px solid #dfe6ef;padding-top:6px;text-align:center}
 .pb{break-before:page}
 .avoid{break-inside:avoid}
 </style></head><body>
@@ -196,8 +199,8 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
   <div class="meta">ឆ្នាំសិក្សា ${DATA.year}<br>${DATA.period}</div>
 </div>
 
-<h1 class="moul">របាយការណ៍វាយតម្លៃលទ្ធផលសិក្សា</h1>
-<p class="subt">${DATA.className} · មុខវិជ្ជា${DATA.subject}</p>
+<h1>របាយការណ៍វាយតម្លៃលទ្ធផលសិក្សា</h1>
+<p class="subt">${DATA.className} | មុខវិជ្ជា${DATA.subject}</p>
 
 <div class="info">
   <div><span>ឈ្មោះសិស្ស</span>៖ <b>${DATA.student}</b></div>
@@ -219,7 +222,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 <table>
   <thead><tr><th style="width:5%">ល.រ</th><th style="width:28%">ជំពូក</th><th style="width:8%">ពិន្ទុ</th><th style="width:11%">កម្រិត</th><th style="width:13%">និទ្ទេស</th><th>មតិយោបល់</th></tr></thead>
   <tbody>${topicRows}
-  <tr class="tfoot"><td></td><td>ពិន្ទុមធ្យមភាគ</td><td class="c">${avgStr}</td><td><div class="bar"><span style="width:${avg}%;background:${avgColor}"></span></div></td><td class="c">${avgLetter} · ${avgLabel}</td><td class="note">លទ្ធផលល្អ គួរជាទីពេញចិត្ត</td></tr>
+  <tr class="tfoot"><td></td><td>ពិន្ទុមធ្យមភាគ</td><td class="c">${avgStr}</td><td><div class="bar"><span style="width:${avg}%;background:${avgColor}"></span></div></td><td class="c">${avgLetter} (${avgLabel})</td><td class="note">លទ្ធផលល្អ គួរជាទីពេញចិត្ត</td></tr>
   </tbody>
 </table>
 
@@ -255,7 +258,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
   <div><b>មាតាបិតា ឬអាណាព្យាបាល</b><br>បានទទួលជ្រាប<div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
 </div>
 
-<div class="scale">មាត្រដ្ឋាននិទ្ទេស៖ ${GRADES.map(([m, L, l], i) => `${L} (${l}) ${i === 0 ? kh('90–100') : i === GRADES.length - 1 ? '&lt; ' + kh(50) : kh(m + '–' + (GRADES[i - 1][0] - 1))}`).join(' · ')}</div>
+<div class="scale">មាត្រដ្ឋាននិទ្ទេស៖ ${GRADES.map(([m, L, l], i) => `${L} (${l}) ${i === 0 ? kh('90-100') : i === GRADES.length - 1 ? '&lt; ' + kh(50) : kh(m + '-' + (GRADES[i - 1][0] - 1))}`).join('&nbsp;&nbsp;|&nbsp;&nbsp;')}</div>
 
 </body></html>`;
 
