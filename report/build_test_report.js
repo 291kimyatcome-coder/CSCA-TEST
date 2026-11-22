@@ -7,7 +7,7 @@ const { chromium } = require('playwright');
 
 const DATA = {
   school: 'Science Master Academic',
-  student: 'Tey Tey',
+  student: 'ផា សុម៉ាវត្តី',
   grade: '៨',
   test: 'វិញ្ញាសាទី ២ | តេស្តគណិតវិទ្យាឡើងថ្នាក់ទី ៨ (ខ្លឹមសារថ្នាក់ទី ៧)',
   duration: '៦០ នាទី',
