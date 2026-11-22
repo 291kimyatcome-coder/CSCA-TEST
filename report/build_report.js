@@ -65,7 +65,7 @@ DATA.issued = DATA.issued || todayKh();
 
 const GRADES = [
   [90, 'A', 'ល្អប្រសើរ', '#1b7a4b'],
-  [80, 'B', 'ល្អណាស់', '#2a6fb0'],
+  [80, 'B', 'ល្អណាស់', '#2f9e73'],
   [70, 'C', 'ល្អ', '#3d8fa8'],
   [60, 'D', 'ល្អបង្គួរ', '#c98a1b'],
   [50, 'E', 'មធ្យម', '#c2611f'],
@@ -107,13 +107,13 @@ function trendSvg() {
   const area = `${x(0)},${y(lo)} ${pts} ${x(DATA.monthly.length - 1)},${y(lo)}`;
   let dots = '';
   DATA.monthly.forEach(([m, v], i) => {
-    dots += `<circle cx="${x(i)}" cy="${y(v)}" r="4.5" fill="#fff" stroke="#173a64" stroke-width="2.5"/>`;
+    dots += `<circle cx="${x(i)}" cy="${y(v)}" r="4.5" fill="#fff" stroke="#1d4d3a" stroke-width="2.5"/>`;
     dots += `<text x="${x(i)}" y="${y(v) - 10}" text-anchor="middle" class="val">${kh(v)}</text>`;
     dots += `<text x="${x(i)}" y="${H - 8}" text-anchor="middle" class="ax">${m}</text>`;
   });
   return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}
-    <polygon points="${area}" fill="#2a6fb0" opacity="0.10"/>
-    <polyline points="${pts}" fill="none" stroke="#173a64" stroke-width="2.5"/>${dots}</svg>`;
+    <polygon points="${area}" fill="#2f9e73" opacity="0.10"/>
+    <polyline points="${pts}" fill="none" stroke="#1d4d3a" stroke-width="2.5"/>${dots}</svg>`;
 }
 
 const first = DATA.monthly[0][1], last = DATA.monthly[DATA.monthly.length - 1][1];
@@ -147,32 +147,32 @@ ${ff('MoulLa', 'moul-latin-400-normal.woff2', 400)}
 body{margin:0;font-family:var(--body);font-size:var(--fs-body);color:#1d2733;line-height:var(--lh);font-synthesis:none;font-kerning:normal}
 h1,h2{font-family:var(--head);font-weight:400}
 b,th,h3,.b{font-weight:700}
-.head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #173a64;padding-bottom:10px}
-.logo{width:62px;height:62px;border-radius:50%;background:#173a64;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14pt;letter-spacing:0.5px;flex:none;border:3px solid #d4a531}
-.head .sch{font-size:15pt;font-weight:700;color:#173a64;line-height:1.3}
+.head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #1d4d3a;padding-bottom:10px}
+.logo{width:76px;height:76px;border-radius:50%;flex:none;display:block}
+.head .sch{font-size:15pt;font-weight:700;color:#1d4d3a;line-height:1.3}
 .head .sub{font-size:var(--fs-small);color:#5a6878}
 .head .meta{margin-left:auto;text-align:right;font-size:var(--fs-small);color:#5a6878;line-height:1.6}
-h1{text-align:center;color:#173a64;font-size:var(--fs-title);margin:10px 0 0;line-height:1.9}
+h1{text-align:center;color:#1d4d3a;font-size:var(--fs-title);margin:10px 0 0;line-height:1.9}
 .subt{text-align:center;color:#5a6878;margin:0 0 10px}
-h2{font-size:var(--fs-h2);color:#173a64;margin:12px 0 5px;padding-left:9px;border-left:4px solid #d4a531;line-height:1.9}
-.info{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;background:#f4f7fb;border:1px solid #dfe6ef;border-radius:8px;padding:8px 14px}
+h2{font-size:var(--fs-h2);color:#1d4d3a;margin:12px 0 5px;padding-left:9px;border-left:4px solid #2f9e73;line-height:1.9}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;background:#f2f8f5;border:1px solid #dfe6ef;border-radius:8px;padding:8px 14px}
 .info div span{color:#5a6878;display:inline-block;min-width:122px}
-.info b{color:#173a64}
+.info b{color:#1d4d3a}
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
 .card{border:1px solid #dfe6ef;border-radius:8px;padding:8px 10px;text-align:center}
 .card .k{font-size:var(--fs-small);color:#5a6878}
-.card .v{font-size:17pt;font-weight:700;color:#173a64;line-height:1.5}
+.card .v{font-size:17pt;font-weight:700;color:#1d4d3a;line-height:1.5}
 .card .v small{font-size:var(--fs-small);color:#5a6878;font-weight:400}
 table{width:100%;border-collapse:collapse}
-th{background:#173a64;color:#fff;font-size:var(--fs-small);padding:3px 6px}
+th{background:#1d4d3a;color:#fff;font-size:var(--fs-small);padding:3px 6px}
 td{border-bottom:1px solid #e3e8ef;padding:1px 6px;vertical-align:middle;line-height:1.65}
-tr:nth-child(even) td{background:#fafbfd}
+tr:nth-child(even) td{background:#f8fbf9}
 .c{text-align:center}.b{font-weight:700}
 .note{font-size:var(--fs-small);color:#4a5866;white-space:nowrap}
 .bar{height:8px;background:#eef1f5;border-radius:4px;overflow:hidden;width:100%}
 .bar span{display:block;height:100%;border-radius:4px}
 .pill{display:inline-block;border:1px solid;border-radius:10px;padding:0 7px;font-size:var(--fs-tiny);white-space:nowrap;line-height:1.7}
-.tfoot td{background:#eef3fa!important;font-weight:700;color:#173a64}
+.tfoot td{background:#e6f2ec!important;font-weight:700;color:#1d4d3a}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .box{border:1px solid #dfe6ef;border-radius:8px;padding:8px 12px}
 .box h3{margin:0 0 4px;font-size:var(--fs-h3);line-height:1.7}
@@ -180,15 +180,15 @@ tr:nth-child(even) td{background:#fafbfd}
 .good{border-top:4px solid #1b7a4b}.good h3{color:#1b7a4b}
 .weak{border-top:4px solid #c98a1b}.weak h3{color:#a5700f}
 .ax{font-size:9px;fill:#6b7886;font-family:var(--body)}
-.val{font-size:10px;font-weight:700;fill:#173a64;font-family:var(--body)}
+.val{font-size:10px;font-weight:700;fill:#1d4d3a;font-family:var(--body)}
 .dots i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#e3e8ef;margin-right:4px}
-.dots i.on{background:#2a6fb0}
+.dots i.on{background:#2f9e73}
 .trendnote{font-size:var(--fs-small);color:#1b7a4b;margin-top:2px;text-align:center}
 .comment{background:#fbf7ec;border:1px solid #ecdcb0;border-radius:8px;padding:10px 14px;}
 ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 .sign{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;margin-top:10px}
 .sign .ln{height:58px}
-.sign .who{color:#173a64;font-size:var(--fs-body)}
+.sign .who{color:#1d4d3a;font-size:var(--fs-body)}
 .sign .nm{border-top:1px dotted #8592a0;padding-top:2px;font-size:var(--fs-small);color:#5a6878}
 .date{text-align:right;margin-top:14px}
 .scale{margin-top:14px;font-size:var(--fs-tiny);color:#5a6878;border-top:1px solid #dfe6ef;padding-top:6px;text-align:center}
@@ -197,7 +197,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 </style></head><body>
 
 <div class="head">
-  <div class="logo">SMA</div>
+  <img class="logo" src="file://${path.join(__dirname, 'assets', 'logo.jpg')}" alt="Science Master Academic">
   <div><div class="sch">${DATA.school}</div><div class="sub">សាលា ${DATA.school}</div></div>
   <div class="meta">ឆ្នាំសិក្សា ${DATA.year}<br>${DATA.period}</div>
 </div>

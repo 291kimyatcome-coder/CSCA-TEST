@@ -88,7 +88,7 @@ DATA.issued = DATA.issued || todayKh();
 
 const GRADES = [
   [90, 'A', 'ល្អប្រសើរ', '#1b7a4b'],
-  [80, 'B', 'ល្អណាស់', '#2a6fb0'],
+  [80, 'B', 'ល្អណាស់', '#2f9e73'],
   [70, 'C', 'ល្អ', '#3d8fa8'],
   [60, 'D', 'ល្អបង្គួរ', '#c98a1b'],
   [50, 'E', 'មធ្យម', '#c2611f'],
@@ -157,25 +157,25 @@ body{margin:0;font-family:var(--body);font-size:var(--fs-body);color:#1d2733;lin
 h1,h2{font-family:var(--head);font-weight:400}
 b,th,h3,.b{font-weight:700}
 sup{font-size:0.7em;line-height:0;vertical-align:0.45em}
-.head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #173a64;padding-bottom:10px}
-.logo{width:62px;height:62px;border-radius:50%;background:#173a64;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14pt;flex:none;border:3px solid #d4a531}
-.head .sch{font-size:15pt;font-weight:700;color:#173a64;line-height:1.3}
+.head{display:flex;align-items:center;gap:14px;border-bottom:3px solid #1d4d3a;padding-bottom:10px}
+.logo{width:76px;height:76px;border-radius:50%;flex:none;display:block}
+.head .sch{font-size:15pt;font-weight:700;color:#1d4d3a;line-height:1.3}
 .head .sub{font-size:var(--fs-small);color:#5a6878}
 .head .meta{margin-left:auto;text-align:right;font-size:var(--fs-small);color:#5a6878;line-height:1.6}
-h1{text-align:center;color:#173a64;font-size:var(--fs-title);margin:10px 0 0;line-height:1.9}
+h1{text-align:center;color:#1d4d3a;font-size:var(--fs-title);margin:10px 0 0;line-height:1.9}
 .subt{text-align:center;color:#5a6878;margin:0 0 10px}
-h2{font-size:var(--fs-h2);color:#173a64;margin:12px 0 5px;padding-left:9px;border-left:4px solid #d4a531;line-height:1.9}
-.info{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;background:#f4f7fb;border:1px solid #dfe6ef;border-radius:8px;padding:8px 14px}
+h2{font-size:var(--fs-h2);color:#1d4d3a;margin:12px 0 5px;padding-left:9px;border-left:4px solid #2f9e73;line-height:1.9}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;background:#f2f8f5;border:1px solid #dfe6ef;border-radius:8px;padding:8px 14px}
 .info div span{color:#5a6878;display:inline-block;min-width:96px}
-.info b{color:#173a64}
+.info b{color:#1d4d3a}
 .info .wide{grid-column:1 / -1}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
 .card{border:1px solid #dfe6ef;border-radius:8px;padding:8px 10px;text-align:center}
 .card .k{font-size:var(--fs-small);color:#5a6878}
-.card .v{font-size:17pt;font-weight:700;color:#173a64;line-height:1.5}
+.card .v{font-size:17pt;font-weight:700;color:#1d4d3a;line-height:1.5}
 .card .v small{font-size:var(--fs-small);color:#5a6878;font-weight:400}
 table{width:100%;border-collapse:collapse}
-th{background:#173a64;color:#fff;font-size:var(--fs-small);padding:3px 6px}
+th{background:#1d4d3a;color:#fff;font-size:var(--fs-small);padding:3px 6px}
 td{border-bottom:1px solid #e3e8ef;padding:1px 6px;vertical-align:middle;line-height:1.65}
 .c{text-align:center}
 .note{font-size:var(--fs-small);color:#4a5866}
@@ -183,7 +183,7 @@ td{border-bottom:1px solid #e3e8ef;padding:1px 6px;vertical-align:middle;line-he
 .bar span{display:block;height:100%;border-radius:4px}
 .det td{font-size:var(--fs-small);line-height:1.55}
 .det td.b{white-space:nowrap}
-.det tr.ph td{background:#eef3fa;color:#173a64;font-weight:700;font-size:var(--fs-small)}
+.det tr.ph td{background:#e6f2ec;color:#1d4d3a;font-weight:700;font-size:var(--fs-small)}
 .det tr.ph td span{float:right}
 .st{display:inline-block;border-radius:10px;padding:0 7px;font-size:var(--fs-tiny);line-height:1.7;white-space:nowrap;color:#fff}
 .st.ok{background:#1b7a4b}.st.no{background:#b23a3a}.st.part{background:#c98a1b}
@@ -198,7 +198,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 .sign{display:grid;grid-template-columns:1fr 1fr;gap:60px;text-align:center;margin:10px 40px 0}
 .sign .ln{height:58px}
 .sign .nm{border-top:1px dotted #8592a0;padding-top:2px;font-size:var(--fs-small);color:#5a6878}
-.sign .who{color:#173a64;font-size:var(--fs-body)}
+.sign .who{color:#1d4d3a;font-size:var(--fs-body)}
 .date{text-align:right;margin-top:14px}
 .scale{margin-top:12px;font-size:var(--fs-tiny);color:#5a6878;border-top:1px solid #dfe6ef;padding-top:6px;text-align:center}
 .pb{break-before:page}
@@ -206,7 +206,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 </style></head><body>
 
 <div class="head">
-  <div class="logo">SMA</div>
+  <img class="logo" src="file://${path.join(__dirname, 'assets', 'logo.jpg')}" alt="Science Master Academic">
   <div><div class="sch">${DATA.school}</div><div class="sub">សាលា ${DATA.school}</div></div>
   <div class="meta">មុខវិជ្ជាគណិតវិទ្យា<br>${DATA.issued}</div>
 </div>
