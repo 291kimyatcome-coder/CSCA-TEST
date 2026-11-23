@@ -35,7 +35,9 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 
 ## Run it
 
-Open `index.html` in a browser (it needs internet only for MathJax from cdnjs), or serve the folder:
+**Easiest:** download `CSCA-Math.html` and double-click it. It opens in Chrome (or any browser) and works offline; everything is inside that one file.
+
+Or open `index.html` in a browser (it needs internet only for MathJax from cdnjs), or serve the folder:
 
 ```bash
 python3 -m http.server 8000   # then open http://localhost:8000
@@ -48,6 +50,7 @@ node tools/validate.js           # structural checks on all 40 papers + stress t
 node tools/validate.js --dump    # print one sample question from each template
 npm i mathjax@3 && node tools/validate.js --tex    # also parse every formula with MathJax
 node tools/build-pdfs.js         # regenerate pdf/ (needs mathjax@3 and Playwright)
+python3 tools/build-standalone.py   # regenerate CSCA-Math.html (needs mathjax@3)
 ```
 
 Fonts (IBM Plex Sans, IBM Plex Sans Condensed, IBM Plex Mono; SIL Open Font License) are embedded in `css/fonts.css`.
