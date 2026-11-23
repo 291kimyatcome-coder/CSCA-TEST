@@ -50,6 +50,19 @@ for (let n = 1; n <= CSCA.PAPER_COUNT; n++) {
   if (JSON.stringify(again) !== JSON.stringify(p)) note(`paper ${n}`, 'not deterministic');
 }
 
+// 1b. printable exam sheets
+const sheets = [];
+for (let n = 1; n <= CSCA.EXAM_SHEET_COUNT; n++) {
+  const p = CSCA.makeExamSheet(n);
+  sheets.push(p);
+  if (p.questions.length !== 48) note(`sheet ${n}`, `has ${p.questions.length} questions`);
+  const mods = [0, 0, 0, 0];
+  p.questions.forEach((q) => { mods[q.module - 1]++; checkQuestion(q, `sheet ${n} Q${q.no} (${q.tpl})`); });
+  if (mods.join() !== '7,17,14,10') note(`sheet ${n}`, 'module split ' + mods.join('/'));
+  if (!p.questions.slice(43).every((q) => q.challenge)) note(`sheet ${n}`, 'last five are not the challenge questions');
+  if (JSON.stringify(CSCA.makeExamSheet(n)) !== JSON.stringify(p)) note(`sheet ${n}`, 'not deterministic');
+}
+
 // 2. stress test every template
 const rng = CSCA.makeRng(12345);
 const perTpl = {};
@@ -74,6 +87,7 @@ console.log(`Templates: ${CSCA.templates.length}`);
 console.log('Templates per lesson:', lessonCounts);
 console.log(`Papers: ${papers.length} × ${CSCA.QUESTIONS_PER_PAPER} questions = ${papers.length * CSCA.QUESTIONS_PER_PAPER}`);
 console.log('Answer-letter distribution (A,B,C,D):', answerDist.join(', '));
+console.log(`Exam sheets: ${sheets.length} × 48 (module split 7/17/14/10, last five = challenge)`);
 const noisy = Object.entries(perTpl).filter(([, v]) => v > 300).sort((a, b) => b[1] - a[1]);
 if (noisy.length) console.log('Templates with many retries (not errors):', noisy.slice(0, 8));
 
@@ -103,7 +117,7 @@ async function texCheck() {
     let m;
     while ((m = re.exec(s))) formulas.push(m[1]);
   };
-  for (const p of papers)
+  for (const p of papers.concat(sheets))
     for (const q of p.questions) {
       collect(q.q);
       collect(q.sol);

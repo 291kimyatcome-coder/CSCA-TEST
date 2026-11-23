@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Test for CSCA — exam sheet (print)</title>
+<link rel="stylesheet" href="../css/fonts.css">
+<style>
+  @page { size: A4; margin: 15mm 14mm 16mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #111; }
+  .accent { color: #c8472e; }
+  header.cover { border: 1.5px solid #c8472e; border-radius: 4px; padding: 10px 14px; margin-bottom: 10px; }
+  header.cover h1 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 19pt; margin: 0; line-height: 1.15; }
+  header.cover .meta { display: flex; gap: 16px; flex-wrap: wrap; color: #c8472e; font-family: "IBM Plex Mono", monospace; font-size: 8.3pt; text-transform: uppercase; letter-spacing: .05em; margin-top: 4px; }
+  .fields { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 18px; margin-top: 12px; font-size: 9.5pt; }
+  .fields span { border-bottom: 1px solid #888; padding-bottom: 3px; }
+  .instructions { font-size: 9pt; color: #333; margin: 0 0 6px; padding-left: 16px; }
+  .instructions li { margin: 1px 0; }
+  h2.part { font-size: 11pt; border-bottom: 1.5px solid #222; padding-bottom: 2px; margin: 12px 0 4px; break-after: avoid; }
+  h2.part.challenge { border-color: #c8472e; color: #c8472e; }
+  .q { break-inside: avoid; padding: 5px 0 7px; border-bottom: 1px dotted #ccc; }
+  .q .stem { margin: 0 0 3px; }
+  .no { font-family: "IBM Plex Mono", monospace; font-weight: 600; margin-right: 6px; }
+  .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px 14px; padding-left: 24px; }
+  .choices.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .choices.one { grid-template-columns: minmax(0, 1fr); }
+  .choices b { font-family: "IBM Plex Mono", monospace; margin-right: 4px; }
+  /* bubble answer sheet */
+  .sheet { break-before: page; }
+  .sheet h2 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 15pt; margin: 0 0 4px; }
+  .sheet .fields { margin: 6px 0 14px; }
+  .bubbles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 26px; border: 1.5px solid #c8472e; border-radius: 4px; padding: 10px 14px; }
+  .brow { display: flex; align-items: center; gap: 7px; padding: 3.2px 0; border-bottom: 1px dashed #f0c4b8; }
+  .brow .n { width: 22px; text-align: right; font-family: "IBM Plex Mono", monospace; font-size: 9pt; color: #c8472e; }
+  .brow i { width: 17px; height: 17px; border: 1.3px solid #c8472e; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-family: "IBM Plex Mono", monospace; font-size: 7.5pt; color: #c8472e; }
+  .sheet .note { font-size: 8.5pt; color: #555; margin-top: 8px; }
+  .scorebox { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; font-size: 9pt; }
+  .scorebox div { border: 1px solid #999; border-radius: 3px; padding: 6px 8px; min-height: 40px; }
+  /* answer key */
+  .key h1 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 17pt; margin: 0 0 2px; }
+  .key .sub { color: #c8472e; font-family: "IBM Plex Mono", monospace; font-size: 8.5pt; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-bottom: 8px; }
+  .grid div { border: 1px solid #bbb; border-radius: 3px; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 9pt; padding: 2px 0; }
+  .grid div b { color: #c8472e; margin-left: 4px; }
+  .scale { font-size: 8.5pt; color: #444; margin: 0 0 12px; }
+  .sol { break-inside: avoid; font-size: 9.3pt; padding: 5px 0; border-bottom: 1px dotted #ccc; }
+  .sol .stem { color: #333; }
+  .sol .ans { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: #c8472e; }
+  footer { margin-top: 10px; font-size: 8pt; color: #666; }
+  mjx-container { font-size: 100% !important; }
+</style>
+<script>
+  window.MathJax = { tex: { inlineMath: [['\\(', '\\)']] }, svg: { fontCache: 'global' }, startup: { typeset: false } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<script src="../js/engine.js"></script>
+</head>
+<body>
+<div id="out"></div>
+<script>
+  (function () {
+    var qs = new URLSearchParams(location.search);
+    var n = Number(qs.get('sheet') || 1);
+    var mode = qs.get('mode') === 'key' ? 'key' : 'student';
+    var p = CSCA.makeExamSheet(n);
+    var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+    var ch = function (q, c) { return q.math ? esc('\\(' + c + '\\)') : esc(c); };
+    var L = 'ABCD';
+    var html = '';
+    if (mode === 'student') {
+      html += '<header class="cover"><h1>Test for CSCA · Mathematics · Exam Sheet ' + n + '</h1>' +
+        '<div class="meta"><span>60 minutes</span><span>48 questions</span><span>100 points</span><span>No calculator</span></div>' +
+        '<div class="fields"><span>Name:</span><span>Class:</span><span>Score:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/100</span></div></header>' +
+        '<ul class="instructions"><li>Answer all 48 questions. Each question has exactly one correct answer; no marks are deducted for wrong answers.</li>' +
+        '<li>Mark your answers on the answer sheet on the last page. Calculators are not allowed.</li>' +
+        '<li>Questions 44–48 are the most challenging. This is a mock paper written to the CSCA Mathematics syllabus (2025); it is not an official paper.</li></ul>';
+      var last = 0;
+      p.questions.forEach(function (q) {
+        if (q.challenge && last !== 'c') { last = 'c'; html += '<h2 class="part challenge">Part 5 · Challenge questions</h2>'; }
+        else if (!q.challenge && q.module !== last) { last = q.module; html += '<h2 class="part">Part ' + q.module + ' · ' + CSCA.MODULES[q.module - 1].en + '</h2>'; }
+        var maxLen = Math.max.apply(null, q.choices.map(function (c) { return c.length; }));
+        var cls = maxLen < 16 ? '' : maxLen < 40 ? ' two' : ' one';
+        html += '<div class="q"><p class="stem"><span class="no">' + q.no + '.</span>' + esc(q.q) + '</p><div class="choices' + cls + '">' +
+          q.choices.map(function (c, i) { return '<span><b>' + L[i] + '.</b>' + ch(q, c) + '</span>'; }).join('') + '</div></div>';
+      });
+      // column-major order: 1–16, 17–32, 33–48
+      var cols = ['', '', ''];
+      for (var j = 0; j < 48; j++) cols[Math.floor(j / 16)] += '<div class="brow"><span class="n">' + (j + 1) + '</span><i>A</i><i>B</i><i>C</i><i>D</i></div>';
+      html += '<section class="sheet"><h2>Answer sheet · Exam Sheet ' + n + '</h2>' +
+        '<div class="fields"><span>Name:</span><span>Class:</span><span>Date:</span></div>' +
+        '<div class="bubbles"><div>' + cols[0] + '</div><div>' + cols[1] + '</div><div>' + cols[2] + '</div></div>' +
+        '<p class="note">Fill one circle per question completely, like this: ●. To change an answer, cross out the old mark clearly.</p>' +
+        '<div class="scorebox"><div>Correct:</div><div>Wrong:</div><div>Blank:</div><div>Score (/100):</div></div></section>';
+    } else {
+      html += '<section class="key"><h1>Test for CSCA · Exam Sheet ' + n + ' · Answer key</h1><p class="sub">For teachers · 48 questions · 100 points</p><div class="grid">' +
+        p.questions.map(function (q) { return '<div>' + q.no + '<b>' + L[q.answer] + '</b></div>'; }).join('') + '</div>' +
+        '<p class="scale">Score = correct answers × 100 ÷ 48 (rounded to one decimal). E.g. 36 correct → 75.0; 40 → 83.3; 44 → 91.7.</p>' +
+        p.questions.map(function (q) {
+          return '<div class="sol"><span class="no">' + q.no + '.</span><span class="ans">' + L[q.answer] + ' — ' + ch(q, q.choices[q.answer]) + '</span><div class="stem">' + esc(q.q) + '</div><div>' + esc(q.sol) + '</div></div>';
+        }).join('') +
+        '<footer>Test for CSCA · mock papers written to the CSCA Mathematics syllabus (2025) · not an official paper.</footer></section>';
+    }
+    document.getElementById('out').innerHTML = html;
+    document.title = 'Test for CSCA Exam Sheet ' + n + (mode === 'key' ? ' Answer Key' : '');
+    MathJax.startup.promise.then(function () { return MathJax.typesetPromise(); }).then(function () { window.__done = true; });
+  })();
+</script>
+</body>
+</html>

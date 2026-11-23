@@ -261,8 +261,9 @@
   LESSON_META.forEach((l) => (LESSON_MODULE[l.id] = l.module));
 
   const TPL = [];
-  function def(id, lesson, gen) {
-    TPL.push({ id, lesson, gen });
+  // opts.examOnly: used only by the printable exam sheets (keeps the 40 online papers unchanged)
+  function def(id, lesson, gen, opts) {
+    TPL.push({ id, lesson, gen, examOnly: !!(opts && opts.examOnly) });
   }
 
   const COND = [
@@ -2301,6 +2302,96 @@
     };
   });
 
+  /* ================================================================== */
+  /* EXAM-SHEET CHALLENGE TEMPLATES (complex roots, summation, recursion) */
+  /* ================================================================== */
+  function pmTex(p, q) {
+    // p ± q i
+    const qi = (q === 1 ? '' : q) + 'i';
+    return p === 0 ? T`\pm ${qi}` : T`${p}\pm ${qi}`;
+  }
+  def('complex-roots', 'complex', (r) => {
+    const p = r.int(-3, 3), q = r.int(1, 4);
+    const b = -2 * p, c = p * p + q * q;
+    const eq = lc([[1, 'x^2'], [b, 'x'], [c, '']]) + '=0';
+    const v = r.int(1, 3);
+    if (v === 1)
+      return {
+        q: T`In the set of complex numbers, the roots of \(${eq}\) are`,
+        correct: T`x=${pmTex(p, q)}`,
+        wrong: [T`x=${pmTex(-p, q)}`, T`x=${pmTex(p, 2 * q)}`, T`x=${pmTex(q, p === 0 ? 1 : Math.abs(p))}`, T`x=${pmTex(p, q * q)}`, T`x=${pmTex(2 * p || 1, q)}`],
+        sol: T`\(\Delta=${b * b}-4\cdot${c}=${b * b - 4 * c}<0\). \(x=\frac{${-b}\pm\sqrt{${b * b - 4 * c}}}{2}=\frac{${-b}\pm${2 * q}i}{2}=${pmTex(p, q)}\).`,
+      };
+    if (v === 2) {
+      const ans = b + c;
+      return {
+        q: T`The equation \(x^2+bx+c=0\) with real coefficients \(b,c\) has a root \(${cTex(p, q)}\). Then \(b+c=\)`,
+        correct: String(ans),
+        wrong: [String(-b + c), String(b - c), String(p * p - q * q + b), String(c)].concat(nb(ans)),
+        sol: T`Complex roots come in conjugate pairs: the roots are \(${pmTex(p, q)}\). Sum \(=${2 * p}=-b\Rightarrow b=${b}\); product \(=${p}^2+${q}^2=${c}=c\). So \(b+c=${ans}\).`,
+      };
+    }
+    return {
+      q: T`\(z\) is a root of \(${eq}\). Then \(|z|=\)`,
+      correct: R(1, c),
+      wrong: [String(c), R(1, c + 2 * q), R(1, Math.abs(p * p - q * q) || 2), String(Math.abs(p) + q)],
+      sol: T`The roots are \(${pmTex(p, q)}\), so \(|z|=\sqrt{${p * p}+${q * q}}=${R(1, c)}\) (also \(|z|^2=z\bar z=c=${c}\)).`,
+    };
+  }, { examOnly: true });
+
+  def('telescoping', 'seq', (r) => {
+    const n = r.int(5, 30);
+    const v = r.int(1, 3);
+    if (v === 1)
+      return {
+        q: T`\(\dfrac{1}{1\times2}+\dfrac{1}{2\times3}+\dfrac{1}{3\times4}+\cdots+\dfrac{1}{${n}\times${n + 1}}=\)`,
+        correct: F(n, n + 1),
+        wrong: [F(n - 1, n), F(n + 1, n + 2), F(1, n + 1), F(n, n + 2), F(2 * n, n + 1)],
+        sol: T`\(\frac{1}{k(k+1)}=\frac1k-\frac1{k+1}\), so the sum telescopes to \(1-\frac{1}{${n + 1}}=${F(n, n + 1)}\).`,
+      };
+    if (v === 2)
+      return {
+        q: T`\(\dfrac{1}{1\times3}+\dfrac{1}{3\times5}+\cdots+\dfrac{1}{${2 * n - 1}\times${2 * n + 1}}=\)`,
+        correct: F(n, 2 * n + 1),
+        wrong: [F(2 * n, 2 * n + 1), F(n, 2 * n - 1), F(n - 1, 2 * n - 1), F(n + 1, 2 * n + 1), F(1, 2 * n + 1)],
+        sol: T`\(\frac{1}{(2k-1)(2k+1)}=\frac12\left(\frac1{2k-1}-\frac1{2k+1}\right)\), so the sum is \(\frac12\left(1-\frac1{${2 * n + 1}}\right)=${F(n, 2 * n + 1)}\).`,
+      };
+    return {
+      q: T`For \(a_n=\dfrac{1}{n(n+1)}\), let \(S_n\) be the sum of the first \(n\) terms. Then \(S_{${n}}=\)`,
+      correct: F(n, n + 1),
+      wrong: [F(n - 1, n), F(n + 1, n + 2), F(1, n * (n + 1)), F(n, n + 2)],
+      sol: T`\(a_k=\frac1k-\frac1{k+1}\), so \(S_{${n}}=1-\frac1{${n + 1}}=${F(n, n + 1)}\).`,
+    };
+  }, { examOnly: true });
+
+  def('recurrence', 'seq', (r) => {
+    const kk = r.int(4, 6);
+    if (r.chance(0.6)) {
+      const q = r.pick([2, 3]), d = r.int(-2, 3), a1 = r.int(1, 3);
+      const seq = [a1];
+      for (let i = 1; i < kk + 1; i++) seq.push(q * seq[i - 1] + d);
+      const ans = seq[kk - 1];
+      if (seq[1] === seq[0]) throw new Error('constant sequence: too easy for a challenge question');
+      if (Math.abs(ans) > 2000) throw new Error('too big');
+      return {
+        q: T`In the sequence \(\{a_n\}\), \(a_1=${a1}\) and \(a_{n+1}=${q}a_n${k(d)}\). Then \(a_{${kk}}=\)`,
+        correct: String(ans),
+        wrong: [String(seq[kk]), String(seq[kk - 2]), String(a1 * q ** (kk - 1)), String(ans + d || ans + 1)].concat(nb(ans)),
+        sol: T`Compute term by term: \(${seq.slice(0, kk).map((x, i) => T`a_{${i + 1}}=${x}`).join(',\ ')}\).`,
+      };
+    }
+    const a1 = r.int(1, 4), m = r.pick([1, 2]);
+    const seq = [a1];
+    for (let i = 1; i < kk + 1; i++) seq.push(seq[i - 1] + m * i);
+    const ans = seq[kk - 1];
+    return {
+      q: T`In the sequence \(\{a_n\}\), \(a_1=${a1}\) and \(a_{n+1}=a_n+${m === 1 ? 'n' : '2n'}\). Then \(a_{${kk}}=\)`,
+      correct: String(ans),
+      wrong: [String(seq[kk]), String(seq[kk - 2]), String(a1 + m * kk), String(a1 + m * (kk - 1))].concat(nb(ans)),
+      sol: T`\(a_{${kk}}=a_1+${m === 1 ? '' : '2('}1+2+\cdots+${kk - 1}${m === 1 ? '' : ')'}=${a1}+${m}\cdot${(kk * (kk - 1)) / 2}=${ans}\).`,
+    };
+  }, { examOnly: true });
+
   /* ------------------------------------------------------------------ */
   /* Assembly                                                            */
   /* ------------------------------------------------------------------ */
@@ -2355,8 +2446,8 @@
     throw new Error(`template ${tpl.id} failed: ${lastErr && lastErr.message}`);
   }
 
-  function byLesson(lesson) {
-    return TPL.filter((t) => t.lesson === lesson);
+  function byLesson(lesson, includeExamOnly) {
+    return TPL.filter((t) => t.lesson === lesson && (includeExamOnly || !t.examOnly));
   }
 
   const PAPER_COUNT = 40;
@@ -2372,9 +2463,39 @@
     return { n, questions: qs };
   }
 
+  /*
+   * Printable exam sheets (separate series from the online papers).
+   * Follows reported 2026 paper patterns: opens with sets and inequalities,
+   * weights roughly Functions 35% · Geometry & Algebra 30% · Probability &
+   * Statistics 20% · Sets & Inequalities 15%, and ends with five harder
+   * questions (vectors, recursive sequence, complex roots, summation,
+   * probability).
+   */
+  const EXAM_SHEET_COUNT = 20;
+  const SHEET_BASE = [['sets', 3], ['ineq', 4], ['func', 4], ['expolog', 3], ['trig', 4], ['seq', 1], ['deriv', 3], ['lines', 3], ['conics', 3], ['vectors', 2], ['complex', 1], ['solid', 3], ['prob', 3], ['stats', 3], ['normal', 3]];
+  const CHALLENGE = [['vec-magnitude', 'vec-angle'], ['recurrence'], ['complex-roots'], ['telescoping'], ['committee', 'pick-numbers']];
+  function makeExamSheet(n) {
+    const r = makeRng('csca-exam-sheet-' + n);
+    const challengeIds = new Set(CHALLENGE.flat());
+    const qs = [];
+    for (const [lesson, count] of SHEET_BASE) {
+      const pool = r.shuffle(byLesson(lesson).filter((t) => !challengeIds.has(t.id)));
+      for (let i = 0; i < count; i++) qs.push(build(pool[i % pool.length], r));
+    }
+    for (const ids of CHALLENGE) {
+      const id = r.pick(ids);
+      const t = TPL.find((x) => x.id === id);
+      const q = build(t, r);
+      q.challenge = true;
+      qs.push(q);
+    }
+    qs.forEach((q, i) => (q.no = i + 1));
+    return { n, questions: qs };
+  }
+
   function practice(lesson, count, seed) {
     const r = makeRng(seed === undefined ? Math.floor(Math.random() * 2 ** 31) : seed);
-    const pool = byLesson(lesson);
+    const pool = byLesson(lesson, true);
     const out = [];
     let order = r.shuffle(pool);
     for (let i = 0; i < count; i++) {
@@ -2392,6 +2513,8 @@
     QUESTIONS_PER_PAPER: LESSON_META.reduce((s, l) => s + l.perPaper, 0),
     templates: TPL,
     makePaper,
+    makeExamSheet,
+    EXAM_SHEET_COUNT,
     practice,
     makeRng,
     _stats: stats,

@@ -20,6 +20,16 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 - **Timed exam mode**: 60-minute countdown, answer-sheet bubbles, auto-submit, score out of 100, breakdown by module, and full review.
 - **Printable PDFs** in `pdf/` (`paper-01.pdf` … `paper-40.pdf`): the paper with Name/Class/Score fields, then the answer key and all solutions.
 
+## Printable exam sheets (20 papers, separate from the online papers)
+
+`exam-sheets/` holds 20 more papers for classroom exams:
+
+- `exam-NN.pdf`: student booklet with Name/Class/Score fields, the 48 questions, and a bubble answer sheet on the last page
+- `answers-NN.pdf`: teacher answer key with the answer grid, a score scale and a worked solution for every question
+- `All-Exam-Sheets-1-20.pdf` and `All-Answer-Keys-1-20.pdf`: all 20 in one file each, for printing
+
+They follow reported 2026 paper patterns (no calculator; opens with sets and inequalities; about Functions 35%, Geometry & Algebra 30%, Probability & Statistics 20%, Sets & Inequalities 15%, split as 7/17/14/10). The last five questions are harder ones on vectors, recursive sequences, complex roots, summation and probability. These sheets are not on the website, so students have not seen them. Rebuild with `node tools/build-exam-sheets.js`.
+
 ## Collect students' results
 
 **No setup needed:** after each paper the student sees a result summary (name, class, score, correct/wrong/blank, missed questions, score by module) with **Copy result**, **Send on Telegram** and **Share** buttons, and sends it to the teacher.
