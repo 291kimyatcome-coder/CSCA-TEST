@@ -166,7 +166,7 @@ button.bubble:hover { background: var(--sheet-soft); }
 .lesson-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; margin-top: 18px; }
 .lesson-main { display: grid; gap: 16px; min-width: 0; }
 .lesson-side { position: sticky; top: 80px; min-width: 0; }
-.block { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; min-width: 0; overflow-wrap: anywhere; }
+.block { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; min-width: 0; overflow-wrap: anywhere; }
 .block h2 { font-size: 1.12rem; margin-bottom: 8px; }
 .block ul { padding-left: 20px; margin: 6px 0; }
 .block li { margin: 5px 0; }
@@ -194,7 +194,7 @@ table.mini th { background: var(--paper); font-weight: 500; }
 .verdict.ok { background: var(--ok-soft); color: var(--ok); }
 .verdict.bad { background: var(--bad-soft); color: var(--bad); }
 .verdict.skip { background: var(--warn-soft); color: var(--warn); }
-.stem { margin: 6px 0 12px; font-size: 1.04rem; overflow-wrap: anywhere; }
+.stem { margin: 6px 0 12px; font-size: 1.04rem; overflow-wrap: anywhere; overflow-x: auto; overflow-y: hidden; }
 .choices { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .choices.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .choice { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid transparent; border-radius: 8px; padding: 9px 12px; cursor: pointer; min-height: 46px; }
@@ -206,7 +206,7 @@ table.mini th { background: var(--paper); font-weight: 500; }
 .ctext { min-width: 0; overflow-x: auto; overflow-y: hidden; }
 .sol { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
 .sol summary { cursor: pointer; color: var(--accent); font-weight: 500; }
-.sol div { margin-top: 6px; overflow-wrap: anywhere; }
+.sol div { margin-top: 6px; overflow-wrap: anywhere; overflow-x: auto; overflow-y: hidden; }
 mjx-container { max-width: 100%; }
 mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
 
@@ -280,6 +280,9 @@ body.in-exam .sheet-col { top: 76px; }
 .sent { margin: 10px 0 6px; font-size: .92rem; color: var(--muted); }
 .sent.ok { color: var(--ok); font-weight: 500; }
 .sent.bad { color: var(--bad); }
+.share-box { margin-bottom: 28px; border-color: var(--sheet); }
+.result-text { font-family: var(--font-mono); font-size: .86rem; line-height: 1.55; background: var(--paper); border: 1px dashed var(--line); border-radius: 8px; padding: 12px 14px; margin: 10px 0 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.copy-note { align-self: center; font-size: .9rem; color: var(--ok); }
 .loading { padding: 80px 0; text-align: center; color: var(--muted); }
 footer.site { border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; padding-block: 22px 32px; }
 

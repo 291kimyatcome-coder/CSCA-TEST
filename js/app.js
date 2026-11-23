@@ -270,7 +270,7 @@
           ${RESULTS_URL ? '<li>When you submit, your name and result are <b>sent to your teacher</b>.</li>' : ''}
         </ul>
         <div class="student-form">
-          <div class="field"><label for="st-name">Your name${RESULTS_URL ? ' (required)' : ''}</label><input id="st-name" type="text" maxlength="60" autocomplete="name" value="${esc(store.student.name)}"></div>
+          <div class="field"><label for="st-name">Your name (required)</label><input id="st-name" type="text" maxlength="60" autocomplete="name" value="${esc(store.student.name)}"></div>
           <div class="field"><label for="st-class">Class</label><input id="st-class" type="text" maxlength="30" value="${esc(store.student.cls)}"></div>
         </div>
         <p class="form-error" id="st-error" hidden>Please type your name before you start, so your teacher knows whose result it is.</p>
@@ -341,6 +341,7 @@
         </div>
         <div class="panel"><h2>By module</h2>${bars}</div>
       </div>
+      ${shareBox(n)}
       <div class="section-head row"><h2>Review</h2><label class="toggle"><input type="checkbox" id="wrong-only" data-action="wrong-only" data-n="${n}"${wrongOnly ? ' checked' : ''}> Show only questions I missed</label></div>
       <div class="exam-grid">
         <div class="qlist">${list || '<p class="muted">Every answer was correct.</p>'}</div>
@@ -365,7 +366,7 @@
     const nameEl = document.getElementById('st-name'), clsEl = document.getElementById('st-class');
     const name = nameEl ? nameEl.value.trim() : '';
     const cls = clsEl ? clsEl.value.trim() : '';
-    if (RESULTS_URL && !name) {
+    if (!name) {
       const err = document.getElementById('st-error');
       if (err) err.hidden = false;
       if (nameEl) nameEl.focus();
@@ -389,6 +390,64 @@
     if (RESULTS_URL) run.sent = 'pending';
     save();
     if (RESULTS_URL) sendResult(n);
+  }
+
+  /* ---------------- result text the student sends to the teacher ---------------- */
+  function resultText(n) {
+    const run = store.runs[n];
+    const p = paper(n);
+    const g = grade(p, run.answers);
+    let blank = 0;
+    const missed = [];
+    p.questions.forEach((q, i) => {
+      if (run.answers[i] < 0) blank++;
+      if (run.answers[i] !== q.answer) missed.push(i + 1);
+    });
+    const st = run.student || {};
+    const short = ['Sets', 'Functions', 'Geometry', 'Probability'];
+    return [
+      'Test for CSCA · Mathematics · Paper ' + n,
+      'Name: ' + (st.name || '—') + (st.cls ? ' · Class: ' + st.cls : ''),
+      'Score: ' + g.score + ' / 100 (' + g.right + ' correct, ' + (48 - g.right - blank) + ' wrong, ' + blank + ' blank)',
+      'Time used: ' + fmtTime(Math.min(EXAM_SECONDS, (run.submittedAt - run.startedAt) / 1000)) + (run.timeout ? ' (time ran out)' : ''),
+      'Missed questions: ' + (missed.length ? missed.join(', ') : 'none'),
+      'By module: ' + E.MODULES.map((m, i) => short[i] + ' ' + g.byModule[m.id].right + '/' + g.byModule[m.id].total).join(' · '),
+      'Submitted: ' + new Date(run.submittedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }),
+    ].join('\n');
+  }
+  function shareBox(n) {
+    const text = resultText(n);
+    const tg = 'https://t.me/share/url?url=' + encodeURIComponent(location.href.split('#')[0]) + '&text=' + encodeURIComponent(text);
+    return `<section class="panel share-box">
+      <h2>Send your result to your teacher</h2>
+      <p class="muted">Copy this message and send it to your teacher, for example on Telegram.</p>
+      <pre class="result-text" id="result-text">${esc(text)}</pre>
+      <div class="cta">
+        <button type="button" class="btn primary" data-action="copy-result">Copy result</button>
+        <a class="btn" href="${esc(tg)}" target="_blank" rel="noopener">Send on Telegram</a>
+        ${navigator.share ? '<button type="button" class="btn" data-action="share-result" data-n="' + n + '">Share…</button>' : ''}
+        <span class="copy-note" id="copy-note" aria-live="polite"></span>
+      </div>
+    </section>`;
+  }
+  function copyResult() {
+    const pre = document.getElementById('result-text');
+    const note = document.getElementById('copy-note');
+    if (!pre) return;
+    const done = () => { if (note) note.textContent = 'Copied. Now paste it in your message to your teacher.'; };
+    const fallback = () => {
+      const range = document.createRange();
+      range.selectNodeContents(pre);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      if (ok) done();
+      else if (note) note.textContent = 'The text is selected. Press Copy on your keyboard or phone.';
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(pre.textContent).then(done, fallback);
+    else fallback();
   }
 
   /* ---------------- send results to the teacher's Google Sheet ---------------- */
@@ -532,6 +591,8 @@
     else if (a === 'cancel-submit') { const b = document.getElementById('confirm'); if (b) b.hidden = true; }
     else if (a === 'confirm-submit') { if (exam) { finish(exam.n, false); render(); window.scrollTo(0, 0); } }
     else if (a === 'resend') sendResult(Number(t.dataset.n));
+    else if (a === 'copy-result') copyResult();
+    else if (a === 'share-result') { const n = Number(t.dataset.n); navigator.share({ title: 'Test for CSCA · Paper ' + n, text: resultText(n) }).catch(() => {}); }
     else if (a === 'retake') { delete store.runs[Number(t.dataset.n)]; save(); render(); }
     else if (a === 'new-practice') {
       const id = t.dataset.lesson;
