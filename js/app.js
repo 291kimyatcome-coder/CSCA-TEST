@@ -18,6 +18,8 @@
   let store = {};
   try { store = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { store = {}; }
   store.best = store.best || {};
+  store.student = store.student || { name: '', cls: '' };
+  const RESULTS_URL = ((window.CSCA_CONFIG || {}).resultsUrl || '').trim();
   store.runs = store.runs || {};
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* storage unavailable */ }
@@ -135,7 +137,7 @@
     <section class="hero"><div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="eyebrow">CSCA · Mathematics · English paper</p>
-        <h1 class="display">CSCA Mathematics<br>exam preparation</h1>
+        <h1 class="display">Test for CSCA<br>Mathematics</h1>
         <p class="lede">${LESSONS.length} lessons that follow the CSCA Mathematics syllabus (2025 edition) and ${E.PAPER_COUNT} full mock papers in English. Each paper has 48 questions and a 60-minute timer, like the real exam, with an answer key and a worked solution for every question.</p>
         <div class="cta"><a class="btn primary" href="#paper-1">Start Paper 1</a><a class="btn" href="#lessons">Read the lessons</a></div>
       </div>
@@ -265,7 +267,13 @@
           <li>You have <b>60 minutes</b>. The timer starts when you press Start, and the paper is submitted automatically when time runs out.</li>
           <li>The paper is marked out of <b>100</b>. Wrong answers lose no marks, so answer every question.</li>
           <li>Mark an answer by clicking a choice or a bubble on the answer sheet. Your answers are saved in this browser.</li>
+          ${RESULTS_URL ? '<li>When you submit, your name and result are <b>sent to your teacher</b>.</li>' : ''}
         </ul>
+        <div class="student-form">
+          <div class="field"><label for="st-name">Your name${RESULTS_URL ? ' (required)' : ''}</label><input id="st-name" type="text" maxlength="60" autocomplete="name" value="${esc(store.student.name)}"></div>
+          <div class="field"><label for="st-class">Class</label><input id="st-class" type="text" maxlength="30" value="${esc(store.student.cls)}"></div>
+        </div>
+        <p class="form-error" id="st-error" hidden>Please type your name before you start, so your teacher knows whose result it is.</p>
         <button type="button" class="btn primary lg" data-action="start" data-n="${n}">Start · 60:00</button>
       </div>
     </section>`;
@@ -325,9 +333,10 @@
       <nav class="crumbs"><a href="#papers">Papers</a> / Paper ${n}</nav>
       <div class="result">
         <div class="score-card">
-          <p class="eyebrow">Result · Paper ${n}</p>
+          <p class="eyebrow">Result · Paper ${n}${run.student && run.student.name ? ' · ' + esc(run.student.name) : ''}</p>
           <p class="score"><span>${g.score}</span><small>/ 100</small></p>
           <p class="muted">${g.right} of 48 correct · time used ${fmtTime(used)}${run.timeout ? ' · time ran out' : ''}${store.best[n] !== undefined ? ` · best ${store.best[n]}` : ''}</p>
+          ${RESULTS_URL ? `<div id="sent-status">${sentHtml(n)}</div>` : ''}
           <div class="cta"><button type="button" class="btn" data-action="retake" data-n="${n}">Retake</button>${n < E.PAPER_COUNT ? `<a class="btn primary" href="#paper-${n + 1}">Next paper →</a>` : ''}</div>
         </div>
         <div class="panel"><h2>By module</h2>${bars}</div>
@@ -353,7 +362,17 @@
 
   /* ---------------- actions ---------------- */
   function start(n) {
-    store.runs[n] = { answers: Array(48).fill(-1), startedAt: Date.now(), done: false };
+    const nameEl = document.getElementById('st-name'), clsEl = document.getElementById('st-class');
+    const name = nameEl ? nameEl.value.trim() : '';
+    const cls = clsEl ? clsEl.value.trim() : '';
+    if (RESULTS_URL && !name) {
+      const err = document.getElementById('st-error');
+      if (err) err.hidden = false;
+      if (nameEl) nameEl.focus();
+      return;
+    }
+    store.student = { name, cls };
+    store.runs[n] = { answers: Array(48).fill(-1), startedAt: Date.now(), done: false, student: { name, cls } };
     save();
     render();
     window.scrollTo(0, 0);
@@ -367,7 +386,58 @@
     const g = grade(paper(n), run.answers);
     run.score = g.score;
     if (store.best[n] === undefined || g.score > store.best[n]) store.best[n] = g.score;
+    if (RESULTS_URL) run.sent = 'pending';
     save();
+    if (RESULTS_URL) sendResult(n);
+  }
+
+  /* ---------------- send results to the teacher's Google Sheet ---------------- */
+  function sentHtml(n) {
+    const run = store.runs[n];
+    const st = run && run.sent;
+    if (st === 'sent') return '<p class="sent ok">✓ Your result was sent to your teacher.</p>';
+    if (st === 'pending') return '<p class="sent">Sending your result to your teacher…</p>';
+    return `<p class="sent bad">Your result has not reached your teacher yet. Check your internet connection, then press Send again.</p><button type="button" class="btn sm" data-action="resend" data-n="${n}">Send again</button>`;
+  }
+  function showSent(n) {
+    const box = document.getElementById('sent-status');
+    if (box && exam && exam.n === n) box.innerHTML = sentHtml(n);
+  }
+  function sendResult(n) {
+    const run = store.runs[n];
+    if (!RESULTS_URL || !run || !run.done) return;
+    const p = paper(n);
+    const g = grade(p, run.answers);
+    const wrongList = [], letters = [];
+    let blank = 0;
+    p.questions.forEach((q, i) => {
+      const a = run.answers[i];
+      letters.push(a >= 0 ? LETTERS[a] : '-');
+      if (a < 0) blank++;
+      if (a !== q.answer) wrongList.push(i + 1);
+    });
+    const payload = {
+      name: (run.student && run.student.name) || '',
+      cls: (run.student && run.student.cls) || '',
+      paper: n,
+      score: g.score,
+      correct: g.right,
+      wrong: 48 - g.right - blank,
+      blank,
+      timeUsed: fmtTime(Math.min(EXAM_SECONDS, (run.submittedAt - run.startedAt) / 1000)),
+      timeout: !!run.timeout,
+      wrongList: wrongList.join(', '),
+      modules: E.MODULES.map((m) => g.byModule[m.id].right + '/' + g.byModule[m.id].total).join(' '),
+      answers: letters.join(''),
+      key: p.questions.map((q) => LETTERS[q.answer]).join(''),
+    };
+    run.sent = 'pending';
+    save();
+    showSent(n);
+    // text/plain + no-cors avoids a CORS preflight, which Apps Script does not answer.
+    fetch(RESULTS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+      .then(() => { run.sent = 'sent'; save(); showSent(n); })
+      .catch(() => { run.sent = 'failed'; save(); showSent(n); });
   }
   function pick(qi, ci) {
     if (!exam || !exam.run || exam.run.done) return;
@@ -461,6 +531,7 @@
     else if (a === 'submit') askSubmit();
     else if (a === 'cancel-submit') { const b = document.getElementById('confirm'); if (b) b.hidden = true; }
     else if (a === 'confirm-submit') { if (exam) { finish(exam.n, false); render(); window.scrollTo(0, 0); } }
+    else if (a === 'resend') sendResult(Number(t.dataset.n));
     else if (a === 'retake') { delete store.runs[Number(t.dataset.n)]; save(); render(); }
     else if (a === 'new-practice') {
       const id = t.dataset.lesson;

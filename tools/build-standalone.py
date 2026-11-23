@@ -19,7 +19,7 @@ def script(code):
 
 s = read('index.html')
 s = s.replace('<link rel="stylesheet" href="css/fonts.css">', '<style>\n' + read('css/fonts.css') + '</style>')
-for name in ('engine', 'lessons', 'app'):
+for name in ('config', 'engine', 'lessons', 'app'):
     s = s.replace('<script src="js/%s.js"></script>' % name, script(read('js/%s.js' % name)))
 cdn = '<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>'
 with open(mj_path, encoding='utf-8') as f:
