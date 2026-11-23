@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CSCA Math Prep</title>
+<title>Test for CSCA</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Lessons and 40 mock papers for the CSCA Mathematics exam (English paper)">
 <link rel="stylesheet" href="css/fonts.css">
@@ -271,6 +271,15 @@ body.in-exam .sheet-col { top: 76px; }
 .key-cell span { color: var(--muted); font-size: .8rem; }
 .key-cell b { color: var(--sheet); }
 
+.student-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; margin: 0 0 14px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label { font-size: .9rem; font-weight: 500; }
+.field input { font: inherit; padding: 9px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); min-width: 0; }
+.field input:focus-visible { border-color: var(--accent); }
+.form-error { color: var(--bad); margin: -4px 0 12px; font-size: .92rem; }
+.sent { margin: 10px 0 6px; font-size: .92rem; color: var(--muted); }
+.sent.ok { color: var(--ok); font-weight: 500; }
+.sent.bad { color: var(--bad); }
 .loading { padding: 80px 0; text-align: center; color: var(--muted); }
 footer.site { border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; padding-block: 22px 32px; }
 
@@ -285,7 +294,7 @@ footer.site { border-top: 1px solid var(--line); color: var(--muted); font-size:
 }
 @media (max-width: 760px) {
   .hero-grid { grid-template-columns: minmax(0, 1fr); padding-block: 32px; gap: 28px; }
-  .two-col, .result { grid-template-columns: minmax(0, 1fr); }
+  .two-col, .result, .student-form { grid-template-columns: minmax(0, 1fr); }
   .choices.two { grid-template-columns: minmax(0, 1fr); }
   .q { padding: 14px 14px; }
   .brand span { display: none; }
@@ -306,7 +315,7 @@ footer.site { border-top: 1px solid var(--line); color: var(--muted); font-size:
 </head>
 <body>
 <header class="topbar"><div class="wrap topbar-in">
-  <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true"><i></i><i class="f"></i><i class="f"></i><i></i></span><b>CSCA Math</b><span>Exam preparation</span></a>
+  <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true"><i></i><i class="f"></i><i class="f"></i><i></i></span><b>Test for CSCA</b><span>Mathematics</span></a>
   <nav class="nav" aria-label="Main"><a href="#home">Home</a><a href="#lessons">Lessons</a><a href="#papers">Papers</a></nav>
 </div></header>
 <main id="main"><p class="loading">Loading…</p></main>
@@ -333,6 +342,7 @@ footer.site { border-top: 1px solid var(--line); color: var(--muted); font-size:
   })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<script src="js/config.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/lessons.js"></script>
 <script src="js/app.js"></script>

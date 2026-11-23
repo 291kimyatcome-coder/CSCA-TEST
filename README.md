@@ -1,4 +1,4 @@
-# CSCA Mathematics — Lessons and Mock Papers
+# Test for CSCA — Mathematics
 
 Practice material for the **CSCA Mathematics** exam (China Scholastic Competency Assessment, English paper), written to the official **CSCA Mathematics Examination Syllabus (2025 edition)**.
 
@@ -19,6 +19,12 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 - **40 mock papers × 48 questions = 1,920 questions**, each with an answer key and a worked solution. Questions per paper by module: 9 · 17 · 13 · 9.
 - **Timed exam mode**: 60-minute countdown, answer-sheet bubbles, auto-submit, score out of 100, breakdown by module, and full review.
 - **Printable PDFs** in `pdf/` (`paper-01.pdf` … `paper-40.pdf`): the paper with Name/Class/Score fields, then the answer key and all solutions.
+
+## Collect students' results (Google Sheet)
+
+Students type their name and class before a paper. When `resultsUrl` in `js/config.js` is set, every submitted paper is sent to the teacher's Google Sheet as one row: name, class, paper, score, correct/wrong/blank, time used, missed questions, score by module, and a ✓ / ✗ / – column for each of the 48 questions.
+
+Setup takes about 5 minutes: paste `teacher/Code.gs` into the sheet's Apps Script, deploy it as a Web app (Execute as: Me, Who has access: Anyone), and put the `/exec` URL into `js/config.js`. Step-by-step guide in Khmer: `teacher/SETUP-KM.md`.
 
 ## Syllabus coverage
 
