@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CSCA Mathematics mock paper (print)</title>
+<link rel="stylesheet" href="../css/fonts.css">
+<style>
+  @page { size: A4; margin: 16mm 14mm 16mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "IBM Plex Sans", system-ui, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #111; }
+  .mono { font-family: "IBM Plex Mono", monospace; }
+  header.cover { border: 1.5px solid #c8472e; border-radius: 4px; padding: 10px 14px; margin-bottom: 12px; }
+  header.cover h1 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 20pt; margin: 0; }
+  header.cover .meta { display: flex; gap: 18px; flex-wrap: wrap; color: #c8472e; font-family: "IBM Plex Mono", monospace; font-size: 8.5pt; text-transform: uppercase; letter-spacing: .05em; margin-top: 4px; }
+  .fields { display: flex; gap: 24px; margin-top: 10px; font-size: 9.5pt; }
+  .fields span { flex: 1; border-bottom: 1px solid #999; padding-bottom: 2px; }
+  .instructions { font-size: 9pt; color: #333; margin: 0 0 10px; }
+  h2.module { font-size: 11pt; border-bottom: 1.5px solid #333; padding-bottom: 2px; margin: 14px 0 6px; break-after: avoid; }
+  .q { break-inside: avoid; padding: 6px 0 8px; border-bottom: 1px dotted #ccc; }
+  .q .stem { margin: 0 0 4px; }
+  .q .no { font-family: "IBM Plex Mono", monospace; font-weight: 600; margin-right: 6px; }
+  .choices { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px 14px; padding-left: 24px; }
+  .choices.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .choices.one { grid-template-columns: minmax(0, 1fr); }
+  .choices b { font-family: "IBM Plex Mono", monospace; margin-right: 4px; }
+  .key { break-before: page; }
+  .key h1 { font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 16pt; margin: 0 0 8px; }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-bottom: 14px; }
+  .grid div { border: 1px solid #bbb; border-radius: 3px; text-align: center; font-family: "IBM Plex Mono", monospace; font-size: 9pt; padding: 2px 0; }
+  .grid div b { color: #c8472e; margin-left: 4px; }
+  .sol { break-inside: avoid; font-size: 9.5pt; padding: 4px 0; border-bottom: 1px dotted #ccc; }
+  .sol .no { font-family: "IBM Plex Mono", monospace; font-weight: 600; }
+  footer { margin-top: 10px; font-size: 8pt; color: #666; }
+  mjx-container { font-size: 100% !important; }
+</style>
+<script>
+  window.MathJax = { tex: { inlineMath: [['\\(', '\\)']] }, svg: { fontCache: 'global' }, startup: { typeset: false } };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<script src="../js/engine.js"></script>
+</head>
+<body>
+<div id="out"></div>
+<script>
+  (function () {
+    var n = Number(new URLSearchParams(location.search).get('paper') || 1);
+    var p = CSCA.makePaper(n);
+    var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+    var ch = function (q, c) { return q.math ? esc('\\(' + c + '\\)') : esc(c); };
+    var L = 'ABCD';
+    var html = '<header class="cover"><h1>CSCA Mathematics · Mock Paper ' + n + '</h1>' +
+      '<div class="meta"><span>60 minutes</span><span>48 questions</span><span>100 points</span><span>Multiple choice · single answer</span></div>' +
+      '<div class="fields"><span>Name:</span><span>Class:</span><span>Score:</span></div></header>' +
+      '<p class="instructions">Answer all 48 questions. Each question has exactly one correct answer. No marks are deducted for wrong answers. This is a mock paper written to the CSCA Mathematics syllabus (2025 edition); it is not an official paper.</p>';
+    var last = 0;
+    p.questions.forEach(function (q) {
+      if (q.module !== last) { last = q.module; html += '<h2 class="module">Part ' + q.module + ' · ' + CSCA.MODULES[q.module - 1].en + '</h2>'; }
+      var maxLen = Math.max.apply(null, q.choices.map(function (c) { return c.length; }));
+      var cls = maxLen < 16 ? '' : maxLen < 40 ? ' two' : ' one';
+      html += '<div class="q"><p class="stem"><span class="no">' + q.no + '.</span>' + esc(q.q) + '</p><div class="choices' + cls + '">' +
+        q.choices.map(function (c, i) { return '<span><b>' + L[i] + '.</b>' + ch(q, c) + '</span>'; }).join('') + '</div></div>';
+    });
+    html += '<section class="key"><h1>Paper ' + n + ' · Answer key and solutions</h1><div class="grid">' +
+      p.questions.map(function (q) { return '<div>' + q.no + '<b>' + L[q.answer] + '</b></div>'; }).join('') + '</div>' +
+      p.questions.map(function (q) { return '<div class="sol"><span class="no">' + q.no + '. ' + L[q.answer] + '</span> — ' + esc(q.sol) + '</div>'; }).join('') +
+      '<footer>CSCA Mathematics mock papers · generated from the open question engine in this repository.</footer></section>';
+    document.getElementById('out').innerHTML = html;
+    document.title = 'CSCA Mathematics Mock Paper ' + n;
+    MathJax.startup.promise.then(function () { return MathJax.typesetPromise(); }).then(function () { window.__done = true; });
+  })();
+</script>
+</body>
+</html>
