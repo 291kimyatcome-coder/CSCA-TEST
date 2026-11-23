@@ -20,7 +20,11 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 - **Timed exam mode**: 60-minute countdown, answer-sheet bubbles, auto-submit, score out of 100, breakdown by module, and full review.
 - **Printable PDFs** in `pdf/` (`paper-01.pdf` … `paper-40.pdf`): the paper with Name/Class/Score fields, then the answer key and all solutions.
 
-## Collect students' results (Google Sheet)
+## Collect students' results
+
+**No setup needed:** after each paper the student sees a result summary (name, class, score, correct/wrong/blank, missed questions, score by module) with **Copy result**, **Send on Telegram** and **Share** buttons, and sends it to the teacher.
+
+**Optional, automatic (Google Sheet):**
 
 Students type their name and class before a paper. When `resultsUrl` in `js/config.js` is set, every submitted paper is sent to the teacher's Google Sheet as one row: name, class, paper, score, correct/wrong/blank, time used, missed questions, score by module, and a ✓ / ✗ / – column for each of the 48 questions.
 
