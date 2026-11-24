@@ -8,12 +8,17 @@
 'use strict';
 const path = require('path');
 const CSCA = require(path.join(__dirname, '..', 'js', 'engine.js'));
+const KM = require(path.join(__dirname, '..', 'js', 'khmer.js'));
 
 const args = process.argv.slice(2);
 const problems = [];
 const note = (where, msg) => problems.push(`${where}: ${msg}`);
 
 function checkQuestion(q, where) {
+  const km = KM.translate(q.q);
+  if (km === null) note(where, 'no Khmer translation for: ' + q.q.slice(0, 120));
+  else if ((q.q.match(/\\\([\s\S]*?\\\)/g) || []).some((m) => !km.includes(m))) note(where, 'Khmer translation lost a formula');
+  if (!q.math) q.choices.forEach((c) => { if (!KM.translateChoice(c)) note(where, 'no Khmer for choice: ' + c); });
   if (!q.q || typeof q.q !== 'string') note(where, 'missing stem');
   if (!Array.isArray(q.choices) || q.choices.length !== 4) note(where, 'needs 4 choices');
   if (new Set(q.choices).size !== 4) note(where, 'duplicate choices ' + JSON.stringify(q.choices));
@@ -50,6 +55,20 @@ for (let n = 1; n <= CSCA.PAPER_COUNT; n++) {
   if (JSON.stringify(again) !== JSON.stringify(p)) note(`paper ${n}`, 'not deterministic');
 }
 
+// 1b. printable exam sheets
+const sheets = [];
+for (let n = 1; n <= CSCA.EXAM_SHEET_COUNT; n++) {
+  const p = CSCA.makeExamSheet(n);
+  sheets.push(p);
+  if (p.questions.length !== 48) note(`sheet ${n}`, `has ${p.questions.length} questions`);
+  const mods = [0, 0, 0, 0];
+  p.questions.forEach((q) => { mods[q.module - 1]++; checkQuestion(q, `sheet ${n} Q${q.no} (${q.tpl})`); });
+  if (mods.join() !== '12,12,12,12') note(`sheet ${n}`, 'module split ' + mods.join('/'));
+  const seq = p.questions.map((q) => q.module).join('');
+  if (seq !== '1'.repeat(12) + '2'.repeat(12) + '3'.repeat(12) + '4'.repeat(12)) note(`sheet ${n}`, 'parts out of order');
+  if (JSON.stringify(CSCA.makeExamSheet(n)) !== JSON.stringify(p)) note(`sheet ${n}`, 'not deterministic');
+}
+
 // 2. stress test every template
 const rng = CSCA.makeRng(12345);
 const perTpl = {};
@@ -74,6 +93,7 @@ console.log(`Templates: ${CSCA.templates.length}`);
 console.log('Templates per lesson:', lessonCounts);
 console.log(`Papers: ${papers.length} × ${CSCA.QUESTIONS_PER_PAPER} questions = ${papers.length * CSCA.QUESTIONS_PER_PAPER}`);
 console.log('Answer-letter distribution (A,B,C,D):', answerDist.join(', '));
+console.log(`Exam sheets: ${sheets.length} × 48 (four parts of 12, in syllabus order)`);
 const noisy = Object.entries(perTpl).filter(([, v]) => v > 300).sort((a, b) => b[1] - a[1]);
 if (noisy.length) console.log('Templates with many retries (not errors):', noisy.slice(0, 8));
 
@@ -103,7 +123,7 @@ async function texCheck() {
     let m;
     while ((m = re.exec(s))) formulas.push(m[1]);
   };
-  for (const p of papers)
+  for (const p of papers.concat(sheets))
     for (const q of p.questions) {
       collect(q.q);
       collect(q.sol);

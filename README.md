@@ -20,6 +20,15 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 - **Timed exam mode**: 60-minute countdown, answer-sheet bubbles, auto-submit, score out of 100, breakdown by module, and full review.
 - **Printable PDFs** in `pdf/` (`paper-01.pdf` … `paper-40.pdf`): the paper with Name/Class/Score fields, then the answer key and all solutions.
 
+## Bilingual PDFs: lessons and 20 exam sheets (English + Khmer)
+
+`bilingual/` holds the printable material, in English with the Khmer translation:
+
+- `Lessons-Module-1..4-*.pdf`: the 15 lessons grouped by syllabus module. Each lesson has key ideas in English with the Khmer translation, a worked example, exam tips, a vocabulary table (English, meaning, Khmer), and 10 exercises with answers and worked solutions.
+- `Exam-Sheet-01.pdf` … `Exam-Sheet-20.pdf`: 48-question sheets modelled question by question on the real CSCA mathematics paper. There are four parts of 12 in syllabus order, and every question is shown as "English: …" then "ខ្មែរ: …". Each sheet ends with a bubble answer sheet, the answer key and a solution for every question.
+
+Each file is under 0.5 MB. These sheets are not on the website, so students have not seen them. Rebuild with `node tools/build-bilingual.js` (needs `mathjax@3` and Playwright). Question translations live in `js/khmer.js` and the lesson translations in `js/lessons-km.js`. `node tools/validate.js` checks that every question has a Khmer translation.
+
 ## Collect students' results
 
 **No setup needed:** after each paper the student sees a result summary (name, class, score, correct/wrong/blank, missed questions, score by module) with **Copy result**, **Send on Telegram** and **Share** buttons, and sends it to the teacher.
