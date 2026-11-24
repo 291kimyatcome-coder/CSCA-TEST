@@ -20,15 +20,14 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 - **Timed exam mode**: 60-minute countdown, answer-sheet bubbles, auto-submit, score out of 100, breakdown by module, and full review.
 - **Printable PDFs** in `pdf/` (`paper-01.pdf` … `paper-40.pdf`): the paper with Name/Class/Score fields, then the answer key and all solutions.
 
-## Printable exam sheets (20 papers, separate from the online papers)
+## Bilingual PDFs: lessons and 20 exam sheets (English + Khmer)
 
-`exam-sheets/` holds 20 more papers for classroom exams:
+`bilingual/` holds the printable material, in English with the Khmer translation:
 
-- `exam-NN.pdf`: student booklet with Name/Class/Score fields, the 48 questions, and a bubble answer sheet on the last page
-- `answers-NN.pdf`: teacher answer key with the answer grid, a score scale and a worked solution for every question
-- `All-Exam-Sheets-1-20.pdf` and `All-Answer-Keys-1-20.pdf`: all 20 in one file each, for printing
+- `Lessons-Module-1..4-*.pdf`: the 15 lessons grouped by syllabus module. Each lesson has key ideas in English with the Khmer translation, a worked example, exam tips, a vocabulary table (English, meaning, Khmer), and 10 exercises with answers and worked solutions.
+- `Exam-Sheet-01.pdf` … `Exam-Sheet-20.pdf`: 48-question sheets modelled question by question on the real CSCA mathematics paper. There are four parts of 12 in syllabus order, and every question is shown as "English: …" then "ខ្មែរ: …". Each sheet ends with a bubble answer sheet, the answer key and a solution for every question.
 
-They follow reported 2026 paper patterns (no calculator; opens with sets and inequalities; about Functions 35%, Geometry & Algebra 30%, Probability & Statistics 20%, Sets & Inequalities 15%, split as 7/17/14/10). The last five questions are harder ones on vectors, recursive sequences, complex roots, summation and probability. These sheets are not on the website, so students have not seen them. Rebuild with `node tools/build-exam-sheets.js`.
+Each file is under 0.5 MB. These sheets are not on the website, so students have not seen them. Rebuild with `node tools/build-bilingual.js` (needs `mathjax@3` and Playwright). Question translations live in `js/khmer.js` and the lesson translations in `js/lessons-km.js`. `node tools/validate.js` checks that every question has a Khmer translation.
 
 ## Collect students' results
 

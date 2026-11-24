@@ -2392,6 +2392,467 @@
     };
   }, { examOnly: true });
 
+  /* ================================================================== */
+  /* REAL-PAPER STYLE TEMPLATES (modelled on the CSCA math paper)        */
+  /* ================================================================== */
+  const XO = { examOnly: true };
+
+  def('interval-notation', 'sets', (r) => {
+    const a = r.int(-5, 3), b = a + r.int(1, 6);
+    const kinds = [[true, false], [false, true], [false, false], [true, true]];
+    const [lc_, rc_] = r.pick(kinds);
+    const cond = T`${a}${lc_ ? T`\le` : '<'} x${rc_ ? T`\le` : '<'}${b}`;
+    const all = kinds.map(([p, q]) => iv(a, b, p, q));
+    const correct = iv(a, b, lc_, rc_);
+    return {
+      q: T`Which of the following represents the set of all real numbers \(x\) such that \(${cond}\)?`,
+      correct,
+      wrong: all.filter((x) => x !== correct).concat([setTex(range(a, b - 1))]),
+      sol: T`A square bracket includes the endpoint and a round bracket excludes it, so \(${cond}\) is written \(${correct}\).`,
+    };
+  }, XO);
+
+  def('set-relation', 'sets', (r) => {
+    const v = r.int(1, 4);
+    const k = r.int(1, 5);
+    let A, B, ans, why;
+    if (v === 1) {
+      A = T`\{x\mid x^2-${k * k}=0\}`; B = T`\{x\mid ${lin('x', k)}=0\}`; ans = 2;
+      why = T`\(A=\{-${k},${k}\}\) and \(B=\{${k}\}\), so \(B\subsetneq A\).`;
+    } else if (v === 2) {
+      const [p, q] = r.distinct(2, -4, 5).sort((x, y) => x - y);
+      const extra = r.pick(range(-6, 7).filter((x) => x !== p && x !== q));
+      A = T`\{x\mid ${lc([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']])}=0\}`; B = setTex([p, q, extra]); ans = 1;
+      why = T`\(A=${setTex([p, q])}\) and every element of \(A\) is in \(B=${setTex([p, q, extra])}\), but not conversely, so \(A\subsetneq B\).`;
+    } else if (v === 3) {
+      const [p, q] = r.distinct(2, -4, 5).sort((x, y) => x - y);
+      A = T`\{x\mid ${lc([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']])}=0\}`; B = setTex([p, q]); ans = 0;
+      why = T`Solving gives \(A=${setTex([p, q])}\), which is exactly \(B\), so \(A=B\).`;
+    } else {
+      const m = r.pick(range(-6, 6).filter((x) => x !== k && x !== -k));
+      A = T`\{x\mid x^2-${k * k}=0\}`; B = T`\{x\mid ${lin('x', m)}=0\}`; ans = 3;
+      why = T`\(A=\{-${k},${k}\}\) and \(B=\{${m}\}\) have no common element, so \(A\cap B=\varnothing\).`;
+    }
+    const opts = ['A=B', T`A\subsetneq B`, T`B\subsetneq A`, T`A\cap B=\varnothing`];
+    return {
+      q: T`Let \(A=${A}\) and \(B=${B}\). Then the relationship between \(A\) and \(B\) is`,
+      correct: opts[ans],
+      wrong: opts.filter((_, i) => i !== ans),
+      sol: why,
+    };
+  }, XO);
+
+  def('set-interval', 'sets', (r) => {
+    const p = r.int(-4, 1), q = p + r.int(2, 5), c = r.int(p + 1, q - 1);
+    const gt = r.chance(0.5);
+    const B = gt ? T`\{x\mid x>${c}\}` : T`\{x\mid x<${c}\}`;
+    const cap = r.chance(0.5);
+    const S = (cond) => T`\{x\mid ${cond}\}`;
+    const res = gt
+      ? { cap: S(T`${c}<x\le ${q}`), cup: S(T`x\ge ${p}`) }
+      : { cap: S(T`${p}\le x<${c}`), cup: S(T`x\le ${q}`) };
+    const correct = cap ? res.cap : res.cup;
+    return {
+      q: T`Let \(A=\{x\mid ${p}\le x\le ${q}\}\) and \(B=${B}\). Then \(${cap ? T`A\cap B` : T`A\cup B`}=\)`,
+      correct,
+      wrong: [cap ? res.cup : res.cap, gt ? S(T`${p}\le x<${c}`) : S(T`${c}<x\le ${q}`), gt ? S(T`x>${c}`) : S(T`x<${c}`), S(T`${p}\le x\le ${q}`)],
+      sol: cap
+        ? T`\(A\cap B\) keeps the numbers in both sets: \(${correct}\).`
+        : T`\(A\cup B\) keeps the numbers in either set. Together they cover \(${correct}\).`,
+    };
+  }, XO);
+
+  def('condition-choice', 'ineq', (r) => {
+    const kk = r.int(1, 3);
+    const nec = r.chance(0.6);
+    const yes = nec ? T`a+${kk}>b` : T`a-${kk}>b`;
+    const other = nec ? T`a-${kk}>b` : T`a+${kk}>b`;
+    return {
+      q: T`Which of the following is a ${nec ? 'necessary' : 'sufficient'} condition for \(a>b\)?`,
+      correct: yes,
+      wrong: [other, T`a^2>b^2`, T`\dfrac{1}{a}<\dfrac{1}{b}`, T`|a|>|b|`],
+      sol: nec
+        ? T`A necessary condition must follow from \(a>b\). If \(a>b\) then \(a+${kk}>b\). The others can fail (e.g. \(a=1,b=-3\)).`
+        : T`A sufficient condition must guarantee \(a>b\). If \(a-${kk}>b\) then \(a>b+${kk}>b\). The others do not guarantee it (e.g. \(a=-3,b=1\) gives \(a^2>b^2\)).`,
+    };
+  }, XO);
+
+  def('ineq-lead-param', 'ineq', (r) => {
+    const a = r.pick([-1, -2, -3]);
+    const [p, q] = r.shuffle(range(-3, 4).filter((x) => x !== 0)).slice(0, 2).sort((x, y) => x - y);
+    const b = -a * (p + q), c = a * p * q;
+    if (c === 0) throw new Error('c=0');
+    const askA = r.chance(0.6);
+    const val = askA ? a : b;
+    return {
+      q: T`If the inequality \(ax^2+bx${k(c)}>0\) has the solution set \(${iv(p, q, false, false)}\), then \(${askA ? 'a' : 'b'}=\)`,
+      correct: String(val),
+      wrong: [String(-val), String(askA ? b : a), String(val + 1), String(val - 1), String(2 * val)],
+      sol: T`The solution set lies between the roots, so \(a<0\) and \(${p},${q}\) are the roots of \(ax^2+bx${k(c)}=0\). Product of roots \(\frac{${c}}{a}=${p * q}\Rightarrow a=${a}\); sum \(-\frac{b}{a}=${p + q}\Rightarrow b=${b}\).`,
+    };
+  }, XO);
+
+  def('quad-min-param', 'func', (r) => {
+    const h = r.nz(-3, 3), m = r.int(-3, 5);
+    const b = -2 * h, c = m + h * h;
+    return {
+      q: T`If \(f(x)=x^2+bx+c\) has a minimum value of \(${m}\) at \(x=${h}\), then \(b+c=\)`,
+      correct: String(b + c),
+      wrong: [String(-b + c), String(b + m), String(-b + m - h * h), String(b + c + 1)].concat(nb(b + c)),
+      sol: T`\(f(x)=(x-${h < 0 ? `(${h})` : h})^2+${m < 0 ? `(${m})` : m}=x^2${k(b)}x${k(c)}\), so \(b=${b}\), \(c=${c}\) and \(b+c=${b + c}\).`,
+    };
+  }, XO);
+
+  def('exp-monotone', 'expolog', (r) => {
+    const a = r.pick([2, 3, 5]), c = r.int(-3, 3);
+    const v = r.int(1, 3);
+    const R = T`\mathbb{R}`;
+    if (v === 3) {
+      const opts = [T`Increasing on \((0,+\infty)\)`, T`Decreasing on \((0,+\infty)\)`, T`Increasing on \(${R}\)`, 'A constant function'];
+      return { q: T`The function \(f(x)=\log_{${a}}x${k(c)}\) is`, math: false, correct: opts[0], wrong: opts.slice(1), sol: T`The domain is \((0,+\infty)\), and \(\log_{${a}}x\) with base \(${a}>1\) is increasing there; adding \(${c}\) does not change this.` };
+    }
+    const inc = v === 1;
+    const base = inc ? String(a) : T`\left(\frac{1}{${a}}\right)`;
+    const opts = [T`Increasing on \(${R}\)`, T`Decreasing on \(${R}\)`, 'A constant function', T`Increasing only on \((0,+\infty)\)`];
+    return {
+      q: T`The function \(f(x)=${base}^x${k(c)}\) is`,
+      math: false,
+      correct: opts[inc ? 0 : 1],
+      wrong: opts.filter((_, i) => i !== (inc ? 0 : 1)),
+      sol: inc ? T`The base \(${a}>1\), so \(${a}^x\) is increasing on \(${R}\); adding a constant keeps it increasing.` : T`The base \(\frac1{${a}}\) is between 0 and 1, so the function is decreasing on \(${R}\).`,
+    };
+  }, XO);
+
+  def('log-value', 'expolog', (r) => {
+    const b = r.pick([2, 3, 4, 5]), kk = r.pick([2, 3, -1]);
+    if (b ** Math.abs(kk) > 125) throw new Error('big');
+    const ans = kk > 0 ? String(b ** kk) : F(1, b);
+    return {
+      q: T`Let \(f(x)=\log_{${b}}x\). If \(f(a)=${kk}\), then \(a=\)`,
+      correct: ans,
+      wrong: [String(b * kk), String(kk ** b), String(b + kk), kk > 0 ? F(1, b ** kk) : String(-b), String(kk)],
+      sol: T`\(\log_{${b}}a=${kk}\iff a=${b}^{${kk}}=${ans}\).`,
+    };
+  }, XO);
+
+  def('power-func', 'expolog', (r) => {
+    const yes = [T`f(x)=x^{-2}`, T`f(x)=x^{3}`, T`f(x)=x^{\frac{1}{2}}`, T`f(x)=x^{-1}`, T`f(x)=x^{\frac{2}{3}}`];
+    const no = [T`f(x)=2x^{2}`, T`f(x)=x^{2}+1`, T`f(x)=2^{x}`, T`f(x)=\log_{2}x`, T`f(x)=3x^{-1}`, T`f(x)=(x+1)^{2}`];
+    return {
+      q: T`Which of the following functions is a power function?`,
+      correct: r.pick(yes),
+      wrong: r.shuffle(no),
+      sol: T`A power function has the form \(f(x)=x^{\alpha}\) exactly: coefficient 1, variable in the base, constant exponent, nothing added.`,
+    };
+  }, XO);
+
+  def('deriv-formula', 'deriv', (r) => {
+    const a = r.nz(-2, 3), b = r.int(-3, 3), c = r.nz(-4, 4), d = r.int(-5, 5);
+    const f = lc([[a, 'x^3'], [b, 'x^2'], [c, 'x'], [d, '']]);
+    const D = (p, q, s, t) => T`f'(x)=` + lc([[p, 'x^2'], [q, 'x'], [s, ''], [t || 0, '']]);
+    return {
+      q: T`The derivative of the function \(f(x)=${f}\) is`,
+      correct: D(3 * a, 2 * b, c),
+      wrong: [D(3 * a, 2 * b, c, d), D(a, b, c), D(3 * a, b, c), D(3 * a, 2 * b, 0), D(3 * a, 2 * b + c, 0)],
+      sol: T`Differentiate term by term with \((x^n)'=nx^{n-1}\) and \((C)'=0\): \(f'(x)=${lc([[3 * a, 'x^2'], [2 * b, 'x'], [c, '']])}\).`,
+    };
+  }, XO);
+
+  def('deriv-meaning', 'deriv', (r) => {
+    if (r.chance(0.5)) {
+      const opts = [
+        T`The slope of the tangent line to the graph of \(y=f(x)\) at \(x=x_0\)`,
+        T`The slope of a secant line of the graph of \(y=f(x)\)`,
+        T`The value of the function \(f(x)\) at \(x=x_0\)`,
+        T`The average rate of change of \(f(x)\) on \([x_0,x_0+\Delta x]\)`,
+      ];
+      return { q: T`The geometric meaning of the derivative \(f'(x_0)\) of the function \(f(x)\) at \(x=x_0\) is`, math: false, correct: opts[0], wrong: opts.slice(1), sol: T`By definition \(f'(x_0)=\lim_{\Delta x\to0}\frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\): the limit of secant slopes, which is the slope of the tangent line at \(x=x_0\).` };
+    }
+    const pos = r.chance(0.5);
+    const [a, b] = r.distinct(2, -3, 4).sort((x, y) => x - y);
+    const opts = ['Increasing', 'Decreasing', 'Constant', 'Cannot be determined'];
+    return {
+      q: T`If \(f'(x)${pos ? '>' : '<'}0\) for all \(x\) in \((${a},${b})\), then on \((${a},${b})\) the function \(f(x)\) is`,
+      math: false,
+      correct: opts[pos ? 0 : 1],
+      wrong: opts.filter((_, i) => i !== (pos ? 0 : 1)),
+      sol: pos ? T`\(f'(x)>0\) on an interval means \(f\) is increasing there.` : T`\(f'(x)<0\) on an interval means \(f\) is decreasing there.`,
+    };
+  }, XO);
+
+  const TRIG_FACTS = {
+    sin: {
+      t: ['It is an odd function', T`Its smallest positive period is \(2\pi\)`, T`It is increasing on \(\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\)`, T`Its range is \([-1,1]\)`, 'Its graph is symmetric about the origin'],
+      f: ['It is an even function', T`Its smallest positive period is \(\pi\)`, T`It is decreasing on \(\left[0,\frac{\pi}{2}\right]\)`, T`Its range is \((0,1)\)`, T`Its maximum value is \(2\)`],
+    },
+    cos: {
+      t: ['It is an even function', T`Its smallest positive period is \(2\pi\)`, T`It is decreasing on \([0,\pi]\)`, T`Its range is \([-1,1]\)`, T`Its graph is symmetric about the \(y\)-axis`],
+      f: ['It is an odd function', T`Its smallest positive period is \(\pi\)`, T`It is increasing on \([0,\pi]\)`, T`Its range is \((0,1)\)`, T`Its minimum value is \(0\)`],
+    },
+    tan: {
+      t: [T`Its smallest positive period is \(\pi\)`, 'It is an odd function'],
+      f: [T`Its range is \([-1,1]\)`, 'It is an even function', T`Its smallest positive period is \(2\pi\)`, T`Its maximum value is \(1\)`],
+    },
+  };
+  def('trig-props', 'trig', (r) => {
+    const fn = r.pick(['sin', 'sin', 'cos', 'cos', 'tan']);
+    const F_ = TRIG_FACTS[fn];
+    return {
+      q: T`For the function \(f(x)=${BS + fn} x\), which of the following statements is correct?`,
+      math: false,
+      correct: r.pick(F_.t),
+      wrong: r.shuffle(F_.f),
+      sol: { sin: T`\(\sin x\) is odd, has period \(2\pi\), range \([-1,1]\), and increases on \(\left[-\frac\pi2,\frac\pi2\right]\).`, cos: T`\(\cos x\) is even, has period \(2\pi\), range \([-1,1]\), and decreases on \([0,\pi]\).`, tan: T`\(\tan x\) is odd, has period \(\pi\) and range \(\mathbb{R}\).` }[fn],
+    };
+  }, XO);
+
+  def('line-point-slope', 'lines', (r) => {
+    const x0 = r.nz(-4, 4), y0 = r.nz(-4, 4), kk = r.pick([2, 3, -2, -3, 4, -4]);
+    if (Math.abs(x0) === Math.abs(y0)) throw new Error('ambiguous');
+    const L = (a, b) => T`${lin('y', a)}=${kk}(${lin('x', b)})`;
+    return {
+      q: T`The equation of the line passing through the point \((${x0},${y0})\) with slope \(${kk}\) is`,
+      correct: L(y0, x0),
+      wrong: [L(-y0, -x0), L(x0, y0), L(-x0, -y0), L(y0, -x0)],
+      sol: T`Point–slope form \(y-y_0=k(x-x_0)\) with \((x_0,y_0)=(${x0},${y0})\), \(k=${kk}\): \(${L(y0, x0)}\).`,
+    };
+  }, XO);
+
+
+  /* ---- real-paper style: Part 3 additions ---- */
+  def('ellipse-from-axes', 'conics', (r) => {
+    const [b, a] = r.distinct(2, 2, 6).sort((x, y) => x - y);
+    const vert = r.chance(0.35);
+    const E = (p, q) => T`\frac{x^2}{${p}}+\frac{y^2}{${q}}=1`;
+    const correct = vert ? E(b * b, a * a) : E(a * a, b * b);
+    return {
+      q: T`The equation of the ellipse with vertices at \(${vert ? T`(0,\pm${a})` : T`(\pm${a},0)`}\) and minor axis length \(${2 * b}\) is`,
+      correct,
+      wrong: [vert ? E(a * a, b * b) : E(b * b, a * a), vert ? E(b * b, a * a + b * b) : E(a * a, a * a + b * b), vert ? E(a * a + b * b, a * a) : E(a * a + b * b, b * b), vert ? E(2 * b, 2 * a) : E(2 * a, 2 * b)],
+      sol: T`The vertices on the \(${vert ? 'y' : 'x'}\)-axis give \(a=${a}\); the minor axis \(2b=${2 * b}\) gives \(b=${b}\). So \(${correct}\).`,
+    };
+  }, XO);
+
+  def('parabola-from-focus', 'conics', (r) => {
+    const c = r.int(1, 4), sg = r.sign(), onY = r.chance(0.6);
+    const m = 4 * c * sg; // x^2 = m y  or y^2 = m x
+    const focus = onY ? `(0,${sg * c})` : `(${sg * c},0)`;
+    const dir = onY ? T`y=${-sg * c}` : T`x=${-sg * c}`;
+    const P = (axisY, coef) => (axisY ? T`x^2=${coefX(coef, 1, 'y')}` : T`y^2=${coefX(coef, 1, 'x')}`);
+    return {
+      q: T`The equation of the parabola with focus at \(${focus}\) and directrix \(${dir}\) is`,
+      correct: P(onY, m),
+      wrong: [P(onY, -m), P(!onY, m), P(!onY, -m), P(onY, 2 * m)],
+      sol: T`The vertex is midway between focus and directrix, at the origin, with \(\frac p2=${c}\), so \(2p=${4 * c}\). The parabola opens ${onY ? (sg > 0 ? 'upward' : 'downward') : sg > 0 ? 'to the right' : 'to the left'}: \(${P(onY, m)}\).`,
+    };
+  }, XO);
+
+  def('complex-conj-product', 'complex', (r) => {
+    const a = r.nz(-4, 4), b = r.nz(-4, 4);
+    const v = r.int(1, 2);
+    if (v === 1)
+      return {
+        q: T`Let the complex number \(z=${cTex(a, b)}\). Then \(z\cdot\bar z=\)`,
+        correct: String(a * a + b * b),
+        wrong: [String(a * a - b * b), cTex(0, 2 * a * b), cTex(a, -b), String(-(a * a + b * b)), R(1, a * a + b * b)],
+        sol: T`\(\bar z=${cTex(a, -b)}\), and \(z\bar z=a^2+b^2=${a * a}+${b * b}=${a * a + b * b}\).`,
+      };
+    return {
+      q: T`Let the complex number \(z=${cTex(a, b)}\). Then \(z+\bar z=\)`,
+      correct: String(2 * a),
+      wrong: [cTex(0, 2 * b), cTex(2 * a, 2 * b), String(a * a + b * b), cTex(0, -2 * b)],
+      sol: T`\(\bar z=${cTex(a, -b)}\), so \(z+\bar z=${2 * a}\) (the imaginary parts cancel).`,
+    };
+  }, XO);
+
+  def('hyperbola-from-ecc', 'conics', (r) => {
+    const opt = r.pick([['2', 3, 1], [T`\sqrt{2}`, 1, 1], [T`\frac{5}{4}`, 9, 16], [T`\frac{5}{3}`, 16, 9]]);
+    const [e, bn, bd] = opt; // b^2 = a^2 * bn / bd
+    const a = opt[2] === 1 ? r.int(1, 4) : opt[2] === 16 ? 4 : 3;
+    const A2 = a * a, B2 = (A2 * bn) / bd;
+    const vert = r.chance(0.35);
+    const H = (p, q, yFirst) => (yFirst ? T`\frac{y^2}{${p}}-\frac{x^2}{${q}}=1` : T`\frac{x^2}{${p}}-\frac{y^2}{${q}}=1`);
+    if (A2 === B2 && false) throw new Error('x');
+    const correct = H(A2, B2, vert);
+    return {
+      q: T`The equation of the hyperbola with vertices at \(${vert ? T`(0,\pm${a})` : T`(\pm${a},0)`}\) and eccentricity \(e=${e}\) is`,
+      correct,
+      wrong: [H(B2, A2, vert), H(A2, B2, !vert), H(B2, A2, !vert), H(A2, A2 + B2, vert), H(A2, B2 + 1, vert)],
+      sol: T`\(a=${a}\), \(c=ea\), so \(c^2=${A2 + B2}\) and \(b^2=c^2-a^2=${B2}\). The vertices are on the \(${vert ? 'y' : 'x'}\)-axis: \(${correct}\).`,
+    };
+  }, XO);
+
+  def('line-parallel-k', 'lines', (r) => {
+    const [A, B] = r.pick([[2, -1], [1, -2], [3, -1], [1, 3], [2, 1], [4, -2], [1, -1], [3, 2]]);
+    const C = r.int(-5, 5), c = r.nz(-4, 4);
+    const par = r.chance(0.6);
+    const slope = F(-A, B);
+    const val = par ? slope : F(B, A);
+    const all = [F(-A, B), F(A, B), F(B, A), F(-B, A)];
+    return {
+      q: T`If the line \(y=kx${k(c)}\) is ${par ? 'parallel' : 'perpendicular'} to the line \(${lc([[A, 'x'], [B, 'y'], [C, '']])}=0\), then \(k=\)`,
+      correct: val,
+      wrong: all.filter((x) => x !== val).concat([F(2 * A, B)]),
+      sol: par
+        ? T`The line \(${lc([[A, 'x'], [B, 'y'], [C, '']])}=0\) has slope \(-\frac{A}{B}=${slope}\). Parallel lines have equal slopes: \(k=${val}\).`
+        : T`The given line has slope \(${slope}\). Perpendicular slopes multiply to \(-1\): \(k=${val}\).`,
+    };
+  }, XO);
+
+  /* ---- real-paper style: Part 4 additions ---- */
+  def('die-once', 'prob', (r) => {
+    const evs = [
+      { e: 'an even number', n: 3 },
+      { e: 'an odd number', n: 3 },
+      { e: 'a multiple of 3', n: 2 },
+      { e: 'a prime number', n: 3 },
+    ];
+    const m = r.int(1, 4);
+    evs.push({ e: T`a number greater than \(${m}\)`, n: 6 - m });
+    const ev = r.pick(evs);
+    const correct = F(ev.n, 6);
+    return {
+      q: T`A fair die is rolled once. The probability of getting ${ev.e} is`,
+      correct,
+      wrong: [F(1, 6), F(1, 3), F(1, 2), F(2, 3), F(5, 6)],
+      sol: T`There are 6 equally likely outcomes, and ${ev.n} of them are favourable: \(\frac{${ev.n}}{6}=${correct}\).`,
+    };
+  }, XO);
+
+  function pickOne(r, forced) {
+    const x = r.int(2, 7), y = r.int(2, 7);
+    if (x === y) throw new Error('equal');
+    if (forced ? forced === 'ball' : r.chance(0.5)) {
+      const red = r.chance(0.5);
+      const val = F(red ? x : y, x + y);
+      return {
+        q: T`A bag contains \(${x}\) red balls and \(${y}\) white balls. One ball is drawn at random. The probability that it is ${red ? 'red' : 'white'} is`,
+        correct: val,
+        wrong: [F(red ? y : x, x + y), F(red ? x : y, red ? y : x), F(1, 2), F(1, x + y)],
+        sol: T`${x + y} balls in total, ${red ? x : y} of them ${red ? 'red' : 'white'}: \(P=${val}\).`,
+      };
+    }
+    const girl = r.chance(0.6);
+    const val = F(girl ? y : x, x + y);
+    return {
+      q: T`A group has \(${x}\) boys and \(${y}\) girls. One person is selected at random. The probability that the person is a ${girl ? 'girl' : 'boy'} is`,
+      correct: val,
+      wrong: [F(girl ? x : y, x + y), F(girl ? y : x, girl ? x : y), F(1, 2), F(1, x + y)],
+      sol: T`${x + y} people in total, ${girl ? y : x} of them ${girl ? 'girls' : 'boys'}: \(P=${val}\).`,
+    };
+  }
+  def('pick-one', 'prob', (r) => pickOne(r), XO);
+  def('pick-one-ball', 'prob', (r) => pickOne(r, 'ball'), XO);
+  def('pick-one-person', 'prob', (r) => pickOne(r, 'person'), XO);
+
+  function eventsRule(r, forced) {
+    const p = r.int(1, 5), q = r.int(1, 4);
+    if (p + q > 9) throw new Error('sum');
+    const excl = forced ? forced === 'exclusive' : r.chance(0.5);
+    const P = (x) => dec(x, 10);
+    if (excl)
+      return {
+        q: T`Events \(A\) and \(B\) are mutually exclusive, \(P(A)=${P(p)}\) and \(P(B)=${P(q)}\). Then \(P(A\cup B)=\)`,
+        correct: P(p + q),
+        wrong: [dec(p * q, 100), P(Math.abs(p - q) || 1), P(Math.max(p, q)), dec(10 * (p + q) - p * q, 100)],
+        sol: T`Mutually exclusive events cannot happen together, so \(P(A\cup B)=P(A)+P(B)=${P(p + q)}\).`,
+      };
+    return {
+      q: T`Events \(A\) and \(B\) are independent, \(P(A)=${P(p)}\) and \(P(B)=${P(q)}\). Then \(P(A\cap B)=\)`,
+      correct: dec(p * q, 100),
+      wrong: [P(p + q), P(Math.abs(p - q) || 1), P(Math.max(p, q)), dec(10 * (p + q) - p * q, 100)],
+      sol: T`For independent events \(P(A\cap B)=P(A)P(B)=${P(p)}\times${P(q)}=${dec(p * q, 100)}\).`,
+    };
+  }
+  def('events-rule', 'prob', (r) => eventsRule(r), XO);
+  def('events-exclusive', 'prob', (r) => eventsRule(r, 'exclusive'), XO);
+  def('events-independent', 'prob', (r) => eventsRule(r, 'independent'), XO);
+
+  function statsSimple(r, forced) {
+    const v = forced || r.pick(['mean', 'median', 'variance', 'sd']);
+    if (v === 'mean') {
+      const vals = r.distinct(4, 1, 12);
+      const total = vals.reduce((a, b) => a + b, 0);
+      const last = 5 * r.int(Math.ceil((total + 1) / 5), Math.floor((total + 12) / 5)) - total;
+      if (last < 1 || last > 12 || vals.includes(last)) throw new Error('mean');
+      const data = r.shuffle(vals.concat([last]));
+      const mean = (total + last) / 5;
+      const sorted = data.slice().sort((a, b) => a - b);
+      return {
+        q: T`For the data set \(${data.join(',\\ ')}\), the mean is`,
+        correct: String(mean),
+        wrong: [String(sorted[2]), String(mean + 1), String(mean - 1), String(total + last), dec((total + last) * 10 / 4, 10)],
+        sol: T`Mean \(=\frac{${data.join('+')}}{5}=\frac{${total + last}}{5}=${mean}\).`,
+      };
+    }
+    if (v === 'median') {
+      const n = r.pick([5, 7]);
+      const data = r.shuffle(r.distinct(n, 1, 15));
+      const sorted = data.slice().sort((a, b) => a - b);
+      const med = sorted[(n - 1) / 2];
+      return {
+        q: T`For the data set \(${data.join(',\\ ')}\), the median is`,
+        correct: String(med),
+        wrong: [String(data[(n - 1) / 2]), String(sorted[(n - 1) / 2 + 1]), String(sorted[(n - 1) / 2 - 1]), String(sorted[n - 1])],
+        sol: T`Sort first: \(${sorted.join(',\\ ')}\). The middle value is \(${med}\).`,
+      };
+    }
+    if (v === 'variance') {
+      const a = r.int(1, 6), t = r.pick([1, 2]);
+      const data = [0, 1, 2, 3, 4].map((i) => a + i * t);
+      const varv = 2 * t * t;
+      return {
+        q: T`For the data set \(${data.join(',\\ ')}\), the variance is`,
+        correct: String(varv),
+        wrong: [R(1, varv), String(varv + 1), R(1, varv + 1), String(5 * varv / 2), String(t * t)],
+        sol: T`Mean \(=${a + 2 * t}\); deviations \(${[-2, -1, 0, 1, 2].map((d) => d * t).join(',\\ ')}\). \(s^2=\frac{${4 * t * t}+${t * t}+0+${t * t}+${4 * t * t}}{5}=${varv}\).`,
+      };
+    }
+    if (r.chance(0.4)) {
+      const c = r.int(2, 9);
+      return {
+        q: T`For the data set \(${[c, c, c, c, c].join(',\\ ')}\), the standard deviation is`,
+        correct: '0',
+        wrong: ['1', String(c), String(c * c), String(5 * c)],
+        sol: T`Every value equals the mean \(${c}\), so every deviation is 0 and the standard deviation is \(0\).`,
+      };
+    }
+    const a = r.int(4, 10), t = r.int(1, 3);
+    const data = r.shuffle([a - t, a - t, a + t, a + t]);
+    return {
+      q: T`For the data set \(${data.join(',\\ ')}\), the standard deviation is`,
+      correct: String(t),
+      wrong: [String(t * t), String(2 * t), '0', String(a)],
+      sol: T`Mean \(=${a}\); every deviation is \(\pm${t}\), so the variance is \(${t * t}\) and the standard deviation is \(${t}\).`,
+    };
+  }
+  def('stats-simple', 'stats', (r) => statsSimple(r), XO);
+  ['mean', 'median', 'variance', 'sd'].forEach((v) => def('stats-' + v, 'stats', (r) => statsSimple(r, v), XO));
+
+  function normalFeatures(r, forced) {
+    if (forced ? forced === 'feature' : r.chance(0.5)) {
+      const yes = [T`It is symmetric about the line \(x=\mu\)`, 'The total area under the curve is 1', T`It has a single peak, at \(x=\mu\)`];
+      const no = [T`It is not symmetric about the mean \(\mu\)`, 'It has two peaks', 'It is bounded on both sides', 'The total area under the curve is 2', T`It is lowest at \(x=\mu\)`];
+      return { q: 'Which of the following is a characteristic of the normal distribution curve?', math: false, correct: r.pick(yes), wrong: r.shuffle(no), sol: T`A normal curve is bell-shaped with one peak at \(x=\mu\), symmetric about \(x=\mu\), never touches the \(x\)-axis, and the total area under it is 1.` };
+    }
+    const opts = ['Shift to the right', 'Shift to the left', 'Become flatter (lower and wider)', 'Become steeper (taller and narrower)'];
+    const which = r.pick(['sig+', 'sig-', 'mu+', 'mu-']);
+    const ans = { 'sig+': 2, 'sig-': 3, 'mu+': 0, 'mu-': 1 }[which];
+    const isSig = which.startsWith('sig');
+    const up = which.endsWith('+');
+    return {
+      q: T`For the normal distribution \(N(\mu,\sigma^2)\), if \(${isSig ? T`\sigma` : T`\mu`}\) ${up ? 'increases' : 'decreases'} while \(${isSig ? T`\mu` : T`\sigma`}\) stays the same, the curve will`,
+      math: false,
+      correct: opts[ans],
+      wrong: opts.filter((_, i) => i !== ans),
+      sol: isSig ? T`\(\sigma\) controls the spread: a larger \(\sigma\) gives a lower, wider curve; a smaller \(\sigma\) gives a taller, narrower one. The centre \(x=\mu\) does not move.` : T`\(\mu\) is the centre of the curve: changing \(\mu\) moves the curve left or right without changing its shape.`,
+    };
+  }
+  def('normal-features', 'normal', (r) => normalFeatures(r), XO);
+  def('normal-feature', 'normal', (r) => normalFeatures(r, 'feature'), XO);
+  def('normal-shape', 'normal', (r) => normalFeatures(r, 'shape'), XO);
+
+
   /* ------------------------------------------------------------------ */
   /* Assembly                                                            */
   /* ------------------------------------------------------------------ */
@@ -2464,31 +2925,31 @@
   }
 
   /*
-   * Printable exam sheets (separate series from the online papers).
-   * Follows reported 2026 paper patterns: opens with sets and inequalities,
-   * weights roughly Functions 35% · Geometry & Algebra 30% · Probability &
-   * Statistics 20% · Sets & Inequalities 15%, and ends with five harder
-   * questions (vectors, recursive sequence, complex roots, summation,
-   * probability).
+   * Printable exam sheets, modelled question by question on the CSCA
+   * mathematics paper: four parts of 12 questions in syllabus order
+   * (Sets and Inequalities · Functions · Geometry and Algebra · Probability
+   * and Statistics). Each slot lists the question types that may fill it.
    */
   const EXAM_SHEET_COUNT = 20;
-  const SHEET_BASE = [['sets', 3], ['ineq', 4], ['func', 4], ['expolog', 3], ['trig', 4], ['seq', 1], ['deriv', 3], ['lines', 3], ['conics', 3], ['vectors', 2], ['complex', 1], ['solid', 3], ['prob', 3], ['stats', 3], ['normal', 3]];
-  const CHALLENGE = [['vec-magnitude', 'vec-angle'], ['recurrence'], ['complex-roots'], ['telescoping'], ['committee', 'pick-numbers']];
+  const SHEET_SLOTS = [
+    // Part 1 · Sets and Inequalities (Q1–12)
+    ['set-ops'], ['interval-notation'], ['set-complement'], ['quad-ineq'], ['condition-choice'], ['rational-ineq'],
+    ['set-relation'], ['ineq-compare'], ['subset-count'], ['abs-ineq'], ['set-interval'], ['ineq-lead-param'],
+    // Part 2 · Functions (Q13–24)
+    ['domain'], ['parity'], ['exp-monotone'], ['arith-term'], ['deriv-formula'], ['log-value'],
+    ['geo-sum'], ['deriv-meaning'], ['quad-range'], ['power-func'], ['trig-props'], ['quad-min-param'],
+    // Part 3 · Geometry and Algebra (Q25–36)
+    ['line-point-slope'], ['circle-center'], ['vec-coords'], ['ellipse-from-axes'], ['vec-dot'], ['parabola-from-focus'],
+    ['complex-conj-product'], ['point-line-dist'], ['hyperbola-from-ecc'], ['space-dist'], ['line-parallel-k'], ['volume'],
+    // Part 4 · Probability and Statistics (Q37–48)
+    ['die-once'], ['stats-mean'], ['events-exclusive'], ['normal-feature'], ['pick-one-ball'], ['stats-variance'],
+    ['events-independent'], ['stats-sd'], ['dice'], ['normal-shape'], ['stats-median'], ['pick-one-person'],
+  ];
   function makeExamSheet(n) {
-    const r = makeRng('csca-exam-sheet-' + n);
-    const challengeIds = new Set(CHALLENGE.flat());
-    const qs = [];
-    for (const [lesson, count] of SHEET_BASE) {
-      const pool = r.shuffle(byLesson(lesson).filter((t) => !challengeIds.has(t.id)));
-      for (let i = 0; i < count; i++) qs.push(build(pool[i % pool.length], r));
-    }
-    for (const ids of CHALLENGE) {
-      const id = r.pick(ids);
-      const t = TPL.find((x) => x.id === id);
-      const q = build(t, r);
-      q.challenge = true;
-      qs.push(q);
-    }
+    const r = makeRng('csca-exam-sheet-v2-' + n);
+    const byId = {};
+    TPL.forEach((t) => (byId[t.id] = t));
+    const qs = SHEET_SLOTS.map((ids) => build(byId[r.pick(ids)], r));
     qs.forEach((q, i) => (q.no = i + 1));
     return { n, questions: qs };
   }
