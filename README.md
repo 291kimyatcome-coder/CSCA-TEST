@@ -29,6 +29,16 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 
 `All-Lessons-Modules-1-4.pdf` (68 pages) puts all 15 lessons in one file. `All-Exam-Sheets-1-20.pdf` (240 pages) puts all 20 sheets in one file with bookmarks, and `All-Exam-Sheets-1-10.pdf` / `All-Exam-Sheets-11-20.pdf` are half-size versions. Each single file is under 0.5 MB. These sheets are not on the website, so students have not seen them. Rebuild with `node tools/build-bilingual.js` (needs `mathjax@3` and Playwright). Question translations live in `js/khmer.js` and the lesson translations in `js/lessons-km.js`. `node tools/validate.js` checks that every question has a Khmer translation.
 
+## Logo
+
+`logo/` holds the CSCA 2026 logo, in the site's own colours and IBM Plex type, with the text converted to outlines so it looks the same everywhere:
+
+- `csca-2026-logo.svg` / `.png`: horizontal logo for light backgrounds (transparent PNG)
+- `csca-2026-logo-dark.svg` / `.png`: version for dark backgrounds
+- `csca-2026-icon.svg` / `.png`: square icon (512 × 512) for a favicon, profile picture or Telegram group
+
+The mark is an answer-sheet grid of four bubbles (the four syllabus modules, or choices A–D), with one bubble filled in. This is not the official CSCA logo. Rebuild with `pip install fonttools brotli uharfbuzz && python3 tools/build-logo.py`.
+
 ## Collect students' results
 
 **No setup needed:** after each paper the student sees a result summary (name, class, score, correct/wrong/blank, missed questions, score by module) with **Copy result**, **Send on Telegram** and **Share** buttons, and sends it to the teacher.
