@@ -56,6 +56,27 @@ class Face:
         rsb = last_adv - bp.bounds[2] * s
         return lsb, rsb, width
 
+    def arc_path(self, text, size, cx, cy, r, center_deg, tracking=0.0, bottom=False):
+        """Text on a circle. Top: baseline on radius r, reads clockwise, centred at
+        center_deg (0 = top). Bottom: baseline on radius r, letters point to the
+        centre, reads left to right, centred at the bottom."""
+        import math
+        glyphs, width, s = self.shape(text, size, tracking)
+        pen = SVGPathPen(self.glyphs, ntos=lambda v: f"{v:.2f}".rstrip("0").rstrip("."))
+        for name, gx, _ in glyphs:
+            adv = self.glyphs[name].width * s
+            u = gx + adv / 2 - width / 2          # arc length from the text centre
+            if bottom:
+                psi = u / r
+                X, Y, th = cx + r * math.sin(psi), cy + r * math.cos(psi), -psi
+            else:
+                phi = math.radians(center_deg) + u / r
+                X, Y, th = cx + r * math.sin(phi), cy - r * math.cos(phi), phi
+            c, n = math.cos(th), math.sin(th)
+            tp = TransformPen(pen, (c * s, n * s, n * s, -c * s, X - c * adv / 2, Y - n * adv / 2))
+            self.glyphs[name].draw(tp)
+        return pen.getCommands(), math.degrees(width / r)
+
     def path(self, text, size, x, y, tracking=0.0, anchor="start"):
         glyphs, width, s = self.shape(text, size, tracking)
         if anchor == "middle": x -= width / 2
@@ -129,6 +150,39 @@ def icon(c, bg=None):
     body = [mark(0, 0, s, c)]
     return svg(s, s, "\n  ".join(body), "CSCA 2026")
 
+def circle(c):
+    """Round badge: name around the rim, 2026 at the bottom, bubbles + CSCA inside."""
+    import math
+    S, cx, cy = 512, 256, 256
+    body = [f'<circle cx="{cx}" cy="{cy}" r="252" fill="{c["tile"]}"/>',
+            f'<circle cx="{cx}" cy="{cy}" r="238" fill="none" stroke="{c["ring"]}" stroke-width="3"/>',
+            f'<circle cx="{cx}" cy="{cy}" r="172" fill="none" stroke="{c["ring"]}" stroke-width="3"/>']
+    # Rim text: top arc spans 246 degrees, tracked to fit exactly
+    name, nsize, rt = "CHINA SCHOLASTIC COMPETENCY ASSESSMENT", 23, 194
+    span = math.radians(246) * rt
+    _, nat, _ = SANS.shape(name, nsize)
+    tracking = (span - nat) / (len(name) - 1) / nsize
+    d, _ = SANS.arc_path(name, nsize, cx, cy, rt, 0, tracking)
+    body.append(f'<path d="{d}" fill="{c["rim"]}"/>')
+    d, deg = COND.arc_path("2026", 52, cx, cy, 226, 180, 0.05, bottom=True)
+    body.append(f'<path d="{d}" fill="{c["year"]}"/>')
+    # Dots between the two arcs
+    mid = 123 + (57 - deg / 2) / 2
+    for a in (mid, -mid):
+        t = math.radians(a)
+        body.append(f'<circle cx="{cx + 205 * math.sin(t):.1f}" cy="{cy - 205 * math.cos(t):.1f}" r="6" fill="{c["year"]}"/>')
+    # Centre: answer bubbles, then the wordmark
+    for i in range(4):
+        x = cx + (i - 1.5) * 46
+        if i == 1:
+            body.append(f'<circle cx="{x:.1f}" cy="{cy - 62}" r="17.5" fill="{c["pick"]}"/>')
+        else:
+            body.append(f'<circle cx="{x:.1f}" cy="{cy - 62}" r="14" fill="none" stroke="{c["ring"]}" stroke-width="7"/>')
+    d, _ = COND.path("CSCA", 118, cx, cy + 66, anchor="middle")
+    body.append(f'<path d="{d}" fill="{c["rim"]}"/>')
+    body.append(f'<rect x="{cx - 70}" y="{cy + 92}" width="140" height="4" rx="2" fill="{c["ring"]}" opacity=".6"/>')
+    return svg(S, S, "\n  ".join(body), "CSCA 2026")
+
 def write(name, text):
     p = os.path.join(OUT, name); open(p, "w").write(text); return p
 
@@ -138,6 +192,7 @@ def main():
         write("csca-2026-logo.svg", horizontal(LIGHT)),
         write("csca-2026-logo-dark.svg", horizontal(DARK, bg="#0e121a")),
         write("csca-2026-icon.svg", icon(LIGHT)),
+        write("csca-2026-logo-circle.svg", circle(dict(LIGHT, rim="#ffffff"))),
     ]
     if "--no-png" not in sys.argv:
         js = r"""

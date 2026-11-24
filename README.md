@@ -35,6 +35,7 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 
 - `csca-2026-logo.svg` / `.png`: horizontal logo for light backgrounds (transparent PNG)
 - `csca-2026-logo-dark.svg` / `.png`: version for dark backgrounds
+- `csca-2026-logo-circle.svg` / `.png`: round badge (512 × 512, transparent corners) with the full name around the rim
 - `csca-2026-icon.svg` / `.png`: square icon (512 × 512) for a favicon, profile picture or Telegram group
 
 The mark is an answer-sheet grid of four bubbles (the four syllabus modules, or choices A–D), with one bubble filled in. This is not the official CSCA logo. Rebuild with `pip install fonttools brotli uharfbuzz && python3 tools/build-logo.py`.
