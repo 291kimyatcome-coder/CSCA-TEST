@@ -1,80 +1,12 @@
-// Build the Khmer test score report (Test 2, Grade 7 -> 8 entrance) as a PDF.
-// Usage: node report/build_test_report.js
-// Edit DATA below to change the student's name, marks, or comments.
+// Build a Khmer test score report as a PDF from a data file in report/data/.
+// Usage: node report/build_test_report.js report/data/<file>.js
+// Each data file holds the student's details, marks per question, and comments.
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
 
-const DATA = {
-  school: 'Science Master Academic',
-  student: 'ផា សុម៉ាវត្តី',
-  grade: '៨',
-  test: 'វិញ្ញាសាទី ២ | តេស្តគណិតវិទ្យាឡើងថ្នាក់ទី ៨ (ខ្លឹមសារថ្នាក់ទី ៧)',
-  duration: '៦០ នាទី',
-  teacher: 'ពៅ គីមយ៉ាត',
-  topics: 'ចំនួនគត់ ប្រភាគ ភាគរយ កន្សោមពីជគណិត សមីការដឺក្រេទី ១ ផលធៀប សមាមាត្រ ធរណីមាត្រ និងស្ថិតិ',
-  issued: null, // null = today (Cambodia time)
-  // [question, student answer, correct answer, got, max, note]
-  parts: [
-    {
-      name: 'ផ្នែកទី ១ | ពហុជ្រើសរើស',
-      rows: [
-        ['១. (-3) × 4 + 15', 'ខ. 3', 'ខ. 3', 4, 4, ''],
-        ['២. GCD(18, 24)', 'ក. 6', 'ក. 6', 4, 4, ''],
-        ['៣. 2/3 + 1/4', 'ឃ. 11/12', 'ឃ. 11/12', 4, 4, ''],
-        ['៤. 25% នៃ 160', 'គ. 40', 'គ. 40', 4, 4, ''],
-        ['៥. សម្រួល 3x + 5 - x + 2', 'ខ. 2x + 7', 'ខ. 2x + 7', 4, 4, ''],
-        ['៦. ដោះស្រាយ 2x - 7 = 9', 'ឃ. x = 16', 'ក. x = 8', 0, 4, 'បាន 2x = 16 តែភ្លេចចែកនឹង 2'],
-        ['៧. ផលបូកមុំក្នុងត្រីកោណ', 'ខ. 360°', 'ឃ. 180°', 0, 4, 'ច្រឡំជាមួយមុំចតុកោណ (360°)'],
-        ['៨. មធ្យមភាគនៃ 4, 7, 9, 12', 'គ. 8', 'គ. 8', 4, 4, ''],
-      ],
-    },
-    {
-      name: 'ផ្នែកទី ២ | លំហាត់ដោះស្រាយ',
-      rows: [
-        ['១ក. (-12) ÷ 3 + (-2)<sup>3</sup>', '-12', '-12', 5, 5, 'ត្រឹមត្រូវ និងច្បាស់លាស់'],
-        ['១ខ. 3/4 × 8/9 - 1/6', '23/30', '1/2', 2, 5, 'គុណត្រូវ (24/36) តែដកប្រភាគខុស'],
-        ['២ក. 5x + 3 = 2x - 9', 'x = 2', 'x = -4', 1, 5, 'ផ្លាស់ទីតួខុសសញ្ញា (ត្រូវ 3x = -12)'],
-        ['២ខ. 3(x - 2) = x + 4', '2x = 10', 'x = 5', 4, 5, 'ជំហានត្រូវ តែមិនបានចែកនឹង 2'],
-        ['៣. ចែក 45 000 រៀល តាម 2 : 3', 'A = 18 000<br>B = 27 000', 'A = 18 000<br>B = 27 000', 10, 10, 'ត្រឹមត្រូវ'],
-        ['៤. ចតុកោណកែង 12 cm × 8 cm', 'S = 96 cm<sup>2</sup>', 'P = 40 cm<br>S = 96 cm<sup>2</sup>', 5, 10, 'ភ្លេចរកបរិមាត្រ 2(12 + 8) = 40 cm'],
-      ],
-    },
-    {
-      name: 'ផ្នែកទី ៣ | លំហាត់ពង្រឹងការគិត (សិស្សពូកែ)',
-      rows: [
-        ['៥. 3/5 នៃចំនួនមួយ = 48', '80', '80', 6, 7, 'សរសេរ 48 × 5/8 ខុស (ត្រូវ 5/3)'],
-        ['៦. 60 000 រៀល បញ្ចុះ 15%', '30 000 រៀល', '51 000 រៀល', 1, 7, '15% = 9 000 (មិនមែន 90 000)'],
-        ['៧. មុំបំពេញគ្នា មួយធំជាង 40°', '140°', '70° និង 110°', 2, 7, '140 ត្រូវ តែភ្លេចចែកនឹង 2'],
-        ['៨. 180 km ក្នុង 3 ម៉ោង, 5 ម៉ោង?', '300 km', '300 km', 7, 7, 'ត្រឹមត្រូវ'],
-      ],
-    },
-  ],
-  strengths: [
-    'គណនាលើចំនួនគត់ និងស្វ័យគុណបានត្រឹមត្រូវ (លំហាត់ ១ក)។',
-    'យល់ច្បាស់ពីផលធៀប (លំហាត់ ៣) និងល្បឿន ចម្ងាយ ពេលវេលា (លំហាត់ ៨)។',
-    'ពហុជ្រើសរើសត្រូវ ៦ ក្នុងចំណោម ៨ សំណួរ (GCD ប្រភាគ ភាគរយ មធ្យមភាគ)។',
-    'មានទម្លាប់សរសេរដំណោះស្រាយជាជំហានៗ។',
-  ],
-  weaknesses: [
-    'សមីការ៖ ភ្លេចប្តូរសញ្ញាពេលផ្លាស់ទីតួ និងភ្លេចចែកនឹងមេគុណរបស់ x (សំណួរ ៦ និងលំហាត់ ២)។',
-    'ប្រភាគ៖ មិនសម្រួលប្រភាគ ហើយដកប្រភាគខុស (លំហាត់ ១ខ)។',
-    'ភាគរយ៖ គណនា 15% ខុស ហើយមិនទាន់យល់ពីតម្លៃក្រោយបញ្ចុះ (លំហាត់ ៦)។',
-    'អានសំណួរមិនគ្រប់៖ ភ្លេចរកបរិមាត្រ (លំហាត់ ៤) និងមិនបញ្ចប់ចម្លើយ (លំហាត់ ២ខ និង ៧)។',
-    'ធរណីមាត្រ៖ ច្រឡំផលបូកមុំក្នុងត្រីកោណ (180°) ជាមួយចតុកោណ (360°)។',
-  ],
-  advice: [
-    'ហ្វឹកហាត់ដោះស្រាយសមីការដឺក្រេទី ១ ឲ្យបាន ១០ លំហាត់ក្នុងមួយសប្តាហ៍ សរសេរសមីការមួយបន្ទាត់ម្តង ហើយផ្ទៀងផ្ទាត់ចម្លើយដោយជំនួស x ចូលវិញ។',
-    'រំលឹកការបូក ដកប្រភាគ (ធ្វើភាគបែងរួម) និងសម្រួលប្រភាគរាល់ពេល។',
-    'ភាគរយ៖ ចងចាំ តម្លៃបញ្ចុះ = តម្លៃដើម × ភាគរយ ហើយ តម្លៃលក់ = តម្លៃដើម - តម្លៃបញ្ចុះ។',
-    'អានសំណួរម្តងទៀតមុនឆ្លើយ ហើយគូសបន្ទាត់ពីក្រោមអ្វីដែលគេឲ្យរក (ឧទាហរណ៍ បរិមាត្រ និងក្រឡាផ្ទៃ)។',
-    'ទន្ទេញរូបមន្តធរណីមាត្រមូលដ្ឋាន៖ ផលបូកមុំត្រីកោណ 180° មុំបំពេញគ្នា 180° និងបរិមាត្រចតុកោណកែង 2(a + b)។',
-  ],
-  comment:
-    'សិស្សមានមូលដ្ឋានគ្រឹះគណិតវិទ្យាថ្នាក់ទី ៧ គួរសម ជាពិសេសការគណនាចំនួនគត់ ផលធៀប និងល្បឿន។ ' +
-    'ពិន្ទុត្រូវបានកាត់ភាគច្រើនដោយសារកំហុសតូចៗ ដូចជាភ្លេចប្តូរសញ្ញា ភ្លេចចែកនឹងមេគុណ និងមិនអានសំណួរឲ្យគ្រប់ ដែលអាចកែបានឆាប់។ ' +
-    'ប្រសិនបើហ្វឹកហាត់សមីការ ប្រភាគ និងភាគរយឲ្យបានទៀងទាត់ សិស្សអាចទទួលបាននិទ្ទេស B ឬខ្ពស់ជាងនេះ ក្នុងវិញ្ញាសាបន្ទាប់។ សូមបន្តខិតខំ!',
-};
+const dataFile = path.resolve(process.argv[2] || path.join(__dirname, 'data', 'test2_somavatey.js'));
+const DATA = require(dataFile);
 
 // ---------------------------------------------------------------------------
 const KH = '០១២៣៤៥៦៧៨៩';
@@ -117,16 +49,16 @@ const partRows = partTotals
   })
   .join('');
 
-const status = (g, m) =>
-  g === m ? '<span class="st ok">ត្រូវ</span>' : g === 0 ? '<span class="st no">ខុស</span>' : '<span class="st part">ត្រូវខ្លះ</span>';
+const status = (g, m, a) =>
+  a === '' ? '<span class="st na">មិនបានធ្វើ</span>' : g === m ? '<span class="st ok">ត្រូវ</span>' : g === 0 ? '<span class="st no">ខុស</span>' : '<span class="st part">ត្រូវខ្លះ</span>';
 
 const detail = DATA.parts
   .map((p, i) => {
     const rows = p.rows
       .map(
         ([q, a, c, g, m, note]) => `<tr>
-        <td>${q}</td><td class="c">${a}</td><td class="c">${c}</td>
-        <td class="c">${status(g, m)}</td><td class="c b">${kh(g)} / ${kh(m)}</td><td class="note">${note}</td></tr>`
+        <td>${q}</td><td class="c">${a === '' ? '-' : a}</td><td class="c">${c}</td>
+        <td class="c">${status(g, m, a)}</td><td class="c b">${kh(g)} / ${kh(m)}</td><td class="note">${note}</td></tr>`
       )
       .join('');
     return `<tr class="ph"><td colspan="6">${p.name}<span>${kh(partTotals[i].got)} / ${kh(partTotals[i].max)} ពិន្ទុ</span></td></tr>${rows}`;
@@ -146,11 +78,12 @@ ${ff('BtbKh', 'battambang-khmer-700-normal.woff2', 700)}
 ${ff('BtbLa', 'battambang-latin-400-normal.woff2', 400)}
 ${ff('BtbLa', 'battambang-latin-700-normal.woff2', 700)}
 ${ff('MoulKh', 'moul-khmer-400-normal.woff2', 400)}
+@font-face{font-family:'SymMath';src:url('file://${fontDir}/dejavu-math.woff2') format('woff2');unicode-range:U+221A,U+221B,U+22C5;}
 @font-face{font-family:'Sym';src:url('file://${fontDir}/noto-sans-khmer-latin-400-normal.woff2') format('woff2');font-weight:400;unicode-range:U+B0,U+D7,U+F7;}
 @font-face{font-family:'Sym';src:url('file://${fontDir}/noto-sans-khmer-latin-700-normal.woff2') format('woff2');font-weight:700;unicode-range:U+B0,U+D7,U+F7;}
 ${ff('MoulLa', 'moul-latin-400-normal.woff2', 400)}
 @page{size:A4;margin:12mm 13mm 14mm}
-:root{--body:Sym,BtbLa,BtbKh,sans-serif;--head:MoulLa,MoulKh,serif;
+:root{--body:SymMath,Sym,BtbLa,BtbKh,sans-serif;--head:MoulLa,MoulKh,serif;
   --fs-title:17pt;--fs-h2:10.5pt;--fs-h3:10.5pt;--fs-body:10pt;--fs-small:9pt;--fs-tiny:8.3pt;--lh:1.7}
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--body);font-size:var(--fs-body);color:#1d2733;line-height:var(--lh);font-synthesis:none}
@@ -186,7 +119,7 @@ td{border-bottom:1px solid #e3e8ef;padding:1px 6px;vertical-align:middle;line-he
 .det tr.ph td{background:#e6f2ec;color:#1d4d3a;font-weight:700;font-size:var(--fs-small)}
 .det tr.ph td span{float:right}
 .st{display:inline-block;border-radius:10px;padding:0 7px;font-size:var(--fs-tiny);line-height:1.7;white-space:nowrap;color:#fff}
-.st.ok{background:#1b7a4b}.st.no{background:#b23a3a}.st.part{background:#c98a1b}
+.st.na{background:#8592a0}.rad{border-top:1px solid currentColor;padding:0 1px}.st.ok{background:#1b7a4b}.st.no{background:#b23a3a}.st.part{background:#c98a1b}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .box{border:1px solid #dfe6ef;border-radius:8px;padding:8px 12px}
 .box h3{margin:0 0 4px;font-size:var(--fs-h3);line-height:1.7}
@@ -219,7 +152,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
   <div><span>ថ្នាក់</span>៖ <b>${DATA.grade}</b></div>
   <div><span>មុខវិជ្ជា</span>៖ <b>គណិតវិទ្យា</b></div>
   <div><span>រយៈពេល</span>៖ <b>${DATA.duration}</b></div>
-  <div><span>គ្រូបង្រៀន</span>៖ <b>${DATA.teacher}</b></div>
+  <div><span>${DATA.teacherTitle || 'គ្រូបង្រៀន'}</span>៖ <b>${DATA.teacher}</b></div>
   <div><span>ថ្ងៃចេញ</span>៖ <b>${DATA.issued}</b></div>
   <div class="wide"><span>មេរៀនប្រឡង</span>៖ <b>${DATA.topics}</b></div>
 </div>
@@ -256,7 +189,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 
 <div class="date">ធ្វើនៅ ${DATA.issued}</div>
 <div class="sign avoid">
-  <div><b>គ្រូបង្រៀន</b><div class="ln"></div><div class="nm"><b class="who">${DATA.teacher}</b></div></div>
+  <div><b>${DATA.teacherTitle || 'គ្រូបង្រៀន'}</b><div class="ln"></div><div class="nm"><b class="who">${DATA.teacher}</b></div></div>
   <div><b>មាតាបិតា ឬអាណាព្យាបាល</b><div class="ln"></div><div class="nm">ហត្ថលេខា និងឈ្មោះ</div></div>
 </div>
 
@@ -266,7 +199,7 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
 </body></html>`;
 
 (async () => {
-  const out = path.join(__dirname, 'Test2_Grade8_Report.pdf');
+  const out = path.join(__dirname, DATA.out);
   const tmp = path.join(__dirname, 'test_report.html');
   fs.writeFileSync(tmp, html);
   const browser = await chromium.launch();
@@ -275,6 +208,6 @@ ol.adv{margin:0;padding-left:24px;list-style:khmer}ol.adv li{margin:2px 0}
   await page.evaluate(() => document.fonts.ready);
   await page.pdf({ path: out, format: 'A4', printBackground: true, preferCSSPageSize: true });
   await browser.close();
-  fs.unlinkSync(tmp);
+  if (!process.env.KEEP_HTML) fs.unlinkSync(tmp);
   console.log('Wrote', out, `total ${total}/${totalMax}`);
 })();
