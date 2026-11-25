@@ -42,6 +42,10 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 
 The mark is an answer-sheet grid of four bubbles (the four syllabus modules, or choices A–D), with one bubble filled in. This is not the official CSCA logo. Rebuild with `pip install fonttools brotli uharfbuzz && python3 tools/build-logo.py`.
 
+## 50-hour study plan poster
+
+`plan/CSCA-50-hour-plan.png` (for phones and Telegram) and `plan/CSCA-50-hour-plan.pdf` (to print on A3 or A2) show a plan to finish the 20 exam sheets in 50 hours: 2 hours a day, Monday to Sunday, over 4 weeks. Days 1–4 cover one syllabus part each (lesson, then that part of Sheets 1–3). Days 5–21 are one timed sheet a day (Sheets 4–20). Days 22–25 are for review, a retake and a final mock, and three buffer days follow. The poster also has the daily 2-hour routine, a score tracker for the 20 sheets, and tips, in English and Khmer. Edit `plan/csca-50-hour-plan.html` and rebuild with `node tools/build-plan.js`.
+
 ## Collect students' results
 
 **No setup needed:** after each paper the student sees a result summary (name, class, score, correct/wrong/blank, missed questions, score by module) with **Copy result**, **Send on Telegram** and **Share** buttons, and sends it to the teacher.

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<title>CSCA 2026 · 50-hour plan</title>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/fonts-km.css">
+<style>
+  :root {
+    --navy: #173a5e; --teal: #23897f; --teal-2: #2fa597; --teal-soft: #e8f5f2; --teal-line: #bfe2db;
+    --ink: #1c2433; --muted: #5d6a7c; --line: #dde5ee; --km: #1f4e79;
+    --p1: #173a5e; --p1-soft: #e7eef6; --p2: #23897f; --p2-soft: #e8f5f2;
+    --p3: #b7791f; --p3-soft: #fdf3e2; --p4: #c8472e; --p4-soft: #fbe9e4; --p5: #8a95a5; --p5-soft: #f2f4f7;
+  }
+  @page { size: 1414px 2000px; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; }
+  body { width: 1414px; height: 2000px; font-family: "IBM Plex Sans", "Kantumruy Pro", sans-serif; color: var(--ink); }
+  .km { font-family: "Kantumruy Pro", "IBM Plex Sans", sans-serif; }
+  .poster { position: relative; margin: 26px; height: 1948px; border: 2.5px solid var(--teal-line); border-radius: 34px; padding: 34px 44px 26px; overflow: hidden; }
+  .bg { position: absolute; color: #dcefeb; font-family: "Times New Roman", serif; font-style: italic; font-size: 30px; white-space: nowrap; }
+
+  header { position: relative; text-align: center; }
+  header img { width: 98px; height: 98px; display: block; margin: 0 auto 10px; }
+  .pill { display: inline-block; background: linear-gradient(90deg, var(--navy), var(--teal)); color: #fff; border-radius: 999px; padding: 8px 30px; font-weight: 700; font-size: 22px; }
+  h1 { font-family: "Kantumruy Pro", sans-serif; font-weight: 700; color: var(--navy); font-size: 54px; line-height: 1.4; margin: 6px 0 0; }
+  h1 em { font-style: normal; color: var(--teal); }
+  .sub { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 600; color: var(--teal); font-size: 25px; margin-top: 2px; }
+  .stats { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 14px 0 12px; }
+  .stat { background: var(--teal-soft); border: 2px solid var(--teal-2); border-radius: 22px; padding: 6px 14px; text-align: center; }
+  .stat b { display: block; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 38px; line-height: 1.1; color: var(--navy); }
+  .stat span { font-size: 17px; color: var(--muted); }
+  .stat .km { display: block; font-size: 19px; color: var(--km); font-weight: 600; }
+
+  .legend { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 14px; margin-bottom: 10px; }
+  .lg { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--line); border-radius: 999px; padding: 5px 16px 5px 6px; font-size: 16px; background: #fff; }
+  .lg i { width: 26px; height: 26px; border-radius: 50%; display: inline-block; }
+  .lg .km { color: var(--km); font-weight: 600; }
+
+  /* calendar */
+  .cal { position: relative; display: grid; grid-template-columns: 104px repeat(7, minmax(0, 1fr)); gap: 9px; }
+  .dh { text-align: center; background: var(--navy); color: #fff; border-radius: 14px; padding: 6px 0 5px; line-height: 1.25; }
+  .dh .km { display: block; font-size: 21px; font-weight: 700; }
+  .dh span { font-size: 14px; opacity: .8; letter-spacing: .06em; }
+  .wk { background: var(--teal-soft); border: 2px solid var(--teal-line); border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; line-height: 1.25; }
+  .wk .km { font-size: 19px; font-weight: 700; color: var(--navy); }
+  .wk span { font-size: 14px; color: var(--muted); }
+  .wk b { margin-top: 6px; font-family: "IBM Plex Sans Condensed", sans-serif; font-size: 22px; color: var(--teal); }
+  .cell { position: relative; border: 2px solid var(--line); border-radius: 16px; padding: 7px 10px 7px; min-height: 172px; display: flex; flex-direction: column; background: #fff; }
+  .cell .top { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; color: var(--muted); }
+  .cell .top .km { font-size: 15px; }
+  .cell .box { width: 22px; height: 22px; border: 2px solid currentColor; border-radius: 6px; flex: none; }
+  .cell .main { font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 700; font-size: 26px; line-height: 1.15; margin-top: 6px; }
+  .cell .main.kmm { font-family: "Kantumruy Pro", sans-serif; font-size: 23px; line-height: 1.35; }
+  .cell .what { font-size: 13.5px; line-height: 1.4; margin-top: 3px; color: var(--ink); }
+  .cell .what .km { display: block; color: var(--km); font-size: 14.5px; line-height: 1.5; }
+  .cell .hrs { margin-top: auto; padding-top: 5px; display: flex; justify-content: space-between; align-items: center; font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--muted); }
+  .bar { height: 6px; border-radius: 3px; background: var(--line); flex: 1; margin-left: 8px; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 3px; }
+  .ph1 { border-color: #c6d4e5; background: var(--p1-soft); } .ph1 .main, .ph1 .box { color: var(--p1); } .ph1 .bar i { background: var(--p1); }
+  .ph2 { border-color: var(--teal-line); background: var(--p2-soft); } .ph2 .main, .ph2 .box { color: var(--p2); } .ph2 .bar i { background: var(--p2); }
+  .ph3 { border-color: #f0d9b0; background: var(--p3-soft); } .ph3 .main, .ph3 .box { color: var(--p3); } .ph3 .bar i { background: var(--p3); }
+  .ph4 { border-color: #f0c5ba; background: var(--p4-soft); } .ph4 .main, .ph4 .box { color: var(--p4); } .ph4 .bar i { background: var(--p4); }
+  .ph5 { border-style: dashed; border-color: #ccd3dd; background: var(--p5-soft); } .ph5 .main, .ph5 .box { color: var(--p5); }
+
+  /* bottom cards */
+  .row { position: relative; display: grid; grid-template-columns: 1.08fr 1fr; gap: 16px; margin-top: 12px; }
+  .card { border: 2px solid var(--teal-line); border-radius: 22px; padding: 11px 16px; background: #fff; }
+  .card h3 { margin: 0 0 8px; display: flex; align-items: center; gap: 10px; font-size: 21px; color: var(--navy); }
+  .card h3 .km { font-size: 21px; }
+  .card h3 .n { width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 17px; }
+  .tl { display: grid; grid-template-columns: 112px 1fr; gap: 5px 12px; align-items: start; }
+  .tl .t { font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 15px; color: #fff; background: var(--teal); border-radius: 10px; text-align: center; padding: 4px 0; }
+  .tl .t.n2 { background: var(--navy); } .tl .t.n3 { background: var(--p3); }
+  .tl .d { font-size: 14px; line-height: 1.35; }
+  .tl .d .km { display: block; color: var(--km); font-size: 15px; line-height: 1.45; }
+  .note { margin-top: 8px; font-size: 14px; color: var(--muted); line-height: 1.45; }
+  .note .km { color: var(--km); font-size: 15px; }
+  .scores { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+  .sc { border: 1.5px solid var(--line); border-radius: 12px; padding: 4px 8px 5px; font-size: 13px; color: var(--muted); line-height: 1.2; }
+  .sc b { color: var(--navy); font-size: 15px; }
+  .sc .line { margin-top: 8px; border-bottom: 1.5px dotted #9aa6b6; text-align: right; font-family: "IBM Plex Mono", monospace; font-size: 12px; color: #9aa6b6; }
+  .goal { margin-top: 9px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .goal div { border-radius: 12px; padding: 5px 8px; font-size: 13px; line-height: 1.35; background: var(--teal-soft); }
+  .goal b { display: block; color: var(--navy); font-size: 14px; }
+  .goal .km { color: var(--km); font-size: 14px; }
+  .tips { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 12px; }
+  .tip { border: 1.5px solid var(--line); border-radius: 18px; padding: 8px 13px; font-size: 13.5px; line-height: 1.35; }
+  .tip b { color: var(--teal); font-size: 15.5px; display: block; margin-bottom: 2px; }
+  .tip .km { display: block; color: var(--km); font-size: 15px; line-height: 1.5; margin-top: 2px; }
+  footer { position: relative; margin-top: 10px; text-align: center; font-size: 14px; color: var(--muted); }
+  footer .km { color: var(--km); }
+</style>
+</head>
+<body>
+<div class="poster" id="poster"></div>
+<script>
+(function () {
+  'use strict';
+  var KD = '០១២៣៤៥៦៧៨៩';
+  var kn = function (n) { return String(n).replace(/\d/g, function (d) { return KD[d]; }); };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+
+  var DAYS = [['ចន្ទ', 'MON'], ['អង្គារ', 'TUE'], ['ពុធ', 'WED'], ['ព្រហស្បតិ៍', 'THU'], ['សុក្រ', 'FRI'], ['សៅរ៍', 'SAT'], ['អាទិត្យ', 'SUN']];
+  var PARTS = [
+    ['Part 1', 'ផ្នែកទី ១', 'Sets & Inequalities', 'សំណុំ និងវិសមភាព'],
+    ['Part 2', 'ផ្នែកទី ២', 'Functions', 'អនុគមន៍'],
+    ['Part 3', 'ផ្នែកទី ៣', 'Geometry & Algebra', 'ធរណីមាត្រ និងពីជគណិត'],
+    ['Part 4', 'ផ្នែកទី ៤', 'Probability & Statistics', 'ប្រូបាប និងស្ថិតិ'],
+  ];
+
+  // 25 study days × 2 hours = 50 hours, then 3 buffer days.
+  var plan = [];
+  PARTS.forEach(function (p, i) {
+    plan.push({ ph: 1, main: p[0], what: p[2] + ' · lesson + Q' + (12 * i + 1) + '–' + (12 * i + 12) + ', Sheets 1–3', km: p[3] + ' · សំណួរ ' + kn(12 * i + 1) + '–' + kn(12 * i + 12) + ' វិញ្ញាសា ១–៣' });
+  });
+  for (var s = 4; s <= 20; s++) plan.push({ ph: 2, main: 'Sheet ' + s, what: 'Timed 60 min + check', km: 'វិញ្ញាសាទី ' + kn(s) + ' · ៦០ នាទី + កែ' });
+  plan.push({ ph: 3, main: 'Review 1', what: 'Redo mistakes, Parts 1–2', km: 'ធ្វើសំណួរខុសឡើងវិញ ផ្នែក ១–២' });
+  plan.push({ ph: 3, main: 'Review 2', what: 'Redo mistakes, Parts 3–4', km: 'ធ្វើសំណួរខុសឡើងវិញ ផ្នែក ៣–៤' });
+  plan.push({ ph: 3, main: 'Retake', what: 'Your lowest-score sheet, timed', km: 'ធ្វើវិញ្ញាសាដែលពិន្ទុទាបបំផុតម្តងទៀត' });
+  plan.push({ ph: 4, main: 'Final mock', what: 'Sheet 1 again, timed + key ideas', km: 'ប្រឡងសាកល្បងចុងក្រោយ + រំលឹកគំនិតគន្លឹះ' });
+  for (var b = 0; b < 3; b++) plan.push({ ph: 5, main: 'Buffer', kmMain: 'ថ្ងៃបម្រុង', what: 'Catch up a missed day, or rest', km: 'ធ្វើថ្ងៃដែលខកខានឲ្យទាន់ ឬសម្រាក' });
+
+  var h = '';
+  [['a² + b² = c²', 3, 2], ['Δ = b² − 4ac', 74, 4], ['|a| ≥ 0', 2, 21], ['A = πr²', 82, 20], ['(a + b)² = a² + 2ab + b²', 3, 96.5], ['√2', 92, 96], ['P(A∪B)', 86, 52], ['f′(x)', 1, 52]]
+    .forEach(function (f) { h += '<span class="bg" style="left:' + f[1] + '%;top:' + f[2] + '%">' + f[0] + '</span>'; });
+
+  h += '<header><img src="../logo/csca-2026-logo-circle.svg" alt="CSCA 2026">' +
+    '<span class="pill">QCM · CSCA 2026 · គណិតវិទ្យា · វិញ្ញាសា ២០</span>' +
+    '<h1>ផែនការបញ្ចប់វិញ្ញាសា ក្នុង <em>៥០ ម៉ោង</em></h1>' +
+    '<div class="sub">50-HOUR PLAN · 2 HOURS A DAY · MONDAY TO SUNDAY · 4 WEEKS</div></header>';
+
+  h += '<div class="stats">' +
+    '<div class="stat"><b>50</b><span class="km">ម៉ោង</span><span>hours in total</span></div>' +
+    '<div class="stat"><b>2 h</b><span class="km">ក្នុងមួយថ្ងៃ · ចន្ទ–អាទិត្យ</span><span>every day, Mon–Sun</span></div>' +
+    '<div class="stat"><b>25</b><span class="km">ថ្ងៃសិក្សា + ៣ ថ្ងៃបម្រុង</span><span>study days + 3 buffer days</span></div>' +
+    '<div class="stat"><b>20 × 48</b><span class="km">វិញ្ញាសា · ៩៦០ សំណួរ</span><span>exam sheets · 960 questions</span></div></div>';
+
+  h += '<div class="legend">' +
+    '<span class="lg"><i style="background:var(--p1)"></i>Foundation <span class="km">មូលដ្ឋាន</span> · 8 h</span>' +
+    '<span class="lg"><i style="background:var(--p2)"></i>Timed sheets <span class="km">ប្រឡងកំណត់ម៉ោង</span> · 34 h</span>' +
+    '<span class="lg"><i style="background:var(--p3)"></i>Review <span class="km">រំលឹក</span> · 6 h</span>' +
+    '<span class="lg"><i style="background:var(--p4)"></i>Final mock <span class="km">ប្រឡងចុងក្រោយ</span> · 2 h</span>' +
+    '<span class="lg"><i style="background:var(--p5)"></i>Buffer <span class="km">បម្រុង</span></span></div>';
+
+  h += '<div class="cal"><div></div>' + DAYS.map(function (d) { return '<div class="dh"><span class="km">' + d[0] + '</span><span>' + d[1] + '</span></div>'; }).join('');
+  var hours = 0;
+  for (var w = 0; w < 4; w++) {
+    var wkHours = plan.slice(w * 7, w * 7 + 7).filter(function (x) { return x.ph < 5; }).length * 2;
+    h += '<div class="wk"><span class="km">សប្តាហ៍ ' + kn(w + 1) + '</span><span>WEEK ' + (w + 1) + '</span><b>' + wkHours + ' h</b></div>';
+    for (var d = 0; d < 7; d++) {
+      var i = w * 7 + d, x = plan[i];
+      var study = x.ph < 5;
+      if (study) hours += 2;
+      h += '<div class="cell ph' + x.ph + '"><div class="top">' +
+        (study ? '<span>DAY ' + (i + 1) + ' · <span class="km">ថ្ងៃទី ' + kn(i + 1) + '</span></span>' : '<span class="km">—</span>') + '<span class="box"></span></div>' +
+        (x.kmMain ? '<div class="main kmm">' + x.kmMain + '</div>' : '<div class="main">' + esc(x.main) + '</div>') +
+        '<div class="what">' + esc(x.what) + '<span class="km">' + esc(x.km) + '</span></div>' +
+        (study ? '<div class="hrs"><span>' + hours + '/50 h</span><span class="bar"><i style="width:' + (hours * 2) + '%"></i></span></div>' : '') +
+        '</div>';
+    }
+  }
+  h += '</div>';
+
+  h += '<div class="row"><div class="card"><h3><span class="n">⏱</span>Your 2 hours <span class="km">· ២ ម៉ោងក្នុងមួយថ្ងៃ</span></h3>' +
+    '<div class="tl">' +
+    '<span class="t">0:00–1:00</span><span class="d">Do one exam sheet: 48 questions in 60 minutes, like the real test. Mark answers on the answer sheet.<span class="km">ធ្វើវិញ្ញាសាមួយ៖ ៤៨ សំណួរ ក្នុង ៦០ នាទី ដូចការប្រឡងពិត។ គូសចម្លើយលើសន្លឹកចម្លើយ។</span></span>' +
+    '<span class="t n2">1:00–1:40</span><span class="d">Mark with the answer key, then read the solution card for every wrong or unsure question.<span class="km">កែជាមួយតារាងចម្លើយ រួចអានដំណោះស្រាយ សម្រាប់សំណួរខុស ឬមិនច្បាស់។</span></span>' +
+    '<span class="t n3">1:40–2:00</span><span class="d">Error notebook: copy the key idea of each mistake. Write your score in the tracker.<span class="km">សៀវភៅកំហុស៖ សរសេរគំនិតគន្លឹះនៃកំហុសនីមួយៗ។ សរសេរពិន្ទុក្នុងតារាងពិន្ទុ។</span></span>' +
+    '</div><p class="note">Foundation days (Day 1–4): 40 min lesson of the part, 50 min its 36 questions from Sheets 1–3, 30 min check.<span class="km"> ថ្ងៃមូលដ្ឋាន (ថ្ងៃទី ១–៤)៖ មេរៀន ៤០ នាទី · សំណួរ ៣៦ ក្នុង ៥០ នាទី · កែ ៣០ នាទី។</span></p></div>';
+
+  var sc = '';
+  for (var k = 1; k <= 20; k++) sc += '<div class="sc"><b>' + k + '</b> · <span class="km">វិញ្ញាសា ' + kn(k) + '</span><div class="line">/100</div></div>';
+  h += '<div class="card"><h3><span class="n">✓</span>Score tracker <span class="km">· តារាងពិន្ទុ</span></h3><div class="scores">' + sc + '</div>' +
+    '<div class="goal"><div><b>Week 1 · ≥ 60</b>Sheets 1–6</div><div><b>Week 2 · ≥ 70</b>Sheets 7–13</div><div><b>Week 3 · ≥ 80</b>Sheets 14–20</div><div><b>Week 4 · ≥ 90</b>Review + final</div></div></div></div>';
+
+  h += '<div class="tips">' +
+    '<div class="tip"><b>About 75 s per question</b>Skip a hard one and come back. Never leave a blank.<span class="km">ប្រហែល ៧៥ វិនាទីក្នុងមួយសំណួរ។ រំលងសំណួរពិបាក ហើយត្រឡប់មកវិញ។ កុំទុកចន្លោះទទេ។</span></div>' +
+    '<div class="tip"><b>Solutions after, not during</b>Close the solution book until the 60 minutes are over.<span class="km">អានដំណោះស្រាយក្រោយ មិនមែនពេលកំពុងធ្វើទេ។ បិទសៀវភៅដំណោះស្រាយរហូតដល់ ៦០ នាទីចប់។</span></div>' +
+    '<div class="tip"><b>Learn the key ideas</b>Most questions use one rule. Read your error notebook every Sunday.<span class="km">ចាំគំនិតគន្លឹះ។ សំណួរភាគច្រើនប្រើច្បាប់តែមួយ។ អានសៀវភៅកំហុសរៀងរាល់ថ្ងៃអាទិត្យ។</span></div>' +
+    '<div class="tip"><b>Missed a day?</b>Move it to a buffer day (Week 4, Fri–Sun). Keep the order.<span class="km">ខកខានមួយថ្ងៃ? ប្តូរទៅថ្ងៃបម្រុង (សប្តាហ៍ ៤ សុក្រ–អាទិត្យ)។ រក្សាលំដាប់ដដែល។</span></div></div>';
+
+  h += '<footer>Materials: Exam-Sheet-01…20.pdf · Solutions-Sheet-01…20.pdf · Lessons-Module-1…4.pdf <span class="km">· ឯកសារ៖ វិញ្ញាសា ២០ · ដំណោះស្រាយ ២០ · មេរៀន ៤ ផ្នែក</span></footer>';
+
+  document.getElementById('poster').innerHTML = h;
+  document.fonts.ready.then(function () {
+    var im = document.images[0];
+    return im.complete ? 0 : new Promise(function (r) { im.onload = im.onerror = r; });
+  }).then(function () { window.__done = true; });
+})();
+</script>
+</body>
+</html>
