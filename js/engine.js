@@ -229,6 +229,18 @@
     return f + v;
   }
 
+  /* Worked solutions for the printed answer book (bilingual/Solutions-*.pdf).
+     key: the idea or formula used. steps: S2 = one step in English and Khmer
+     (math is shared), DM = a displayed formula. */
+  const S2 = (en, km) => ({ en, km });
+  const DM = (m) => ({ m });
+  const pr = (x) => (String(x).startsWith('-') ? `(${x})` : String(x));
+  const lst = (arr) => arr.slice().sort((a, b) => a - b).join(',\\ ');
+  /** (x-p)(x-q) written nicely: x(x-q) when a root is 0 */
+  const fac2 = (p, q) => (p === 0 ? `x(${lin('x', q)})` : q === 0 ? `x(${lin('x', p)})` : `(${lin('x', p)})(${lin('x', q)})`);
+  /** "lhs ⇒ rhs", or just lhs when they are the same */
+  const imp = (lhs, rhs) => (lhs === rhs ? lhs : lhs + T`\Rightarrow ` + rhs);
+
   /* ------------------------------------------------------------------ */
   /* Syllabus structure                                                  */
   /* ------------------------------------------------------------------ */
@@ -301,6 +313,20 @@
         op === 'cap'
           ? T`\(A\cap B\) contains the elements that belong to both sets: \(${res.cap}\).`
           : T`\(A\cup B\) contains every element of \(A\) or \(B\) (each listed once): \(${res.cup}\).`,
+      key: op === 'cap'
+        ? S2(T`\(A\cap B\) (intersection) is the set of elements that are in \(A\) and also in \(B\).`, T`\(A\cap B\) (ប្រសព្វ) ជាសំណុំនៃធាតុដែលស្ថិតនៅក្នុង \(A\) ផង និងក្នុង \(B\) ផង។`)
+        : S2(T`\(A\cup B\) (union) is the set of elements that are in \(A\) or in \(B\), each written once.`, T`\(A\cup B\) (ប្រជុំ) ជាសំណុំនៃធាតុដែលស្ថិតនៅក្នុង \(A\) ឬក្នុង \(B\) (ធាតុនីមួយៗសរសេរតែម្តង)។`),
+      steps: op === 'cap'
+        ? [
+            S2(T`Compare \(A=${setTex(A)}\) and \(B=${setTex(B)}\) element by element.`, T`ប្រៀបធៀបធាតុនៃ \(A=${setTex(A)}\) និង \(B=${setTex(B)}\) ម្តងមួយៗ។`),
+            S2(T`The elements found in both sets are \(${lst(common)}\).`, T`ធាតុដែលមាននៅក្នុងសំណុំទាំងពីរគឺ \(${lst(common)}\)។`),
+            DM(T`A\cap B=${res.cap}`),
+          ]
+        : [
+            S2(T`Write all the elements of \(A=${setTex(A)}\).`, T`សរសេរធាតុទាំងអស់នៃ \(A=${setTex(A)}\)។`),
+            S2(T`Add the elements of \(B=${setTex(B)}\) that are not listed yet: \(${lst(bOnly)}\).`, T`បន្ថែមធាតុនៃ \(B=${setTex(B)}\) ដែលមិនទាន់មាន៖ \(${lst(bOnly)}\)។`),
+            DM(T`A\cup B=${res.cup}`),
+          ],
     };
   });
 
@@ -319,6 +345,13 @@
       correct: setTex(ans),
       wrong: [setTex(cUnion), setTex(AB), setTex(cA), setTex(cB.filter((x) => A.includes(x))), setTex(B)],
       sol: T`\(\complement_U A=${setTex(cA)}\). Intersecting with \(B\) gives \(${setTex(ans)}\).`,
+      key: S2(T`\(\complement_U A\) (complement) is the set of elements of \(U\) that are not in \(A\).`, T`\(\complement_U A\) (សំណុំបំពេញ) ជាសំណុំនៃធាតុរបស់ \(U\) ដែលមិនស្ថិតនៅក្នុង \(A\)។`),
+      steps: [
+        S2(T`Remove the elements of \(A=${setTex(A)}\) from \(U=${setTex(U)}\):`, T`ដកធាតុនៃ \(A=${setTex(A)}\) ចេញពី \(U=${setTex(U)}\)៖`),
+        DM(T`\complement_U A=${setTex(cA)}`),
+        S2(T`Keep only the elements of \(\complement_U A\) that are also in \(B=${setTex(B)}\):`, T`រក្សាទុកតែធាតុនៃ \(\complement_U A\) ដែលមាននៅក្នុង \(B=${setTex(B)}\) ដែរ៖`),
+        DM(T`(\complement_U A)\cap B=${setTex(ans)}`),
+      ],
     };
   });
 
@@ -340,6 +373,13 @@
       correct: String(val[kind]),
       wrong: [String(val.all), String(val.proper), String(val.np), String(2 ** (n + 1)), String(n * n), String(2 ** (n - 1))],
       sol: T`\(A=${setTex(elems)}\) has \(n=${n}\) elements. A set with \(n\) elements has \(2^n\) subsets, \(2^n-1\) proper subsets and \(2^n-2\) non-empty proper subsets, so the answer is \(${val[kind]}\).`,
+      key: S2(T`A set with \(n\) elements has \(2^n\) subsets, \(2^n-1\) proper subsets and \(2^n-2\) non-empty proper subsets.`, T`សំណុំដែលមាន \(n\) ធាតុ មានសំណុំរង \(2^n\), សំណុំរងផ្ទាល់ \(2^n-1\) និងសំណុំរងផ្ទាល់មិនទទេ \(2^n-2\)។`),
+      steps: [
+        S2(T`List the integers with \(${a}\le x${closed ? T`\le` : '<'}${b}\):`, T`សរសេរចំនួនគត់ដែល \(${a}\le x${closed ? T`\le` : '<'}${b}\)៖`),
+        DM(T`A=${setTex(elems)}\quad\Rightarrow\quad n=${n}`),
+        S2(T`Number of ${word}:`, T`ចំនួន${{ all: 'សំណុំរង', proper: 'សំណុំរងផ្ទាល់', np: 'សំណុំរងផ្ទាល់មិនទទេ' }[kind]}៖`),
+        DM({ all: T`2^{${n}}=${val.all}`, proper: T`2^{${n}}-1=${2 ** n}-1=${val.proper}`, np: T`2^{${n}}-2=${2 ** n}-2=${val.np}` }[kind]),
+      ],
     };
   });
 
@@ -465,6 +505,21 @@
         T`Factor: \((${lin('x', p)})(${lin('x', q)})${actual}0\), roots \(${p}\) and \(${q}\). ` +
         (actual === '<' || actual === T`\le` ? 'The product is negative between the roots.' : 'The product is positive outside the roots.') +
         T` Answer: \(${S[actual]}\).`,
+      key: S2(T`If \(p<q\), then \((x-p)(x-q)<0\) between the roots (\(p<x<q\)) and \((x-p)(x-q)>0\) outside the roots.`, T`បើ \(p<q\) នោះ \((x-p)(x-q)<0\) នៅចន្លោះឫស (\(p<x<q\)) ហើយ \((x-p)(x-q)>0\) នៅក្រៅឫស។`),
+      steps: [
+        ...(neg
+          ? [
+              S2(T`The coefficient of \(x^2\) is negative. Multiply both sides by \(-1\) and reverse the inequality sign:`, T`មេគុណនៃ \(x^2\) អវិជ្ជមាន។ គុណអង្គទាំងពីរនឹង \(-1\) ហើយប្តូរទិសសញ្ញាវិសមភាព៖`),
+              DM(T`${lc([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']])}${actual}0`),
+            ]
+          : []),
+        S2(T`Factor the left side. The roots are \(x=${p}\) and \(x=${q}\):`, T`ដាក់អង្គខាងឆ្វេងជាផលគុណកត្តា។ ឫសគឺ \(x=${p}\) និង \(x=${q}\)៖`),
+        DM(T`${fac2(p, q)}${actual}0`),
+        (actual === '<' || actual === T`\le`)
+          ? S2(T`The product must be negative${actual === '<' ? '' : ' or zero'}, so \(x\) lies between the roots${actual === '<' ? '' : ' (roots included)'}.`, T`ផលគុណត្រូវតែអវិជ្ជមាន${actual === '<' ? '' : ' ឬស្មើសូន្យ'} ដូច្នេះ \(x\) ស្ថិតនៅចន្លោះឫសទាំងពីរ${actual === '<' ? '' : ' (រាប់បញ្ចូលឫស)'}។`)
+          : S2(T`The product must be positive${actual === '>' ? '' : ' or zero'}, so \(x\) lies outside the roots${actual === '>' ? '' : ' (roots included)'}.`, T`ផលគុណត្រូវតែវិជ្ជមាន${actual === '>' ? '' : ' ឬស្មើសូន្យ'} ដូច្នេះ \(x\) ស្ថិតនៅក្រៅឫសទាំងពីរ${actual === '>' ? '' : ' (រាប់បញ្ចូលឫស)'}។`),
+        DM(T`x\in${S[actual]}`),
+      ],
     };
   });
 
@@ -484,6 +539,13 @@
       correct,
       wrong: r.shuffle(all.filter((x) => x !== correct)),
       sol: T`Critical points: \(x=${p}\) (numerator, ${strict ? 'excluded' : 'included'}) and \(x=${q}\) (denominator, always excluded). The quotient is ${between ? 'negative between' : 'positive outside'} them, so the solution set is \(${correct}\).`,
+      key: S2(T`\(\dfrac{${lin('x', p)}}{${lin('x', q)}}\) has the same sign as \((${lin('x', p)})(${lin('x', q)})\), but the denominator can never be \(0\).`, T`\(\dfrac{${lin('x', p)}}{${lin('x', q)}}\) មានសញ្ញាដូច \((${lin('x', p)})(${lin('x', q)})\) ប៉ុន្តែភាគបែងមិនអាចស្មើ \(0\) បានទេ។`),
+      steps: [
+        S2(T`Critical points: the numerator is \(0\) at \(x=${p}\); the denominator is \(0\) at \(x=${q}\).`, T`ចំណុចសំខាន់៖ ភាគយកស្មើ \(0\) ត្រង់ \(x=${p}\); ភាគបែងស្មើ \(0\) ត្រង់ \(x=${q}\)។`),
+        S2(T`The quotient is negative between \(${lo}\) and \(${hi}\), and positive outside them.`, T`ផលចែកអវិជ្ជមាននៅចន្លោះ \(${lo}\) និង \(${hi}\) ហើយវិជ្ជមាននៅក្រៅចន្លោះនោះ។`),
+        S2(T`We need ${between ? 'negative' : 'positive'} values${strict ? '' : ' or zero'}: ${between ? 'between' : 'outside'} the critical points. \(x=${p}\) is ${strict ? 'excluded' : 'included (the fraction equals 0)'}; \(x=${q}\) is always excluded (division by zero).`, T`យើងត្រូវការតម្លៃ${between ? 'អវិជ្ជមាន' : 'វិជ្ជមាន'}${strict ? '' : ' ឬស្មើសូន្យ'}៖ ${between ? 'នៅចន្លោះ' : 'នៅក្រៅ'}ចំណុចសំខាន់។ \(x=${p}\) ${strict ? 'មិនរាប់បញ្ចូល' : 'រាប់បញ្ចូល (ប្រភាគស្មើ 0)'}; \(x=${q}\) មិនរាប់បញ្ចូលជានិច្ច (មិនអាចចែកនឹងសូន្យ)។`),
+        DM(T`x\in${correct}`),
+      ],
     };
   });
 
@@ -507,6 +569,25 @@
       sol: inside
         ? T`\(|${expr}|${rel}${b}\iff -${b}${rel}${expr}${rel}${b}\), so \(${lo}${rel}x${rel}${hi}\).`
         : T`\(|${expr}|${rel}${b}\iff ${expr}${rel === '>' ? '<' : T`\le`}-${b}\) or \(${expr}${rel}${b}\), so \(x${rel === '>' ? '<' : T`\le`}${lo}\) or \(x${rel}${hi}\).`,
+      key: S2(T`For \(b>0\): \(|u|<b\iff -b<u<b\), and \(|u|>b\iff u<-b\) or \(u>b\) (the same with \(\le,\ \ge\)).`, T`ចំពោះ \(b>0\)៖ \(|u|<b\iff -b<u<b\) ហើយ \(|u|>b\iff u<-b\) ឬ \(u>b\) (ដូចគ្នាចំពោះ \(\le,\ \ge\))។`),
+      steps: (() => {
+        const kx = kk === 1 ? 'x' : kk + 'x';
+        if (inside) {
+          const out = [S2('Remove the absolute value (double inequality):', 'ដកសញ្ញាតម្លៃដាច់ខាតចេញ (វិសមភាពទ្វេ)៖'), DM(T`-${b}${rel}${expr}${rel}${b}`)];
+          if (c !== 0) out.push(c > 0 ? S2(T`Add \(${c}\) to every part:`, T`បូក \(${c}\) គ្រប់អង្គ៖`) : S2(T`Subtract \(${-c}\) from every part:`, T`ដក \(${-c}\) ពីគ្រប់អង្គ៖`), DM(T`${c - b}${rel}${kx}${rel}${c + b}`));
+          if (kk > 1) out.push(S2(T`Divide every part by \(${kk}>0\) (the signs stay the same):`, T`ចែកគ្រប់អង្គនឹង \(${kk}>0\) (សញ្ញានៅដដែល)៖`), DM(T`${lo}${rel}x${rel}${hi}`));
+          out.push(DM(T`x\in${inner}`));
+          return out;
+        }
+        const rel2 = rel === '>' ? '<' : T`\le`;
+        return [
+          S2('Split into two cases:', 'បំបែកជាពីរករណី៖'),
+          S2(T`Case 1: \(${expr}${rel2}-${b}\Rightarrow ${kx}${rel2}${c - b}\Rightarrow x${rel2}${lo}\).`, T`ករណីទី ១៖ \(${expr}${rel2}-${b}\Rightarrow ${kx}${rel2}${c - b}\Rightarrow x${rel2}${lo}\)។`),
+          S2(T`Case 2: \(${expr}${rel}${b}\Rightarrow ${kx}${rel}${c + b}\Rightarrow x${rel}${hi}\).`, T`ករណីទី ២៖ \(${expr}${rel}${b}\Rightarrow ${kx}${rel}${c + b}\Rightarrow x${rel}${hi}\)។`),
+          S2('Combine the two cases (union):', 'ផ្គុំករណីទាំងពីរ (ប្រជុំ)៖'),
+          DM(T`x\in${outer}`),
+        ];
+      })(),
     };
   });
 
@@ -559,6 +640,18 @@
       correct,
       wrong,
       sol: T`Multiplying or dividing by the negative number \(c\) reverses an inequality; adding or subtracting \(c\) or multiplying by \(c^2>0\) keeps it. For \(a>b>0\): \(a^2>b^2\), \(\sqrt a>\sqrt b\) and \(\frac1a<\frac1b\).`,
+      key: S2('Multiplying or dividing both sides by a negative number reverses the inequality sign; adding or subtracting any number keeps it.', 'គុណ ឬចែកអង្គទាំងពីរនឹងចំនួនអវិជ្ជមាន ត្រូវប្តូរទិសសញ្ញាវិសមភាព; បូក ឬដកចំនួនណាមួយ សញ្ញានៅដដែល។'),
+      steps: [
+        S2(T`Since \(c<0\), multiplying or dividing \(a>b\) by \(c\) reverses the sign:`, T`ដោយ \(c<0\) ការគុណ ឬចែក \(a>b\) នឹង \(c\) ត្រូវប្តូរទិសសញ្ញា៖`),
+        DM(T`ac<bc,\qquad \frac{a}{c}<\frac{b}{c}`),
+        S2(T`Adding or subtracting \(c\) keeps the sign, and \(c^2>0\) keeps it too:`, T`ការបូក ឬដក \(c\) សញ្ញានៅដដែល ហើយ \(c^2>0\) ក៏សញ្ញានៅដដែលដែរ៖`),
+        DM(T`a+c>b+c,\qquad a-c>b-c,\qquad ac^2>bc^2`),
+        S2(T`Since \(a>b>0\) (both positive):`, T`ដោយ \(a>b>0\) (ទាំងពីរវិជ្ជមាន)៖`),
+        DM(T`a^2>b^2,\qquad \sqrt a>\sqrt b,\qquad \frac1a<\frac1b`),
+        askTrue
+          ? S2(T`So the statement that is necessarily true is \(${correct}\).`, T`ដូច្នេះ សំណើដែលពិតជានិច្ចគឺ \(${correct}\)។`)
+          : S2(T`\(${correct}\) contradicts these results, so it is the false statement.`, T`\(${correct}\) ផ្ទុយនឹងលទ្ធផលខាងលើ ដូច្នេះវាជាសំណើមិនពិត។`),
+      ],
     };
   });
 
@@ -584,6 +677,13 @@
         correct: iv(a, b, true, false) + T`\cup` + iv(b, null, false),
         wrong: [iv(a, null, true), iv(a, b, false, false) + T`\cup` + iv(b, null, false), iv(b, null, false), iv(a, b, true, false)],
         sol: T`Need \(${lin('x', a)}\ge0\) and \(${lin('x', b)}\ne0\): \(x\ge${a}\), \(x\ne${b}\).`,
+        key: S2(T`\(\sqrt{u}\) needs \(u\ge0\); a fraction needs its denominator \(\ne0\).`, T`\(\sqrt{u}\) ទាមទារ \(u\ge0\); ប្រភាគទាមទារភាគបែង \(\ne0\)។`),
+        steps: [
+          S2(T`Square root: \(${imp(T`${lin('x', a)}\ge0`, T`x\ge${a}`)}\).`, T`ឫសការេ៖ \(${imp(T`${lin('x', a)}\ge0`, T`x\ge${a}`)}\)។`),
+          S2(T`Fraction: \(${imp(T`${lin('x', b)}\ne0`, T`x\ne${b}`)}\).`, T`ប្រភាគ៖ \(${imp(T`${lin('x', b)}\ne0`, T`x\ne${b}`)}\)។`),
+          S2(T`Both conditions together: \(x\ge${a}\) with \(x=${b}\) removed.`, T`ផ្គុំលក្ខខណ្ឌទាំងពីរ៖ \(x\ge${a}\) ដោយដក \(x=${b}\) ចេញ។`),
+          DM(T`D=${iv(a, b, true, false) + T`\cup` + iv(b, null, false)}`),
+        ],
       };
     }
     if (v === 2) {
@@ -593,6 +693,13 @@
         correct: iv(a, b, false, true),
         wrong: [iv(a, b, true, true), iv(a, b, false, false), iv(a, b, true, false), iv(a, null, false)],
         sol: T`Need \(${lin('x', a)}>0\) (logarithm) and \(${lc([[b, ''], [-1, 'x']])}\ge0\) (square root): \(${a}<x\le${b}\).`,
+        key: S2(T`\(\ln u\) needs \(u>0\); \(\sqrt{u}\) needs \(u\ge0\).`, T`\(\ln u\) ទាមទារ \(u>0\); \(\sqrt{u}\) ទាមទារ \(u\ge0\)។`),
+        steps: [
+          S2(T`Logarithm: \(${imp(T`${lin('x', a)}>0`, T`x>${a}`)}\).`, T`លោការីត៖ \(${imp(T`${lin('x', a)}>0`, T`x>${a}`)}\)។`),
+          S2(T`Square root: \(${lc([[b, ''], [-1, 'x']])}\ge0\Rightarrow x\le${b}\).`, T`ឫសការេ៖ \(${lc([[b, ''], [-1, 'x']])}\ge0\Rightarrow x\le${b}\)។`),
+          S2('Both conditions together:', 'ផ្គុំលក្ខខណ្ឌទាំងពីរ៖'),
+          DM(T`${a}<x\le${b}\quad\Rightarrow\quad D=${iv(a, b, false, true)}`),
+        ],
       };
     }
     const [p, q] = r.distinct(2, -4, 5).sort((x, y) => x - y);
@@ -602,6 +709,15 @@
       correct: iv(p, q, false, false),
       wrong: [iv(p, q, true, true), iv(null, p, false, false) + T`\cup` + iv(q, null, false), iv(p, q, true, false), iv(-q, -p, false, false)],
       sol: T`Need \(${poly}>0\iff (${lin('x', p)})(${lin('x', q)})<0\iff ${p}<x<${q}\).`,
+      key: S2(T`\(\dfrac{1}{\sqrt{u}}\) needs \(u>0\): the root must exist and must not be \(0\).`, T`\(\dfrac{1}{\sqrt{u}}\) ទាមទារ \(u>0\)៖ ឫសត្រូវមានន័យ ហើយមិនត្រូវស្មើ \(0\)។`),
+      steps: [
+        S2('The expression under the root must be strictly positive:', 'កន្សោមក្រោមឫសត្រូវតែវិជ្ជមានដាច់ខាត៖'),
+        DM(T`${poly}>0`),
+        S2(T`Multiply by \(-1\) (reverse the sign) and factor:`, T`គុណនឹង \(-1\) (ប្តូរទិសសញ្ញា) រួចដាក់ជាផលគុណកត្តា៖`),
+        DM(T`${lc([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']])}<0\iff ${fac2(p, q)}<0`),
+        S2(T`The product is negative between the roots \(${p}\) and \(${q}\):`, T`ផលគុណអវិជ្ជមាននៅចន្លោះឫស \(${p}\) និង \(${q}\)៖`),
+        DM(T`${p}<x<${q}\quad\Rightarrow\quad D=${iv(p, q, false, false)}`),
+      ],
     };
   });
 
@@ -632,26 +748,77 @@
     const NEITHER = [T`y=x+1`, T`y=2^x`, T`y=\ln x`, T`y=x^2+x`, T`y=x^3+1`, T`y=\sqrt{x}`, T`y=e^x`, T`y=x^2-2x`];
     const ODD_INC = [T`y=x^3`, T`y=x^3+x`, T`y=2^x-2^{-x}`, T`y=x|x|`, T`y=x^5+x`];
     const ODD_NOT_INC = [T`y=\frac{1}{x}`, T`y=\sin x`, T`y=\tan x`, T`y=x^3-x`, T`y=x+\frac{1}{x}`, T`y=-x`];
+    const CHK = {
+      [T`y=x^3`]: T`f(-x)=(-x)^3=-x^3=-f(x)`,
+      [T`y=x^3-x`]: T`f(-x)=(-x)^3-(-x)=-x^3+x=-(x^3-x)=-f(x)`,
+      [T`y=\sin x`]: T`f(-x)=\sin(-x)=-\sin x=-f(x)`,
+      [T`y=x+\frac{1}{x}`]: T`f(-x)=-x+\frac{1}{-x}=-\left(x+\frac{1}{x}\right)=-f(x)`,
+      [T`y=\frac{1}{x}`]: T`f(-x)=\frac{1}{-x}=-\frac{1}{x}=-f(x)`,
+      [T`y=x|x|`]: T`f(-x)=(-x)|-x|=-x|x|=-f(x)`,
+      [T`y=\tan x`]: T`f(-x)=\tan(-x)=-\tan x=-f(x)`,
+      [T`y=2^x-2^{-x}`]: T`f(-x)=2^{-x}-2^{x}=-(2^x-2^{-x})=-f(x)`,
+      [T`y=x^5+x`]: T`f(-x)=(-x)^5+(-x)=-(x^5+x)=-f(x)`,
+      [T`y=x^3+x`]: T`f(-x)=(-x)^3+(-x)=-(x^3+x)=-f(x)`,
+      [T`y=x^2+1`]: T`f(-x)=(-x)^2+1=x^2+1=f(x)`,
+      [T`y=|x|`]: T`f(-x)=|-x|=|x|=f(x)`,
+      [T`y=\cos x`]: T`f(-x)=\cos(-x)=\cos x=f(x)`,
+      [T`y=x^4-x^2`]: T`f(-x)=(-x)^4-(-x)^2=x^4-x^2=f(x)`,
+      [T`y=2^x+2^{-x}`]: T`f(-x)=2^{-x}+2^{x}=f(x)`,
+      [T`y=\ln|x|`]: T`f(-x)=\ln|-x|=\ln|x|=f(x)`,
+      [T`y=x\sin x`]: T`f(-x)=(-x)\sin(-x)=(-x)(-\sin x)=x\sin x=f(x)`,
+      [T`y=x^2\cos x`]: T`f(-x)=(-x)^2\cos(-x)=x^2\cos x=f(x)`,
+    };
+    const INC = {
+      [T`y=x^3`]: [T`\(f'(x)=3x^2\ge0\) (zero only at \(x=0\)), so it is increasing on \(\mathbb R\).`, T`\(f'(x)=3x^2\ge0\) (ស្មើសូន្យតែត្រង់ \(x=0\)) ដូច្នេះវាកើនលើ \(\mathbb R\)។`],
+      [T`y=x^3+x`]: [T`\(f'(x)=3x^2+1>0\), so it is increasing on \(\mathbb R\).`, T`\(f'(x)=3x^2+1>0\) ដូច្នេះវាកើនលើ \(\mathbb R\)។`],
+      [T`y=2^x-2^{-x}`]: [T`\(2^x\) is increasing and \(-2^{-x}\) is increasing, so their sum is increasing on \(\mathbb R\).`, T`\(2^x\) កើន ហើយ \(-2^{-x}\) ក៏កើន ដូច្នេះផលបូករបស់វាកើនលើ \(\mathbb R\)។`],
+      [T`y=x|x|`]: [T`\(f(x)=x^2\) for \(x\ge0\) and \(f(x)=-x^2\) for \(x<0\); both pieces are increasing, so \(f\) is increasing on \(\mathbb R\).`, T`\(f(x)=x^2\) ចំពោះ \(x\ge0\) និង \(f(x)=-x^2\) ចំពោះ \(x<0\); ផ្នែកទាំងពីរកើន ដូច្នេះ \(f\) កើនលើ \(\mathbb R\)។`],
+      [T`y=x^5+x`]: [T`\(f'(x)=5x^4+1>0\), so it is increasing on \(\mathbb R\).`, T`\(f'(x)=5x^4+1>0\) ដូច្នេះវាកើនលើ \(\mathbb R\)។`],
+    };
     const v = r.pick(['odd', 'even', 'oddinc']);
-    if (v === 'odd')
+    if (v === 'odd') {
+      const cf = r.pick(ODD);
       return {
         q: T`Which of the following functions is an odd function?`,
-        correct: r.pick(ODD),
+        correct: cf,
         wrong: r.shuffle(EVEN.concat(NEITHER)),
         sol: T`A function is odd if \(f(-x)=-f(x)\) for every \(x\) in a domain symmetric about \(0\). Check each option: only the correct one satisfies this; the others are even or neither.`,
+        key: S2(T`Odd function: the domain is symmetric about \(0\) and \(f(-x)=-f(x)\); its graph is symmetric about the origin.`, T`អនុគមន៍សេស៖ ដែនកំណត់ឆ្លុះធៀប \(0\) ហើយ \(f(-x)=-f(x)\); ក្រាបរបស់វាឆ្លុះធៀបគល់តម្រុយ។`),
+        steps: [
+          S2(T`Replace \(x\) by \(-x\) in the correct option \(${cf}\):`, T`ជំនួស \(x\) ដោយ \(-x\) ក្នុងជម្រើសត្រឹមត្រូវ \(${cf}\)៖`),
+          DM(CHK[cf]),
+          S2(T`So \(${cf}\) is odd. Every other option is even (\(f(-x)=f(x)\)) or neither (for example \(y=x+1\): \(f(-x)=-x+1\), which is neither \(f(x)\) nor \(-f(x)\)).`, T`ដូច្នេះ \(${cf}\) ជាអនុគមន៍សេស។ ជម្រើសផ្សេងទៀតជាអនុគមន៍គូ (\(f(-x)=f(x)\)) ឬមិនគូមិនសេស (ឧ. \(y=x+1\)៖ \(f(-x)=-x+1\) មិនស្មើ \(f(x)\) ហើយក៏មិនស្មើ \(-f(x)\))។`),
+        ],
       };
-    if (v === 'even')
+    }
+    if (v === 'even') {
+      const cf = r.pick(EVEN);
       return {
         q: T`Which of the following functions is an even function?`,
-        correct: r.pick(EVEN),
+        correct: cf,
         wrong: r.shuffle(ODD.concat(NEITHER)),
         sol: T`A function is even if \(f(-x)=f(x)\) for every \(x\) in a domain symmetric about \(0\). The correct option satisfies this; the others are odd or neither.`,
+        key: S2(T`Even function: the domain is symmetric about \(0\) and \(f(-x)=f(x)\); its graph is symmetric about the \(y\)-axis.`, T`អនុគមន៍គូ៖ ដែនកំណត់ឆ្លុះធៀប \(0\) ហើយ \(f(-x)=f(x)\); ក្រាបរបស់វាឆ្លុះធៀបអ័ក្ស \(y\)។`),
+        steps: [
+          S2(T`Replace \(x\) by \(-x\) in the correct option \(${cf}\):`, T`ជំនួស \(x\) ដោយ \(-x\) ក្នុងជម្រើសត្រឹមត្រូវ \(${cf}\)៖`),
+          DM(CHK[cf]),
+          S2(T`So \(${cf}\) is even. Every other option is odd (\(f(-x)=-f(x)\)) or neither (for example \(y=x^2+x\): \(f(-x)=x^2-x\), which is neither \(f(x)\) nor \(-f(x)\)).`, T`ដូច្នេះ \(${cf}\) ជាអនុគមន៍គូ។ ជម្រើសផ្សេងទៀតជាអនុគមន៍សេស (\(f(-x)=-f(x)\)) ឬមិនគូមិនសេស (ឧ. \(y=x^2+x\)៖ \(f(-x)=x^2-x\) មិនស្មើ \(f(x)\) ហើយក៏មិនស្មើ \(-f(x)\))។`),
+        ],
       };
+    }
+    const cf = r.pick(ODD_INC);
     return {
       q: T`Which of the following functions is both odd and increasing on its whole domain \(\mathbb{R}\)?`,
-      correct: r.pick(ODD_INC),
+      correct: cf,
       wrong: r.shuffle(ODD_NOT_INC.concat([T`y=2^x`, T`y=x^2`, T`y=e^x`])),
       sol: T`Odd: \(f(-x)=-f(x)\). Increasing on \(\mathbb R\): check the derivative or the shape. \(\frac1x,\tan x,\sin x\) are not increasing on all of \(\mathbb R\); \(2^x, e^x\) are not odd; \(x^2\) is even.`,
+      key: S2(T`Check two things: odd (\(f(-x)=-f(x)\)) and increasing on all of \(\mathbb R\) (for example \(f'(x)\ge0\)).`, T`ពិនិត្យពីរចំណុច៖ សេស (\(f(-x)=-f(x)\)) និងកើនលើ \(\mathbb R\) ទាំងមូល (ឧ. \(f'(x)\ge0\))។`),
+      steps: [
+        S2(T`Odd: for \(${cf}\),`, T`ភាពសេស៖ ចំពោះ \(${cf}\)`),
+        DM(CHK[cf]),
+        S2(T`Increasing: ${INC[cf][0]}`, T`ភាពកើន៖ ${INC[cf][1]}`),
+        S2(T`The others fail: \(\frac1x,\ \tan x,\ \sin x,\ x^3-x,\ x+\frac1x\) are odd but not increasing on the whole domain, \(y=-x\) is decreasing, \(2^x\) and \(e^x\) are not odd, \(x^2\) is even.`, T`ជម្រើសផ្សេងទៀតមិនត្រឹមត្រូវ៖ \(\frac1x,\ \tan x,\ \sin x,\ x^3-x,\ x+\frac1x\) ជាអនុគមន៍សេស ប៉ុន្តែមិនកើនលើដែនកំណត់ទាំងមូល; \(y=-x\) ចុះ; \(2^x\) និង \(e^x\) មិនសេស; \(x^2\) ជាអនុគមន៍គូ។`),
+      ],
     };
   });
 
@@ -683,6 +850,15 @@
       correct: `[${mn},${mx}]`,
       wrong: [`[${other},${mx}]`, `[${mn},${other}]`, iv(mn, null, true), `[${c},${mx}]`, `[${fp},${fq}]`],
       sol: T`Vertex at \(x=${h}\in[${p},${q}]\), so the minimum is \(f(${h})=${mn}\). Endpoints: \(f(${p})=${fp}\), \(f(${q})=${fq}\); the maximum is \(${mx}\).`,
+      key: S2(T`For a parabola opening upward on \([p,q]\) with the vertex inside: the minimum is at the vertex, the maximum at an endpoint.`, T`ចំពោះប៉ារ៉ាបូលបើកឡើងលើ លើ \([p,q]\) ដែលកំពូលនៅខាងក្នុង៖ អប្បបរមានៅត្រង់កំពូល អតិបរមានៅត្រង់ចុងណាមួយ។`),
+      steps: [
+        S2('Complete the square to find the vertex:', 'បំពេញការេ ដើម្បីរកកំពូល៖'),
+        DM(T`f(x)=${lc([[1, 'x^2'], [-2 * h, 'x'], [c, '']])}=${sq('x', h)}${k(mn)}`),
+        S2(T`The parabola opens upward and its vertex \(x=${h}\) lies in \([${p},${q}]\), so the minimum is \(f(${h})=${mn}\).`, T`ប៉ារ៉ាបូលបើកឡើងលើ ហើយកំពូល \(x=${h}\) ស្ថិតក្នុង \([${p},${q}]\) ដូច្នេះអប្បបរមាគឺ \(f(${h})=${mn}\)។`),
+        S2('Compare the values at the endpoints:', 'ប្រៀបធៀបតម្លៃត្រង់ចុងទាំងពីរ៖'),
+        DM(T`f(${p})=${fp},\qquad f(${q})=${fq}\quad\Rightarrow\quad \max=${mx}`),
+        DM(T`f(x)\in[${mn},${mx}]`),
+      ],
     };
   });
 
@@ -1126,6 +1302,11 @@
         correct: String(an(n)),
         wrong: [String(a1 + n * d), String(an(n - 1)), String(a1 + (n - 1) * -d)].concat(nb(an(n))),
         sol: T`\(a_n=a_1+(n-1)d\Rightarrow a_{${n}}=${a1}+${n - 1}\cdot${d < 0 ? `(${d})` : d}=${an(n)}\).`,
+        key: S2(T`General term of an arithmetic sequence: \(a_n=a_1+(n-1)d\).`, T`តួទូទៅនៃស្វ៊ីតនព្វន្ត៖ \(a_n=a_1+(n-1)d\)។`),
+        steps: [
+          S2(T`Here \(a_1=${a1}\), \(d=${d}\) and \(n=${n}\).`, T`នៅទីនេះ \(a_1=${a1}\), \(d=${d}\) និង \(n=${n}\)។`),
+          DM(T`a_{${n}}=a_1+(${n}-1)d=${a1}+${n - 1}\cdot${pr(d)}=${a1}${k((n - 1) * d)}=${an(n)}`),
+        ],
       };
     }
     const p = r.int(2, 4), q = p + r.int(2, 5);
@@ -1134,6 +1315,13 @@
       correct: String(an(n)),
       wrong: [String(an(n + 1)), String(an(n - 1)), String(a1 + n * d), String(an(p) + (n - p) * -d)].concat(nb(an(n))),
       sol: T`\(d=\frac{${an(q)}-${an(p) < 0 ? `(${an(p)})` : an(p)}}{${q}-${p}}=${d}\), so \(a_{${n}}=a_{${p}}+(${n}-${p})d=${an(n)}\).`,
+      key: S2(T`In an arithmetic sequence \(a_m=a_k+(m-k)d\), so \(d=\frac{a_m-a_k}{m-k}\).`, T`ក្នុងស្វ៊ីតនព្វន្ត \(a_m=a_k+(m-k)d\) ដូច្នេះ \(d=\frac{a_m-a_k}{m-k}\)។`),
+      steps: [
+        S2(T`Find the common difference \(d\) from the two given terms:`, T`រកផលសងរួម \(d\) ពីតួទាំងពីរដែលគេឲ្យ៖`),
+        DM(T`d=\frac{a_{${q}}-a_{${p}}}{${q}-${p}}=\frac{${an(q)}-${pr(an(p))}}{${q - p}}=${d}`),
+        S2(T`Then move from \(a_{${p}}\) to \(a_{${n}}\):`, T`បន្ទាប់មក គណនាពី \(a_{${p}}\) ទៅ \(a_{${n}}\)៖`),
+        DM(T`a_{${n}}=a_{${p}}+(${n}-${p})d=${an(p)}+${n - p}\cdot${pr(d)}=${an(n)}`),
+      ],
     };
   });
 
@@ -1192,6 +1380,13 @@
       correct: S(n),
       wrong: [S(n + 1), S(n - 1), F(a1 * qn ** (n - 1), qd ** (n - 1)), F(a1 * (qd ** n - qn ** n), qd ** n)].concat(fnb(SN, SD)),
       sol: T`\(S_n=\frac{a_1(1-q^n)}{1-q}=\frac{${a1}\left(1-\left(${F(qn, qd)}\right)^{${n}}\right)}{1-${qn < 0 ? `(${qn})` : F(qn, qd)}}=${S(n)}\).`,
+      key: S2(T`Sum of the first \(n\) terms of a geometric sequence: \(S_n=\frac{a_1(1-q^n)}{1-q}\) (\(q\ne1\)).`, T`ផលបូក \(n\) តួដំបូងនៃស្វ៊ីតធរណីមាត្រ៖ \(S_n=\frac{a_1(1-q^n)}{1-q}\) (\(q\ne1\))។`),
+      steps: [
+        S2(T`Here \(a_1=${a1}\), \(q=${F(qn, qd)}\), \(n=${n}\). First compute \(q^{${n}}\):`, T`នៅទីនេះ \(a_1=${a1}\), \(q=${F(qn, qd)}\), \(n=${n}\)។ ដំបូងគណនា \(q^{${n}}\)៖`),
+        DM(T`q^{${n}}=\left(${F(qn, qd)}\right)^{${n}}=${F(qn ** n, qd ** n)}`),
+        S2('Substitute into the formula:', 'ជំនួសក្នុងរូបមន្ត៖'),
+        DM(T`S_{${n}}=\frac{${a1}\left(1-${pr(F(qn ** n, qd ** n))}\right)}{1-${pr(F(qn, qd))}}=\frac{${a1}\cdot${pr(F(qd ** n - qn ** n, qd ** n))}}{${F(qd - qn, qd)}}=${S(n)}`),
+      ],
     };
   });
 
@@ -1443,6 +1638,11 @@
       correct: R(Math.abs(N), S, S),
       wrong: [F(Math.abs(N), S), R(Math.abs(N2), S, S), String(Math.abs(N)), R(Math.abs(N) + 1, S, S)],
       sol: T`\(d=\frac{|Ax_0+By_0+C|}{\sqrt{A^2+B^2}}=\frac{|${N}|}{\sqrt{${S}}}=${R(Math.abs(N), S, S)}\).`,
+      key: S2(T`Distance from \((x_0,y_0)\) to \(Ax+By+C=0\): \(d=\dfrac{|Ax_0+By_0+C|}{\sqrt{A^2+B^2}}\).`, T`ចម្ងាយពី \((x_0,y_0)\) ទៅបន្ទាត់ \(Ax+By+C=0\)៖ \(d=\dfrac{|Ax_0+By_0+C|}{\sqrt{A^2+B^2}}\)។`),
+      steps: [
+        S2(T`Here \(A=${a}\), \(B=${b}\), \(C=${c}\), \((x_0,y_0)=(${x0},${y0})\).`, T`នៅទីនេះ \(A=${a}\), \(B=${b}\), \(C=${c}\), \((x_0,y_0)=(${x0},${y0})\)។`),
+        DM(T`d=\frac{|${a}\cdot${pr(x0)}+${pr(b)}\cdot${pr(y0)}+${pr(c)}|}{\sqrt{${pr(a)}^2+${pr(b)}^2}}=\frac{|${N}|}{\sqrt{${S}}}=${R(Math.abs(N), S, S)}`),
+      ],
     };
   });
 
@@ -1472,6 +1672,15 @@
       correct: ch(h, kk, rad),
       wrong: [ch(-h, -kk, rad), ch(h, kk, rad * rad), ch(-h, -kk, rad * rad), ch(kk, h, rad)],
       sol: T`Complete the squares: \(${sq('x', h)}+${sq('y', kk)}=${rad * rad}\). Centre \((${h},${kk})\), radius \(${rad}\).`,
+      key: S2(T`Standard form \((x-a)^2+(y-b)^2=r^2\): centre \((a,b)\), radius \(r\).`, T`ទម្រង់ស្តង់ដារ \((x-a)^2+(y-b)^2=r^2\)៖ ផ្ចិត \((a,b)\) កាំ \(r\)។`),
+      steps: [
+        S2(T`Group the \(x\)-terms and the \(y\)-terms and complete each square:`, T`ដាក់តួ \(x\) ជាមួយគ្នា និងតួ \(y\) ជាមួយគ្នា រួចបំពេញការេនីមួយៗ៖`),
+        ...(h ? [DM(T`${lc([[1, 'x^2'], [D, 'x']])}=${sq('x', h)}-${h * h}`)] : []),
+        ...(kk ? [DM(T`${lc([[1, 'y^2'], [E, 'y']])}=${sq('y', kk)}-${kk * kk}`)] : []),
+        S2(T`Substitute and move the constants to the right side:`, T`ជំនួស រួចផ្ទេរចំនួនថេរទៅអង្គខាងស្តាំ៖`),
+        DM(T`${sq('x', h)}+${sq('y', kk)}=${h * h + kk * kk}${k(-Fc)}=${rad * rad}`),
+        S2(T`So the centre is \((${h},${kk})\) and the radius is \(r=\sqrt{${rad * rad}}=${rad}\).`, T`ដូច្នេះ ផ្ចិតគឺ \((${h},${kk})\) ហើយកាំ \(r=\sqrt{${rad * rad}}=${rad}\)។`),
+      ],
     };
   });
 
@@ -1653,21 +1862,41 @@
     const x1 = r.nz(-4, 4), y1 = r.int(-4, 4), x2 = r.int(-4, 4), y2 = r.nz(-4, 4);
     const v = r.int(1, 4);
     const pre = T`Given \(\vec a=${vt(x1, y1)}\) and \(\vec b=${vt(x2, y2)}\), `;
+    const VKEY = S2(T`For \(\vec a=(x_1,y_1)\), \(\vec b=(x_2,y_2)\): \(\vec a\cdot\vec b=x_1x_2+y_1y_2\) and \(|\vec a|=\sqrt{x_1^2+y_1^2}\).`, T`ចំពោះ \(\vec a=(x_1,y_1)\), \(\vec b=(x_2,y_2)\)៖ \(\vec a\cdot\vec b=x_1x_2+y_1y_2\) និង \(|\vec a|=\sqrt{x_1^2+y_1^2}\)។`);
     if (v === 1) {
       const d = x1 * x2 + y1 * y2;
-      return { q: pre + T`\(\vec a\cdot\vec b=\)`, correct: String(d), wrong: [String(x1 * x2 - y1 * y2), String(x1 * y2 + x2 * y1), String(-d)].concat(nb(d)), sol: T`\(\vec a\cdot\vec b=x_1x_2+y_1y_2=${x1 * x2}${k(y1 * y2)}=${d}\).` };
+      return { q: pre + T`\(\vec a\cdot\vec b=\)`, correct: String(d), wrong: [String(x1 * x2 - y1 * y2), String(x1 * y2 + x2 * y1), String(-d)].concat(nb(d)), sol: T`\(\vec a\cdot\vec b=x_1x_2+y_1y_2=${x1 * x2}${k(y1 * y2)}=${d}\).`, key: VKEY,
+        steps: [DM(T`\vec a\cdot\vec b=x_1x_2+y_1y_2=${x1}\cdot${pr(x2)}+${pr(y1)}\cdot${pr(y2)}=${x1 * x2}${k(y1 * y2)}=${d}`)] };
     }
     if (v === 2) {
       const sx = x1 + x2, sy = y1 + y2, d = sx * x1 + sy * y1;
-      return { q: pre + T`\((\vec a+\vec b)\cdot\vec a=\)`, correct: String(d), wrong: [String(sx * x2 + sy * y2), String(x1 * x2 + y1 * y2), String(x1 * x1 + y1 * y1)].concat(nb(d)), sol: T`\(\vec a+\vec b=${vt(sx, sy)}\), so \((\vec a+\vec b)\cdot\vec a=${sx * x1}${k(sy * y1)}=${d}\).` };
+      return { q: pre + T`\((\vec a+\vec b)\cdot\vec a=\)`, correct: String(d), wrong: [String(sx * x2 + sy * y2), String(x1 * x2 + y1 * y2), String(x1 * x1 + y1 * y1)].concat(nb(d)), sol: T`\(\vec a+\vec b=${vt(sx, sy)}\), so \((\vec a+\vec b)\cdot\vec a=${sx * x1}${k(sy * y1)}=${d}\).`, key: VKEY,
+        steps: [
+          S2(T`First add the vectors:`, T`ដំបូង បូកវ៉ិចទ័រ៖`),
+          DM(T`\vec a+\vec b=(${x1}+${pr(x2)},\ ${y1}+${pr(y2)})=${vt(sx, sy)}`),
+          S2(T`Then take the dot product with \(\vec a=${vt(x1, y1)}\):`, T`បន្ទាប់មក គណនាផលគុណស្កាលែជាមួយ \(\vec a=${vt(x1, y1)}\)៖`),
+          DM(T`(\vec a+\vec b)\cdot\vec a=${sx}\cdot${pr(x1)}+${pr(sy)}\cdot${pr(y1)}=${sx * x1}${k(sy * y1)}=${d}`),
+        ] };
     }
     if (v === 3) {
       const ux = 2 * x1 - x2, uy = 2 * y1 - y2, d = ux * x2 + uy * y2;
-      return { q: pre + T`\((2\vec a-\vec b)\cdot\vec b=\)`, correct: String(d), wrong: [String(ux * x1 + uy * y1), String((2 * x1 + x2) * x2 + (2 * y1 + y2) * y2), String(2 * (x1 * x2 + y1 * y2))].concat(nb(d)), sol: T`\(2\vec a-\vec b=${vt(ux, uy)}\), so the dot product is \(${ux * x2}${k(uy * y2)}=${d}\).` };
+      return { q: pre + T`\((2\vec a-\vec b)\cdot\vec b=\)`, correct: String(d), wrong: [String(ux * x1 + uy * y1), String((2 * x1 + x2) * x2 + (2 * y1 + y2) * y2), String(2 * (x1 * x2 + y1 * y2))].concat(nb(d)), sol: T`\(2\vec a-\vec b=${vt(ux, uy)}\), so the dot product is \(${ux * x2}${k(uy * y2)}=${d}\).`, key: VKEY,
+        steps: [
+          S2(T`First compute \(2\vec a-\vec b\):`, T`ដំបូង គណនា \(2\vec a-\vec b\)៖`),
+          DM(T`2\vec a-\vec b=(${2 * x1}-${pr(x2)},\ ${2 * y1}-${pr(y2)})=${vt(ux, uy)}`),
+          S2(T`Then take the dot product with \(\vec b=${vt(x2, y2)}\):`, T`បន្ទាប់មក គណនាផលគុណស្កាលែជាមួយ \(\vec b=${vt(x2, y2)}\)៖`),
+          DM(T`(2\vec a-\vec b)\cdot\vec b=${ux}\cdot${pr(x2)}+${pr(uy)}\cdot${pr(y2)}=${ux * x2}${k(uy * y2)}=${d}`),
+        ] };
     }
     const dx = x1 - x2, dy = y1 - y2, S = dx * dx + dy * dy;
     if (S === 0) throw new Error('zero');
-    return { q: pre + T`\(|\vec a-\vec b|=\)`, correct: R(1, S), wrong: [String(S), R(1, (x1 + x2) ** 2 + (y1 + y2) ** 2), R(1, S + 2), String(Math.abs(dx) + Math.abs(dy))], sol: T`\(\vec a-\vec b=${vt(dx, dy)}\), \(|\vec a-\vec b|=\sqrt{${dx * dx}+${dy * dy}}=${R(1, S)}\).` };
+    return { q: pre + T`\(|\vec a-\vec b|=\)`, correct: R(1, S), wrong: [String(S), R(1, (x1 + x2) ** 2 + (y1 + y2) ** 2), R(1, S + 2), String(Math.abs(dx) + Math.abs(dy))], sol: T`\(\vec a-\vec b=${vt(dx, dy)}\), \(|\vec a-\vec b|=\sqrt{${dx * dx}+${dy * dy}}=${R(1, S)}\).`, key: VKEY,
+      steps: [
+        S2(T`First subtract the vectors:`, T`ដំបូង ដកវ៉ិចទ័រ៖`),
+        DM(T`\vec a-\vec b=(${x1}-${pr(x2)},\ ${y1}-${pr(y2)})=${vt(dx, dy)}`),
+        S2(T`Then use \(|\vec v|=\sqrt{x^2+y^2}\):`, T`បន្ទាប់មក ប្រើ \(|\vec v|=\sqrt{x^2+y^2}\)៖`),
+        DM(T`|\vec a-\vec b|=\sqrt{${pr(dx)}^2+${pr(dy)}^2}=\sqrt{${S}}${R(1, S) === T`\sqrt{${S}}` ? '' : '=' + R(1, S)}`),
+      ] };
   });
 
   def('vec-param', 'vectors', (r) => {
@@ -1737,6 +1966,13 @@
       correct: res,
       wrong: [vt(p * x1 - q * x2, p * y1 - q * y2), vt(p * y1 + q * y2, p * x1 + q * x2), vt(p * x1 + q * x2, p * y1 - q * y2), vt(q * x1 + p * x2, q * y1 + p * y2), vt(p * x1 + q * x2 + 1, p * y1 + q * y2)],
       sol: T`Work component by component: \((${p * x1}${k(q * x2)},\ ${p * y1}${k(q * y2)})=${res}\).`,
+      key: S2(T`Vectors are added and multiplied by numbers coordinate by coordinate: \(p\vec a+q\vec b=(px_1+qx_2,\ py_1+qy_2)\).`, T`វ៉ិចទ័រត្រូវបូក និងគុណនឹងចំនួន តាមកូអរដោនេនីមួយៗ៖ \(p\vec a+q\vec b=(px_1+qx_2,\ py_1+qy_2)\)។`),
+      steps: [
+        S2('Multiply each vector by its number:', 'គុណវ៉ិចទ័រនីមួយៗនឹងចំនួនរបស់វា៖'),
+        DM(T`${lc([[p, T`\vec a`]])}=${vt(p * x1, p * y1)},\qquad ${lc([[q, T`\vec b`]])}=${vt(q * x2, q * y2)}`),
+        S2('Add the coordinates:', 'បូកកូអរដោនេ៖'),
+        DM(T`${lc([[p, T`\vec a`], [q, T`\vec b`]])}=(${p * x1}${k(q * x2)},\ ${p * y1}${k(q * y2)})=${res}`),
+      ],
     };
   });
 
@@ -1865,22 +2101,40 @@
     const v = r.int(1, 5);
     if (v === 1) {
       const rr = r.int(1, 5), h = r.int(1, 8);
-      return { q: T`A cylinder has base radius \(${rr}\) and height \(${h}\). Its volume is`, correct: P(rr * rr * h), wrong: [P(rr * rr * h, 3), P(2 * rr * h), P(4 * rr * rr * h), P(2 * rr * rr * h)], sol: T`\(V=\pi r^2h=\pi\cdot${rr * rr}\cdot${h}=${P(rr * rr * h)}\).` };
+      return { q: T`A cylinder has base radius \(${rr}\) and height \(${h}\). Its volume is`, correct: P(rr * rr * h), wrong: [P(rr * rr * h, 3), P(2 * rr * h), P(4 * rr * rr * h), P(2 * rr * rr * h)], sol: T`\(V=\pi r^2h=\pi\cdot${rr * rr}\cdot${h}=${P(rr * rr * h)}\).`,
+        key: S2(T`Volume of a cylinder: \(V=\pi r^2h\) (base area \(\times\) height).`, T`មាឌស៊ីឡាំង៖ \(V=\pi r^2h\) (ក្រឡាផ្ទៃបាត \(\times\) កម្ពស់)។`),
+        steps: [S2(T`Here \(r=${rr}\), \(h=${h}\):`, T`នៅទីនេះ \(r=${rr}\), \(h=${h}\)៖`), DM(T`V=\pi r^2h=\pi\cdot${rr}^2\cdot${h}=\pi\cdot${rr * rr}\cdot${h}=${P(rr * rr * h)}`)] };
     }
     if (v === 2) {
       const rr = r.int(1, 6), h = r.int(1, 9);
-      return { q: T`A cone has base radius \(${rr}\) and height \(${h}\). Its volume is`, correct: P(rr * rr * h, 3), wrong: [P(rr * rr * h), P(rr * h, 3), P(4 * rr * rr * h, 3), P(rr * rr * h, 2)], sol: T`\(V=\frac13\pi r^2h=\frac13\pi\cdot${rr * rr}\cdot${h}=${P(rr * rr * h, 3)}\).` };
+      return { q: T`A cone has base radius \(${rr}\) and height \(${h}\). Its volume is`, correct: P(rr * rr * h, 3), wrong: [P(rr * rr * h), P(rr * h, 3), P(4 * rr * rr * h, 3), P(rr * rr * h, 2)], sol: T`\(V=\frac13\pi r^2h=\frac13\pi\cdot${rr * rr}\cdot${h}=${P(rr * rr * h, 3)}\).`,
+        key: S2(T`Volume of a cone: \(V=\frac13\pi r^2h\).`, T`មាឌកោណ៖ \(V=\frac13\pi r^2h\)។`),
+        steps: [S2(T`Here \(r=${rr}\), \(h=${h}\):`, T`នៅទីនេះ \(r=${rr}\), \(h=${h}\)៖`), DM(T`V=\frac13\pi r^2h=\frac13\pi\cdot${rr}^2\cdot${h}=\frac{${rr * rr * h}\pi}{3}${F(rr * rr * h, 3) === T`\frac{${rr * rr * h}}{3}` ? '' : '=' + P(rr * rr * h, 3)}`)] };
     }
     if (v === 3) {
       const rr = r.int(1, 6);
-      return { q: T`The volume of a sphere with radius \(${rr}\) is`, correct: P(4 * rr ** 3, 3), wrong: [P(4 * rr * rr), P(rr ** 3), P(4 * rr ** 3), P(2 * rr ** 3, 3)], sol: T`\(V=\frac43\pi r^3=\frac43\pi\cdot${rr ** 3}=${P(4 * rr ** 3, 3)}\).` };
+      return { q: T`The volume of a sphere with radius \(${rr}\) is`, correct: P(4 * rr ** 3, 3), wrong: [P(4 * rr * rr), P(rr ** 3), P(4 * rr ** 3), P(2 * rr ** 3, 3)], sol: T`\(V=\frac43\pi r^3=\frac43\pi\cdot${rr ** 3}=${P(4 * rr ** 3, 3)}\).`,
+        key: S2(T`Volume of a sphere: \(V=\frac43\pi r^3\).`, T`មាឌស្វ៊ែ៖ \(V=\frac43\pi r^3\)។`),
+        steps: [S2(T`Here \(r=${rr}\), so \(r^3=${rr ** 3}\):`, T`នៅទីនេះ \(r=${rr}\) ដូច្នេះ \(r^3=${rr ** 3}\)៖`), DM(T`V=\frac43\pi r^3=\frac43\pi\cdot${rr ** 3}=${P(4 * rr ** 3, 3)}`)] };
     }
     if (v === 4) {
       const [rr, h, l] = r.pick([[3, 4, 5], [4, 3, 5], [6, 8, 10], [5, 12, 13], [8, 6, 10]]);
-      return { q: T`A cone has base radius \(${rr}\) and slant height \(${l}\). Its volume is`, correct: P(rr * rr * h, 3), wrong: [P(rr * rr * l, 3), P(rr * rr * h), P(rr * l), P(rr * rr * l)], sol: T`Height \(h=\sqrt{${l}^2-${rr}^2}=${h}\). \(V=\frac13\pi r^2h=${P(rr * rr * h, 3)}\).` };
+      return { q: T`A cone has base radius \(${rr}\) and slant height \(${l}\). Its volume is`, correct: P(rr * rr * h, 3), wrong: [P(rr * rr * l, 3), P(rr * rr * h), P(rr * l), P(rr * rr * l)], sol: T`Height \(h=\sqrt{${l}^2-${rr}^2}=${h}\). \(V=\frac13\pi r^2h=${P(rr * rr * h, 3)}\).`,
+        key: S2(T`In a cone, the radius \(r\), height \(h\) and slant height \(l\) form a right triangle: \(l^2=r^2+h^2\). Volume \(V=\frac13\pi r^2h\).`, T`ក្នុងកោណ កាំ \(r\) កម្ពស់ \(h\) និងចំណោត \(l\) បង្កើតបានត្រីកោណកែង៖ \(l^2=r^2+h^2\)។ មាឌ \(V=\frac13\pi r^2h\)។`),
+        steps: [
+          S2('Find the height with Pythagoras:', 'រកកម្ពស់ដោយប្រើទ្រឹស្តីបទពីតាគ័រ៖'),
+          DM(T`h=\sqrt{l^2-r^2}=\sqrt{${l}^2-${rr}^2}=\sqrt{${l * l - rr * rr}}=${h}`),
+          S2('Then the volume:', 'បន្ទាប់មក មាឌ៖'),
+          DM(T`V=\frac13\pi r^2h=\frac13\pi\cdot${rr * rr}\cdot${h}=${P(rr * rr * h, 3)}`),
+        ] };
     }
     const s = r.int(2, 6), h = r.int(2, 9);
-    return { q: T`A regular square pyramid has base edge \(${s}\) and height \(${h}\). Its volume is`, correct: F(s * s * h, 3), wrong: [String(s * s * h), F(s * h, 3), F(s * s * h, 2), F(4 * s * h, 3)], sol: T`\(V=\frac13Sh=\frac13\cdot${s * s}\cdot${h}=${F(s * s * h, 3)}\).` };
+    return { q: T`A regular square pyramid has base edge \(${s}\) and height \(${h}\). Its volume is`, correct: F(s * s * h, 3), wrong: [String(s * s * h), F(s * h, 3), F(s * s * h, 2), F(4 * s * h, 3)], sol: T`\(V=\frac13Sh=\frac13\cdot${s * s}\cdot${h}=${F(s * s * h, 3)}\).`,
+        key: S2(T`Volume of a pyramid: \(V=\frac13Sh\), where \(S\) is the base area.`, T`មាឌពីរ៉ាមីត៖ \(V=\frac13Sh\) ដែល \(S\) ជាក្រឡាផ្ទៃបាត។`),
+        steps: [
+          S2(T`The base is a square with edge \(${s}\): \(S=${s}^2=${s * s}\).`, T`បាតជាការេមានជ្រុង \(${s}\)៖ \(S=${s}^2=${s * s}\)។`),
+          DM(T`V=\frac13Sh=\frac13\cdot${s * s}\cdot${h}=${F(s * s * h, 3)}`),
+        ] };
   });
 
   def('surface', 'solid', (r) => {
@@ -1926,6 +2180,13 @@
         correct: R(1, S),
         wrong: [String(S), R(1, Sw === S ? S + 3 : Sw), String(Math.abs(d[0]) + Math.abs(d[1]) + Math.abs(d[2])), R(1, S + 1)],
         sol: T`\(|AB|=\sqrt{${d.map((x) => (x < 0 ? `(${x})^2` : `${x}^2`)).join('+')}}=${R(1, S) === T`\sqrt{${S}}` ? R(1, S) : T`\sqrt{${S}}=${R(1, S)}`}\).`,
+        key: S2(T`Distance in space: \(|AB|=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}\).`, T`ចម្ងាយក្នុងលំហ៖ \(|AB|=\sqrt{(x_2-x_1)^2+(y_2-y_1)^2+(z_2-z_1)^2}\)។`),
+        steps: [
+          S2(T`Subtract the coordinates of \(A\) from those of \(B\):`, T`ដកកូអរដោនេនៃ \(A\) ពីកូអរដោនេនៃ \(B\)៖`),
+          DM(T`(${B[0]}-${pr(A[0])},\ ${B[1]}-${pr(A[1])},\ ${B[2]}-${pr(A[2])})=${v3(...d)}`),
+          S2('Apply the distance formula:', 'អនុវត្តរូបមន្តចម្ងាយ៖'),
+          DM(T`|AB|=\sqrt{${d.map((x) => `${pr(x)}^2`).join('+')}}=\sqrt{${d.map((x) => x * x).join('+')}}=${R(1, S) === T`\sqrt{${S}}` ? R(1, S) : T`\sqrt{${S}}=${R(1, S)}`}`),
+        ],
       };
     }
     const M = A.map((x, i) => F(x + B[i], 2));
@@ -1934,6 +2195,11 @@
       correct: v3(...M),
       wrong: [v3(...d.map((x) => F(x, 2))), v3(...A.map((x, i) => x + B[i])), v3(...A.map((x, i) => F(B[i] - x, 1))), v3(M[0], M[2], M[1])],
       sol: T`Average the coordinates: \(\left(\frac{${A[0]}+${B[0]}}{2},\frac{${A[1]}+${B[1]}}{2},\frac{${A[2]}+${B[2]}}{2}\right)=${v3(...M)}\).`,
+      key: S2(T`Midpoint: \(M=\left(\frac{x_1+x_2}{2},\frac{y_1+y_2}{2},\frac{z_1+z_2}{2}\right)\).`, T`ចំណុចកណ្តាល៖ \(M=\left(\frac{x_1+x_2}{2},\frac{y_1+y_2}{2},\frac{z_1+z_2}{2}\right)\)។`),
+      steps: [
+        S2(T`Average each coordinate of \(A\) and \(B\):`, T`គណនាមធ្យមភាគនៃកូអរដោនេនីមួយៗរបស់ \(A\) និង \(B\)៖`),
+        DM(T`M=\left(\frac{${A[0]}+${pr(B[0])}}{2},\ \frac{${A[1]}+${pr(B[1])}}{2},\ \frac{${A[2]}+${pr(B[2])}}{2}\right)=${v3(...M)}`),
+      ],
     };
   });
 
@@ -2013,11 +2279,26 @@
     const p = r.pick(preds)();
     const c = countPairs(p.t);
     const correct = F(c, 36);
+    const fav = [], unf = [];
+    for (let a = 1; a <= 6; a++) for (let b = 1; b <= 6; b++) (p.t(a, b) ? fav : unf).push(`(${a},${b})`);
+    const rows = (arr) => { const out = []; for (let i = 0; i < arr.length; i += 6) out.push(DM(arr.slice(i, i + 6).join(',\\ '))); return out; };
     return {
       q: T`Two fair dice are rolled. The probability that ${p.d} is`,
       correct,
       wrong: [F(36 - c, 36), F(c + 1, 36), F(c - 1, 36), F(c, 21), F(c + 2, 36), F(c, 18)],
       sol: T`There are \(36\) equally likely outcomes; \(${c}\) of them satisfy the condition. Probability \(=${eqf(c, 36)}\).`,
+      key: S2(T`Classical probability: \(P=\dfrac{\text{favourable outcomes}}{\text{all equally likely outcomes}}\).`, T`ប្រូបាបបុរាណ៖ \(P=\dfrac{m}{n}\) ដែល \(m\) ជាចំនួនករណីស្រប និង \(n\) ជាចំនួនករណីអាចមានទាំងអស់ (អាចកើតមានស្មើៗគ្នា)។`),
+      steps: [
+        S2(T`Each die has 6 faces, so there are \(n=6\times6=36\) equally likely ordered pairs \((a,b)\).`, T`គ្រាប់ឡុកឡាក់នីមួយៗមាន 6 មុខ ដូច្នេះមានគូលំដាប់ \((a,b)\) ចំនួន \(n=6\times6=36\) ដែលអាចកើតមានស្មើៗគ្នា។`),
+        ...(fav.length <= unf.length
+          ? [S2(T`List the pairs where ${p.d} (\(m=${c}\) pairs):`, T`រាយគូដែលស្របនឹងលក្ខខណ្ឌ (\(m=${c}\) គូ)៖`), ...rows(fav)]
+          : [
+              S2(T`It is quicker to list the pairs that do NOT satisfy the condition (\(${36 - c}\) pairs):`, T`ងាយជាងគឺរាយគូដែលមិនស្របនឹងលក្ខខណ្ឌ (\(${36 - c}\) គូ)៖`),
+              ...rows(unf),
+              S2(T`So the number of favourable pairs is \(m=36-${36 - c}=${c}\).`, T`ដូច្នេះចំនួនគូស្របគឺ \(m=36-${36 - c}=${c}\)។`),
+            ]),
+        DM(T`P=\frac{m}{n}=${eqf(c, 36)}`),
+      ],
     };
   });
 
@@ -2409,29 +2690,59 @@
       correct,
       wrong: all.filter((x) => x !== correct).concat([setTex(range(a, b - 1))]),
       sol: T`A square bracket includes the endpoint and a round bracket excludes it, so \(${cond}\) is written \(${correct}\).`,
+      key: S2(T`Square bracket \([\ ]\): the endpoint is included (\(\le,\ \ge\)). Round bracket \((\ )\): the endpoint is excluded (\(<,\ >\)).`, T`តង្កៀបជ្រុង \([\ ]\)៖ រាប់បញ្ចូលចុង (\(\le,\ \ge\))។ តង្កៀបមូល \((\ )\)៖ មិនរាប់បញ្ចូលចុង (\(<,\ >\))។`),
+      steps: [
+        S2(T`Left end \(${a}\): the sign is \(${lc_ ? T`\le` : '<'}\), so \(${a}\) is ${lc_ ? 'included: use "["' : 'excluded: use "("'}.`, T`ចុងខាងឆ្វេង \(${a}\)៖ សញ្ញាគឺ \(${lc_ ? T`\le` : '<'}\) ដូច្នេះ \(${a}\) ${lc_ ? 'ត្រូវរាប់បញ្ចូល៖ ប្រើ "["' : 'មិនរាប់បញ្ចូល៖ ប្រើ "("'}។`),
+        S2(T`Right end \(${b}\): the sign is \(${rc_ ? T`\le` : '<'}\), so \(${b}\) is ${rc_ ? 'included: use "]"' : 'excluded: use ")"'}.`, T`ចុងខាងស្តាំ \(${b}\)៖ សញ្ញាគឺ \(${rc_ ? T`\le` : '<'}\) ដូច្នេះ \(${b}\) ${rc_ ? 'ត្រូវរាប់បញ្ចូល៖ ប្រើ "]"' : 'មិនរាប់បញ្ចូល៖ ប្រើ ")"'}។`),
+        DM(T`${cond}\iff x\in${correct}`),
+      ],
     };
   }, XO);
 
   def('set-relation', 'sets', (r) => {
     const v = r.int(1, 4);
     const k = r.int(1, 5);
-    let A, B, ans, why;
+    let A, B, ans, why, st;
     if (v === 1) {
       A = T`\{x\mid x^2-${k * k}=0\}`; B = T`\{x\mid ${lin('x', k)}=0\}`; ans = 2;
       why = T`\(A=\{-${k},${k}\}\) and \(B=\{${k}\}\), so \(B\subsetneq A\).`;
+      st = [
+        S2(T`Solve \(x^2-${k * k}=0\): \(x^2=${k * k}\), so \(x=\pm${k}\).`, T`ដោះស្រាយ \(x^2-${k * k}=0\)៖ \(x^2=${k * k}\) ដូច្នេះ \(x=\pm${k}\)។`),
+        DM(T`A=\{-${k},${k}\},\qquad B=\{${k}\}`),
+        S2(T`Every element of \(B\) is in \(A\), but \(-${k}\in A\) is not in \(B\). So \(B\) is a proper subset of \(A\).`, T`គ្រប់ធាតុនៃ \(B\) ស្ថិតនៅក្នុង \(A\) ប៉ុន្តែ \(-${k}\in A\) មិននៅក្នុង \(B\)។ ដូច្នេះ \(B\) ជាសំណុំរងផ្ទាល់នៃ \(A\)។`),
+        DM(T`B\subsetneq A`),
+      ];
     } else if (v === 2) {
       const [p, q] = r.distinct(2, -4, 5).sort((x, y) => x - y);
       const extra = r.pick(range(-6, 7).filter((x) => x !== p && x !== q));
       A = T`\{x\mid ${lc([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']])}=0\}`; B = setTex([p, q, extra]); ans = 1;
       why = T`\(A=${setTex([p, q])}\) and every element of \(A\) is in \(B=${setTex([p, q, extra])}\), but not conversely, so \(A\subsetneq B\).`;
+      st = [
+        S2(T`Factor: \(${fac2(p, q)}=0\), so \(x=${p}\) or \(x=${q}\).`, T`ដាក់ជាផលគុណកត្តា៖ \(${fac2(p, q)}=0\) ដូច្នេះ \(x=${p}\) ឬ \(x=${q}\)។`),
+        DM(T`A=${setTex([p, q])},\qquad B=${setTex([p, q, extra])}`),
+        S2(T`Every element of \(A\) is in \(B\), but \(${extra}\in B\) is not in \(A\). So \(A\) is a proper subset of \(B\).`, T`គ្រប់ធាតុនៃ \(A\) ស្ថិតនៅក្នុង \(B\) ប៉ុន្តែ \(${extra}\in B\) មិននៅក្នុង \(A\)។ ដូច្នេះ \(A\) ជាសំណុំរងផ្ទាល់នៃ \(B\)។`),
+        DM(T`A\subsetneq B`),
+      ];
     } else if (v === 3) {
       const [p, q] = r.distinct(2, -4, 5).sort((x, y) => x - y);
       A = T`\{x\mid ${lc([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']])}=0\}`; B = setTex([p, q]); ans = 0;
       why = T`Solving gives \(A=${setTex([p, q])}\), which is exactly \(B\), so \(A=B\).`;
+      st = [
+        S2(T`Factor: \(${fac2(p, q)}=0\), so \(x=${p}\) or \(x=${q}\).`, T`ដាក់ជាផលគុណកត្តា៖ \(${fac2(p, q)}=0\) ដូច្នេះ \(x=${p}\) ឬ \(x=${q}\)។`),
+        DM(T`A=${setTex([p, q])},\qquad B=${setTex([p, q])}`),
+        S2(T`The two sets have exactly the same elements.`, T`សំណុំទាំងពីរមានធាតុដូចគ្នាទាំងស្រុង។`),
+        DM(T`A=B`),
+      ];
     } else {
       const m = r.pick(range(-6, 6).filter((x) => x !== k && x !== -k));
       A = T`\{x\mid x^2-${k * k}=0\}`; B = T`\{x\mid ${lin('x', m)}=0\}`; ans = 3;
       why = T`\(A=\{-${k},${k}\}\) and \(B=\{${m}\}\) have no common element, so \(A\cap B=\varnothing\).`;
+      st = [
+        S2(T`Solve \(x^2-${k * k}=0\): \(x=\pm${k}\). Solve \(${lin('x', m)}=0\): \(x=${m}\).`, T`ដោះស្រាយ \(x^2-${k * k}=0\)៖ \(x=\pm${k}\)។ ដោះស្រាយ \(${lin('x', m)}=0\)៖ \(x=${m}\)។`),
+        DM(T`A=\{-${k},${k}\},\qquad B=\{${m}\}`),
+        S2(T`Since \(${m}\ne\pm${k}\), the two sets have no common element.`, T`ដោយ \(${m}\ne\pm${k}\) សំណុំទាំងពីរគ្មានធាតុរួមទេ។`),
+        DM(T`A\cap B=\varnothing`),
+      ];
     }
     const opts = ['A=B', T`A\subsetneq B`, T`B\subsetneq A`, T`A\cap B=\varnothing`];
     return {
@@ -2439,6 +2750,8 @@
       correct: opts[ans],
       wrong: opts.filter((_, i) => i !== ans),
       sol: why,
+      key: S2('First find the elements of each set, then compare them.', 'ដំបូងរកធាតុនៃសំណុំនីមួយៗ រួចប្រៀបធៀបពួកវា។'),
+      steps: st,
     };
   }, XO);
 
@@ -2459,6 +2772,18 @@
       sol: cap
         ? T`\(A\cap B\) keeps the numbers in both sets: \(${correct}\).`
         : T`\(A\cup B\) keeps the numbers in either set. Together they cover \(${correct}\).`,
+      key: cap
+        ? S2('Draw both sets on a number line. The intersection is the part covered by both sets.', 'គូសសំណុំទាំងពីរលើអ័ក្សចំនួន។ ប្រសព្វ ជាផ្នែកដែលសំណុំទាំងពីរគ្របដណ្តប់រួមគ្នា។')
+        : S2('Draw both sets on a number line. The union is the part covered by at least one of the sets.', 'គូសសំណុំទាំងពីរលើអ័ក្សចំនួន។ ប្រជុំ ជាផ្នែកដែលសំណុំយ៉ាងហោចណាស់មួយគ្របដណ្តប់។'),
+      steps: [
+        S2(T`\(A\) is the closed interval \([${p},${q}]\); \(B\) is all \(x${gt ? '>' : '<'}${c}\), and \(${p}<${c}<${q}\).`, T`\(A\) ជាចន្លោះបិទ \([${p},${q}]\); \(B\) ជាគ្រប់ \(x${gt ? '>' : '<'}${c}\) ហើយ \(${p}<${c}<${q}\)។`),
+        cap
+          ? S2(T`\(x\) must satisfy both \(${p}\le x\le ${q}\) and \(x${gt ? '>' : '<'}${c}\). The overlap is:`, T`\(x\) ត្រូវផ្ទៀងផ្ទាត់ទាំង \(${p}\le x\le ${q}\) និង \(x${gt ? '>' : '<'}${c}\)។ ផ្នែករួមគឺ៖`)
+          : gt
+            ? S2(T`\(A\) starts at \(${p}\) and \(B\) continues to \(+\infty\); there is no gap since \(${c}<${q}\).`, T`\(A\) ចាប់ផ្តើមពី \(${p}\) ហើយ \(B\) បន្តទៅ \(+\infty\); គ្មានចន្លោះប្រហោងទេ ព្រោះ \(${c}<${q}\)។`)
+            : S2(T`\(B\) comes from \(-\infty\) and \(A\) ends at \(${q}\); there is no gap since \(${p}<${c}\).`, T`\(B\) មកពី \(-\infty\) ហើយ \(A\) បញ្ចប់ត្រឹម \(${q}\); គ្មានចន្លោះប្រហោងទេ ព្រោះ \(${p}<${c}\)។`),
+        DM(T`${cap ? T`A\cap B` : T`A\cup B`}=${correct}`),
+      ],
     };
   }, XO);
 
@@ -2474,6 +2799,22 @@
       sol: nec
         ? T`A necessary condition must follow from \(a>b\). If \(a>b\) then \(a+${kk}>b\). The others can fail (e.g. \(a=1,b=-3\)).`
         : T`A sufficient condition must guarantee \(a>b\). If \(a-${kk}>b\) then \(a>b+${kk}>b\). The others do not guarantee it (e.g. \(a=-3,b=1\) gives \(a^2>b^2\)).`,
+      key: nec
+        ? S2(T`\(q\) is a necessary condition for \(p\) when \(p\Rightarrow q\) (whenever \(p\) is true, \(q\) is true). Here \(p\) is \(a>b\).`, T`\(q\) ជាលក្ខខណ្ឌចាំបាច់សម្រាប់ \(p\) កាលណា \(p\Rightarrow q\) (រាល់ពេល \(p\) ពិត នោះ \(q\) ក៏ពិត)។ នៅទីនេះ \(p\) គឺ \(a>b\)។`)
+        : S2(T`\(q\) is a sufficient condition for \(p\) when \(q\Rightarrow p\) (\(q\) true guarantees \(p\) true). Here \(p\) is \(a>b\).`, T`\(q\) ជាលក្ខខណ្ឌគ្រប់គ្រាន់សម្រាប់ \(p\) កាលណា \(q\Rightarrow p\) (\(q\) ពិត ធានាថា \(p\) ពិត)។ នៅទីនេះ \(p\) គឺ \(a>b\)។`),
+      steps: nec
+        ? [
+            S2(T`Assume \(a>b\). Since \(${kk}>0\), adding \(${kk}\) to the bigger side keeps it bigger:`, T`ឧបមាថា \(a>b\)។ ដោយ \(${kk}>0\) ការបូក \(${kk}\) ទៅអង្គធំ វានៅតែធំជាង៖`),
+            DM(T`a>b\Rightarrow a+${kk}>a>b\Rightarrow a+${kk}>b`),
+            S2(T`So \(a+${kk}>b\) always follows from \(a>b\): it is a necessary condition.`, T`ដូច្នេះ \(a+${kk}>b\) ពិតជានិច្ចកាលណា \(a>b\)៖ វាជាលក្ខខណ្ឌចាំបាច់។`),
+            S2(T`The other options can fail while \(a>b\): with \(a=1,\ b=0\) we get \(a-${kk}>b\) false; with \(a=1,\ b=-3\) we get \(a^2>b^2\), \(|a|>|b|\) and \(\frac1a<\frac1b\) false.`, T`ជម្រើសផ្សេងទៀតអាចមិនពិត ទោះ \(a>b\)៖ យក \(a=1,\ b=0\) នោះ \(a-${kk}>b\) មិនពិត; យក \(a=1,\ b=-3\) នោះ \(a^2>b^2\), \(|a|>|b|\) និង \(\frac1a<\frac1b\) មិនពិត។`),
+          ]
+        : [
+            S2(T`Assume \(a-${kk}>b\). Then:`, T`ឧបមាថា \(a-${kk}>b\)។ គេបាន៖`),
+            DM(T`a>b+${kk}>b\Rightarrow a>b`),
+            S2(T`So \(a-${kk}>b\) guarantees \(a>b\): it is a sufficient condition.`, T`ដូច្នេះ \(a-${kk}>b\) ធានាថា \(a>b\)៖ វាជាលក្ខខណ្ឌគ្រប់គ្រាន់។`),
+            S2(T`The other options do not guarantee \(a>b\): \(a=-3,\ b=1\) gives \(a^2>b^2\) and \(|a|>|b|\) but \(a<b\); \(a=b=0\) gives \(a+${kk}>b\); \(a=-1,\ b=1\) gives \(\frac1a<\frac1b\).`, T`ជម្រើសផ្សេងទៀតមិនធានាថា \(a>b\) ទេ៖ \(a=-3,\ b=1\) ផ្តល់ \(a^2>b^2\) និង \(|a|>|b|\) ប៉ុន្តែ \(a<b\); \(a=b=0\) ផ្តល់ \(a+${kk}>b\); \(a=-1,\ b=1\) ផ្តល់ \(\frac1a<\frac1b\)។`),
+          ],
     };
   }, XO);
 
@@ -2489,6 +2830,15 @@
       correct: String(val),
       wrong: [String(-val), String(askA ? b : a), String(val + 1), String(val - 1), String(2 * val)],
       sol: T`The solution set lies between the roots, so \(a<0\) and \(${p},${q}\) are the roots of \(ax^2+bx${k(c)}=0\). Product of roots \(\frac{${c}}{a}=${p * q}\Rightarrow a=${a}\); sum \(-\frac{b}{a}=${p + q}\Rightarrow b=${b}\).`,
+      key: S2(T`If \(ax^2+bx+c>0\) has solution set \((x_1,x_2)\), the parabola opens downward (\(a<0\)) and \(x_1,x_2\) are the roots, so \(x_1+x_2=-\frac ba\), \(x_1x_2=\frac ca\) (Vieta).`, T`បើ \(ax^2+bx+c>0\) មានសំណុំចម្លើយ \((x_1,x_2)\) នោះប៉ារ៉ាបូលបើកចុះក្រោម (\(a<0\)) ហើយ \(x_1,x_2\) ជាឫស ដូច្នេះ \(x_1+x_2=-\frac ba\), \(x_1x_2=\frac ca\) (ទ្រឹស្តីបទវីយែត)។`),
+      steps: [
+        S2(T`The solution set \(${iv(p, q, false, false)}\) is between the roots, so \(a<0\) and the roots are \(x_1=${p}\), \(x_2=${q}\).`, T`សំណុំចម្លើយ \(${iv(p, q, false, false)}\) ស្ថិតនៅចន្លោះឫស ដូច្នេះ \(a<0\) ហើយឫសគឺ \(x_1=${p}\), \(x_2=${q}\)។`),
+        S2('Product of the roots:', 'ផលគុណឫស៖'),
+        DM(T`x_1x_2=\frac{${c}}{a}\ \Rightarrow\ ${p}\cdot${pr(q)}=\frac{${c}}{a}\ \Rightarrow\ a=\frac{${c}}{${p * q}}=${a}`),
+        S2('Sum of the roots:', 'ផលបូកឫស៖'),
+        DM(T`x_1+x_2=-\frac{b}{a}\ \Rightarrow\ ${p}+${pr(q)}=-\frac{b}{${a}}\ \Rightarrow\ b=${b}`),
+        S2(T`Check: \(a=${a}<0\) ✓. So \(${askA ? 'a' : 'b'}=${val}\).`, T`ផ្ទៀងផ្ទាត់៖ \(a=${a}<0\) ✓។ ដូច្នេះ \(${askA ? 'a' : 'b'}=${val}\)។`),
+      ],
     };
   }, XO);
 
@@ -2500,6 +2850,15 @@
       correct: String(b + c),
       wrong: [String(-b + c), String(b + m), String(-b + m - h * h), String(b + c + 1)].concat(nb(b + c)),
       sol: T`\(f(x)=(x-${h < 0 ? `(${h})` : h})^2+${m < 0 ? `(${m})` : m}=x^2${k(b)}x${k(c)}\), so \(b=${b}\), \(c=${c}\) and \(b+c=${b + c}\).`,
+      key: S2(T`Vertex form: \(f(x)=(x-h)^2+k\) has its minimum value \(k\) at \(x=h\).`, T`ទម្រង់កំពូល៖ \(f(x)=(x-h)^2+k\) មានតម្លៃអប្បបរមា \(k\) ត្រង់ \(x=h\)។`),
+      steps: [
+        S2(T`The minimum is \(${m}\) at \(x=${h}\), so:`, T`អប្បបរមាគឺ \(${m}\) ត្រង់ \(x=${h}\) ដូច្នេះ៖`),
+        DM(T`f(x)=${sq('x', h)}${k(m)}`),
+        S2('Expand:', 'ពន្លាត៖'),
+        DM(T`f(x)=x^2${k(-2 * h)}x+${h * h}${k(m)}=x^2${k(b)}x${k(c)}`),
+        S2(T`Compare with \(x^2+bx+c\): \(b=${b}\), \(c=${c}\).`, T`ប្រៀបធៀបជាមួយ \(x^2+bx+c\)៖ \(b=${b}\), \(c=${c}\)។`),
+        DM(T`b+c=${b}+${pr(c)}=${b + c}`),
+      ],
     };
   }, XO);
 
@@ -2509,7 +2868,13 @@
     const R = T`\mathbb{R}`;
     if (v === 3) {
       const opts = [T`Increasing on \((0,+\infty)\)`, T`Decreasing on \((0,+\infty)\)`, T`Increasing on \(${R}\)`, 'A constant function'];
-      return { q: T`The function \(f(x)=\log_{${a}}x${k(c)}\) is`, math: false, correct: opts[0], wrong: opts.slice(1), sol: T`The domain is \((0,+\infty)\), and \(\log_{${a}}x\) with base \(${a}>1\) is increasing there; adding \(${c}\) does not change this.` };
+      return { q: T`The function \(f(x)=\log_{${a}}x${k(c)}\) is`, math: false, correct: opts[0], wrong: opts.slice(1), sol: T`The domain is \((0,+\infty)\), and \(\log_{${a}}x\) with base \(${a}>1\) is increasing there; adding \(${c}\) does not change this.`,
+        key: S2(T`\(y=\log_a x\) is increasing on \((0,+\infty)\) when \(a>1\), and decreasing when \(0<a<1\).`, T`\(y=\log_a x\) កើនលើ \((0,+\infty)\) កាលណា \(a>1\) ហើយចុះកាលណា \(0<a<1\)។`),
+        steps: [
+          S2(T`Domain: \(x>0\), that is \((0,+\infty)\).`, T`ដែនកំណត់៖ \(x>0\) គឺ \((0,+\infty)\)។`),
+          S2(T`The base is \(${a}>1\), so \(\log_{${a}}x\) is increasing on \((0,+\infty)\).`, T`គោលគឺ \(${a}>1\) ដូច្នេះ \(\log_{${a}}x\) កើនលើ \((0,+\infty)\)។`),
+          ...(c ? [S2(T`Adding \(${c}\) only moves the graph ${c > 0 ? 'up' : 'down'}; it does not change where the function increases.`, T`ការបូក \(${c}\) គ្រាន់តែរំកិលក្រាប${c > 0 ? 'ឡើងលើ' : 'ចុះក្រោម'} មិនប្តូរភាពកើនរបស់អនុគមន៍ទេ។`)] : []),
+        ] };
     }
     const inc = v === 1;
     const base = inc ? String(a) : T`\left(\frac{1}{${a}}\right)`;
@@ -2520,6 +2885,14 @@
       correct: opts[inc ? 0 : 1],
       wrong: opts.filter((_, i) => i !== (inc ? 0 : 1)),
       sol: inc ? T`The base \(${a}>1\), so \(${a}^x\) is increasing on \(${R}\); adding a constant keeps it increasing.` : T`The base \(\frac1{${a}}\) is between 0 and 1, so the function is decreasing on \(${R}\).`,
+      key: S2(T`\(y=a^x\) (domain \(\mathbb R\)) is increasing when \(a>1\) and decreasing when \(0<a<1\).`, T`\(y=a^x\) (ដែនកំណត់ \(\mathbb R\)) កើនកាលណា \(a>1\) ហើយចុះកាលណា \(0<a<1\)។`),
+      steps: [
+        S2(T`The domain of an exponential function is \(\mathbb R\).`, T`ដែនកំណត់នៃអនុគមន៍អិចស្ប៉ូណង់ស្យែលគឺ \(\mathbb R\)។`),
+        inc
+          ? S2(T`The base is \(${a}>1\), so \(${a}^x\) is increasing on \(\mathbb R\).`, T`គោលគឺ \(${a}>1\) ដូច្នេះ \(${a}^x\) កើនលើ \(\mathbb R\)។`)
+          : S2(T`The base is \(\frac{1}{${a}}\) and \(0<\frac{1}{${a}}<1\), so \(\left(\frac{1}{${a}}\right)^x\) is decreasing on \(\mathbb R\).`, T`គោលគឺ \(\frac{1}{${a}}\) ហើយ \(0<\frac{1}{${a}}<1\) ដូច្នេះ \(\left(\frac{1}{${a}}\right)^x\) ចុះលើ \(\mathbb R\)។`),
+        ...(c ? [S2(T`Adding \(${c}\) only moves the graph ${c > 0 ? 'up' : 'down'}; it does not change whether it increases or decreases.`, T`ការបូក \(${c}\) គ្រាន់តែរំកិលក្រាប${c > 0 ? 'ឡើងលើ' : 'ចុះក្រោម'} មិនប្តូរភាពកើន ឬចុះទេ។`)] : []),
+      ],
     };
   }, XO);
 
@@ -2532,17 +2905,30 @@
       correct: ans,
       wrong: [String(b * kk), String(kk ** b), String(b + kk), kk > 0 ? F(1, b ** kk) : String(-b), String(kk)],
       sol: T`\(\log_{${b}}a=${kk}\iff a=${b}^{${kk}}=${ans}\).`,
+      key: S2(T`\(\log_b a=k\iff a=b^k\) (\(b>0,\ b\ne1,\ a>0\)).`, T`\(\log_b a=k\iff a=b^k\) (\(b>0,\ b\ne1,\ a>0\))។`),
+      steps: [
+        S2(T`\(f(a)=${kk}\) means \(\log_{${b}}a=${kk}\).`, T`\(f(a)=${kk}\) មានន័យថា \(\log_{${b}}a=${kk}\)។`),
+        S2('Rewrite it in exponential form:', 'សរសេរជាទម្រង់ស្វ័យគុណ៖'),
+        DM(T`a=${b}^{${kk}}=${ans}`),
+      ],
     };
   }, XO);
 
   def('power-func', 'expolog', (r) => {
     const yes = [T`f(x)=x^{-2}`, T`f(x)=x^{3}`, T`f(x)=x^{\frac{1}{2}}`, T`f(x)=x^{-1}`, T`f(x)=x^{\frac{2}{3}}`];
     const no = [T`f(x)=2x^{2}`, T`f(x)=x^{2}+1`, T`f(x)=2^{x}`, T`f(x)=\log_{2}x`, T`f(x)=3x^{-1}`, T`f(x)=(x+1)^{2}`];
+    const ALPHA = { [T`f(x)=x^{-2}`]: '-2', [T`f(x)=x^{3}`]: '3', [T`f(x)=x^{\frac{1}{2}}`]: T`\frac{1}{2}`, [T`f(x)=x^{-1}`]: '-1', [T`f(x)=x^{\frac{2}{3}}`]: T`\frac{2}{3}` };
+    const cf = r.pick(yes);
     return {
       q: T`Which of the following functions is a power function?`,
-      correct: r.pick(yes),
+      correct: cf,
       wrong: r.shuffle(no),
       sol: T`A power function has the form \(f(x)=x^{\alpha}\) exactly: coefficient 1, variable in the base, constant exponent, nothing added.`,
+      key: S2(T`A power function has the form \(y=x^{\alpha}\) (\(\alpha\) a constant): coefficient exactly \(1\), the variable in the base, nothing added.`, T`អនុគមន៍ស្វ័យគុណមានទម្រង់ \(y=x^{\alpha}\) (\(\alpha\) ជាចំនួនថេរ)៖ មេគុណស្មើ \(1\) អថេរនៅគោល ហើយគ្មានតួបន្ថែម។`),
+      steps: [
+        S2(T`\(${cf}\) has exactly this form, with \(\alpha=${ALPHA[cf]}\).`, T`\(${cf}\) មានទម្រង់នេះពិតប្រាកដ ដោយ \(\alpha=${ALPHA[cf]}\)។`),
+        S2(T`The others are not power functions: \(2x^2\) and \(3x^{-1}\) have a coefficient \(\ne1\); \(x^2+1\) and \((x+1)^2\) are not a single \(x^{\alpha}\); \(2^x\) is exponential (the variable is in the exponent); \(\log_2x\) is logarithmic.`, T`ជម្រើសផ្សេងទៀតមិនមែនជាអនុគមន៍ស្វ័យគុណទេ៖ \(2x^2\) និង \(3x^{-1}\) មានមេគុណ \(\ne1\); \(x^2+1\) និង \((x+1)^2\) មិនមែនជា \(x^{\alpha}\) តែមួយ; \(2^x\) ជាអនុគមន៍អិចស្ប៉ូណង់ស្យែល (អថេរនៅនិទស្សន្ត); \(\log_2x\) ជាអនុគមន៍លោការីត។`),
+      ],
     };
   }, XO);
 
@@ -2555,6 +2941,13 @@
       correct: D(3 * a, 2 * b, c),
       wrong: [D(3 * a, 2 * b, c, d), D(a, b, c), D(3 * a, b, c), D(3 * a, 2 * b, 0), D(3 * a, 2 * b + c, 0)],
       sol: T`Differentiate term by term with \((x^n)'=nx^{n-1}\) and \((C)'=0\): \(f'(x)=${lc([[3 * a, 'x^2'], [2 * b, 'x'], [c, '']])}\).`,
+      key: S2(T`\((x^n)'=nx^{n-1}\), \((kx^n)'=k\,nx^{n-1}\), \((C)'=0\); the derivative of a sum is the sum of the derivatives.`, T`\((x^n)'=nx^{n-1}\), \((kx^n)'=k\,nx^{n-1}\), \((C)'=0\); ដេរីវេនៃផលបូក ស្មើផលបូកនៃដេរីវេ។`),
+      steps: [
+        S2('Differentiate each term:', 'គណនាដេរីវេនៃតួនីមួយៗ៖'),
+        DM([T`(${lc([[a, 'x^3']])})'=${lc([[3 * a, 'x^2']])}`, b ? T`(${lc([[b, 'x^2']])})'=${lc([[2 * b, 'x']])}` : '', T`(${lc([[c, 'x']])})'=${c}`, d ? T`(${d})'=0` : ''].filter(Boolean).join(T`,\qquad `)),
+        S2('Add the results:', 'បូកលទ្ធផលទាំងនោះ៖'),
+        DM(T`f'(x)=${lc([[3 * a, 'x^2'], [2 * b, 'x'], [c, '']])}`),
+      ],
     };
   }, XO);
 
@@ -2566,7 +2959,13 @@
         T`The value of the function \(f(x)\) at \(x=x_0\)`,
         T`The average rate of change of \(f(x)\) on \([x_0,x_0+\Delta x]\)`,
       ];
-      return { q: T`The geometric meaning of the derivative \(f'(x_0)\) of the function \(f(x)\) at \(x=x_0\) is`, math: false, correct: opts[0], wrong: opts.slice(1), sol: T`By definition \(f'(x_0)=\lim_{\Delta x\to0}\frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\): the limit of secant slopes, which is the slope of the tangent line at \(x=x_0\).` };
+      return { q: T`The geometric meaning of the derivative \(f'(x_0)\) of the function \(f(x)\) at \(x=x_0\) is`, math: false, correct: opts[0], wrong: opts.slice(1), sol: T`By definition \(f'(x_0)=\lim_{\Delta x\to0}\frac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\): the limit of secant slopes, which is the slope of the tangent line at \(x=x_0\).`,
+        key: S2(T`Definition: \(f'(x_0)=\lim\limits_{\Delta x\to0}\dfrac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\).`, T`និយមន័យ៖ \(f'(x_0)=\lim\limits_{\Delta x\to0}\dfrac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\)។`),
+        steps: [
+          S2(T`\(\dfrac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\) is the slope of the secant line through \((x_0,f(x_0))\) and \((x_0+\Delta x,f(x_0+\Delta x))\).`, T`\(\dfrac{f(x_0+\Delta x)-f(x_0)}{\Delta x}\) ជាមេគុណប្រាប់ទិសនៃបន្ទាត់កាត់ (secant) ដែលកាត់តាម \((x_0,f(x_0))\) និង \((x_0+\Delta x,f(x_0+\Delta x))\)។`),
+          S2(T`When \(\Delta x\to0\), the secant line turns into the tangent line at \(x=x_0\).`, T`កាលណា \(\Delta x\to0\) បន្ទាត់កាត់ក្លាយជាបន្ទាត់ប៉ះត្រង់ \(x=x_0\)។`),
+          S2(T`So \(f'(x_0)\) is the slope of the tangent line to \(y=f(x)\) at \(x=x_0\).`, T`ដូច្នេះ \(f'(x_0)\) ជាមេគុណប្រាប់ទិសនៃបន្ទាត់ប៉ះនឹងក្រាប \(y=f(x)\) ត្រង់ \(x=x_0\)។`),
+        ] };
     }
     const pos = r.chance(0.5);
     const [a, b] = r.distinct(2, -3, 4).sort((x, y) => x - y);
@@ -2577,6 +2976,13 @@
       correct: opts[pos ? 0 : 1],
       wrong: opts.filter((_, i) => i !== (pos ? 0 : 1)),
       sol: pos ? T`\(f'(x)>0\) on an interval means \(f\) is increasing there.` : T`\(f'(x)<0\) on an interval means \(f\) is decreasing there.`,
+      key: S2(T`On an interval: \(f'(x)>0\Rightarrow f\) is increasing; \(f'(x)<0\Rightarrow f\) is decreasing.`, T`លើចន្លោះមួយ៖ \(f'(x)>0\Rightarrow f\) កើន; \(f'(x)<0\Rightarrow f\) ចុះ។`),
+      steps: [
+        S2(T`\(f'(x)\) is the slope of the tangent line at each point of the graph.`, T`\(f'(x)\) ជាមេគុណប្រាប់ទិសនៃបន្ទាត់ប៉ះត្រង់ចំណុចនីមួយៗនៃក្រាប។`),
+        pos
+          ? S2(T`On \((${a},${b})\) every tangent slope is positive, so the graph goes up from left to right: \(f\) is increasing.`, T`លើ \((${a},${b})\) មេគុណប្រាប់ទិសនៃបន្ទាត់ប៉ះទាំងអស់វិជ្ជមាន ដូច្នេះក្រាបឡើងពីឆ្វេងទៅស្តាំ៖ \(f\) កើន។`)
+          : S2(T`On \((${a},${b})\) every tangent slope is negative, so the graph goes down from left to right: \(f\) is decreasing.`, T`លើ \((${a},${b})\) មេគុណប្រាប់ទិសនៃបន្ទាត់ប៉ះទាំងអស់អវិជ្ជមាន ដូច្នេះក្រាបចុះពីឆ្វេងទៅស្តាំ៖ \(f\) ចុះ។`),
+      ],
     };
   }, XO);
 
@@ -2603,6 +3009,26 @@
       correct: r.pick(F_.t),
       wrong: r.shuffle(F_.f),
       sol: { sin: T`\(\sin x\) is odd, has period \(2\pi\), range \([-1,1]\), and increases on \(\left[-\frac\pi2,\frac\pi2\right]\).`, cos: T`\(\cos x\) is even, has period \(2\pi\), range \([-1,1]\), and decreases on \([0,\pi]\).`, tan: T`\(\tan x\) is odd, has period \(\pi\) and range \(\mathbb{R}\).` }[fn],
+      key: S2(T`Know the basic properties of \(y=${BS + fn} x\): parity, period, range and where it increases or decreases.`, T`ត្រូវចាំលក្ខណៈមូលដ្ឋាននៃ \(y=${BS + fn} x\)៖ ភាពគូ/សេស ខួប សំណុំតម្លៃ និងចន្លោះកើន/ចុះ។`),
+      steps: {
+        sin: [
+          S2(T`Odd: \(\sin(-x)=-\sin x\); the graph is symmetric about the origin.`, T`សេស៖ \(\sin(-x)=-\sin x\); ក្រាបឆ្លុះធៀបគល់តម្រុយ។`),
+          S2(T`Smallest positive period: \(T=2\pi\).`, T`ខួបវិជ្ជមានតូចបំផុត៖ \(T=2\pi\)។`),
+          S2(T`Range: \([-1,1]\) (maximum \(1\), minimum \(-1\)).`, T`សំណុំតម្លៃ៖ \([-1,1]\) (អតិបរមា \(1\) អប្បបរមា \(-1\))។`),
+          S2(T`Increasing on \(\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\), decreasing on \(\left[\frac{\pi}{2},\frac{3\pi}{2}\right]\).`, T`កើនលើ \(\left[-\frac{\pi}{2},\frac{\pi}{2}\right]\) ចុះលើ \(\left[\frac{\pi}{2},\frac{3\pi}{2}\right]\)។`),
+        ],
+        cos: [
+          S2(T`Even: \(\cos(-x)=\cos x\); the graph is symmetric about the \(y\)-axis.`, T`គូ៖ \(\cos(-x)=\cos x\); ក្រាបឆ្លុះធៀបអ័ក្ស \(y\)។`),
+          S2(T`Smallest positive period: \(T=2\pi\).`, T`ខួបវិជ្ជមានតូចបំផុត៖ \(T=2\pi\)។`),
+          S2(T`Range: \([-1,1]\) (maximum \(1\), minimum \(-1\)).`, T`សំណុំតម្លៃ៖ \([-1,1]\) (អតិបរមា \(1\) អប្បបរមា \(-1\))។`),
+          S2(T`Decreasing on \([0,\pi]\), increasing on \([\pi,2\pi]\).`, T`ចុះលើ \([0,\pi]\) កើនលើ \([\pi,2\pi]\)។`),
+        ],
+        tan: [
+          S2(T`Odd: \(\tan(-x)=-\tan x\).`, T`សេស៖ \(\tan(-x)=-\tan x\)។`),
+          S2(T`Smallest positive period: \(T=\pi\).`, T`ខួបវិជ្ជមានតូចបំផុត៖ \(T=\pi\)។`),
+          S2(T`Domain: \(x\ne\frac{\pi}{2}+k\pi\); range: \(\mathbb R\) (no maximum or minimum).`, T`ដែនកំណត់៖ \(x\ne\frac{\pi}{2}+k\pi\); សំណុំតម្លៃ៖ \(\mathbb R\) (គ្មានអតិបរមា ឬអប្បបរមា)។`),
+        ],
+      }[fn].concat([S2('Compare each statement with these facts: only the correct option agrees with them.', 'ប្រៀបធៀបសំណើនីមួយៗជាមួយលក្ខណៈខាងលើ៖ មានតែជម្រើសត្រឹមត្រូវប៉ុណ្ណោះដែលស្របគ្នា។')]),
     };
   }, XO);
 
@@ -2615,6 +3041,13 @@
       correct: L(y0, x0),
       wrong: [L(-y0, -x0), L(x0, y0), L(-x0, -y0), L(y0, -x0)],
       sol: T`Point–slope form \(y-y_0=k(x-x_0)\) with \((x_0,y_0)=(${x0},${y0})\), \(k=${kk}\): \(${L(y0, x0)}\).`,
+      key: S2(T`Point–slope form: the line through \((x_0,y_0)\) with slope \(k\) is \(y-y_0=k(x-x_0)\).`, T`ទម្រង់ចំណុច–មេគុណប្រាប់ទិស៖ បន្ទាត់កាត់តាម \((x_0,y_0)\) ហើយមានមេគុណប្រាប់ទិស \(k\) គឺ \(y-y_0=k(x-x_0)\)។`),
+      steps: [
+        S2(T`Here \(x_0=${x0}\), \(y_0=${y0}\), \(k=${kk}\). Substitute:`, T`នៅទីនេះ \(x_0=${x0}\), \(y_0=${y0}\), \(k=${kk}\)។ ជំនួស៖`),
+        DM(T`y-${pr(y0)}=${kk}\left(x-${pr(x0)}\right)`),
+        S2('Simplify the signs:', 'សម្រួលសញ្ញា៖'),
+        DM(L(y0, x0)),
+      ],
     };
   }, XO);
 
@@ -2630,6 +3063,12 @@
       correct,
       wrong: [vert ? E(a * a, b * b) : E(b * b, a * a), vert ? E(b * b, a * a + b * b) : E(a * a, a * a + b * b), vert ? E(a * a + b * b, a * a) : E(a * a + b * b, b * b), vert ? E(2 * b, 2 * a) : E(2 * a, 2 * b)],
       sol: T`The vertices on the \(${vert ? 'y' : 'x'}\)-axis give \(a=${a}\); the minor axis \(2b=${2 * b}\) gives \(b=${b}\). So \(${correct}\).`,
+      key: S2(T`Ellipse (\(a>b>0\)): major axis on the \(x\)-axis \(\Rightarrow \frac{x^2}{a^2}+\frac{y^2}{b^2}=1\); on the \(y\)-axis \(\Rightarrow \frac{x^2}{b^2}+\frac{y^2}{a^2}=1\). Minor axis length \(=2b\).`, T`អេលីប (\(a>b>0\))៖ អ័ក្សធំលើអ័ក្ស \(x\) \(\Rightarrow \frac{x^2}{a^2}+\frac{y^2}{b^2}=1\); លើអ័ក្ស \(y\) \(\Rightarrow \frac{x^2}{b^2}+\frac{y^2}{a^2}=1\)។ ប្រវែងអ័ក្សតូច \(=2b\)។`),
+      steps: [
+        S2(T`The vertices \(${vert ? T`(0,\pm${a})` : T`(\pm${a},0)`}\) are on the \(${vert ? 'y' : 'x'}\)-axis, so the major axis is on the \(${vert ? 'y' : 'x'}\)-axis and \(a=${a}\), \(a^2=${a * a}\).`, T`កំពូល \(${vert ? T`(0,\pm${a})` : T`(\pm${a},0)`}\) ស្ថិតលើអ័ក្ស \(${vert ? 'y' : 'x'}\) ដូច្នេះអ័ក្សធំនៅលើអ័ក្ស \(${vert ? 'y' : 'x'}\) ហើយ \(a=${a}\), \(a^2=${a * a}\)។`),
+        S2(T`Minor axis length: \(2b=${2 * b}\Rightarrow b=${b}\), \(b^2=${b * b}\).`, T`ប្រវែងអ័ក្សតូច៖ \(2b=${2 * b}\Rightarrow b=${b}\), \(b^2=${b * b}\)។`),
+        DM(correct),
+      ],
     };
   }, XO);
 
@@ -2644,6 +3083,13 @@
       correct: P(onY, m),
       wrong: [P(onY, -m), P(!onY, m), P(!onY, -m), P(onY, 2 * m)],
       sol: T`The vertex is midway between focus and directrix, at the origin, with \(\frac p2=${c}\), so \(2p=${4 * c}\). The parabola opens ${onY ? (sg > 0 ? 'upward' : 'downward') : sg > 0 ? 'to the right' : 'to the left'}: \(${P(onY, m)}\).`,
+      key: S2(T`\(x^2=2py\): focus \(\left(0,\frac p2\right)\), directrix \(y=-\frac p2\). \(y^2=2px\): focus \(\left(\frac p2,0\right)\), directrix \(x=-\frac p2\).`, T`\(x^2=2py\)៖ កំណុំ \(\left(0,\frac p2\right)\) បន្ទាត់ប្រាប់ទិស \(y=-\frac p2\)។ \(y^2=2px\)៖ កំណុំ \(\left(\frac p2,0\right)\) បន្ទាត់ប្រាប់ទិស \(x=-\frac p2\)។`),
+      steps: [
+        S2(T`The vertex is halfway between the focus \(${focus}\) and the directrix \(${dir}\): it is the origin \((0,0)\).`, T`កំពូលស្ថិតនៅពាក់កណ្តាលរវាងកំណុំ \(${focus}\) និងបន្ទាត់ប្រាប់ទិស \(${dir}\)៖ គឺគល់តម្រុយ \((0,0)\)។`),
+        S2(T`The focus is on the \(${onY ? 'y' : 'x'}\)-axis, so the equation has the form \(${onY ? 'x^2=2py' : 'y^2=2px'}\).`, T`កំណុំស្ថិតលើអ័ក្ស \(${onY ? 'y' : 'x'}\) ដូច្នេះសមីការមានទម្រង់ \(${onY ? 'x^2=2py' : 'y^2=2px'}\)។`),
+        DM(T`\frac p2=${sg * c}\ \Rightarrow\ p=${2 * sg * c}\ \Rightarrow\ 2p=${m}`),
+        DM(P(onY, m)),
+      ],
     };
   }, XO);
 
@@ -2656,12 +3102,26 @@
         correct: String(a * a + b * b),
         wrong: [String(a * a - b * b), cTex(0, 2 * a * b), cTex(a, -b), String(-(a * a + b * b)), R(1, a * a + b * b)],
         sol: T`\(\bar z=${cTex(a, -b)}\), and \(z\bar z=a^2+b^2=${a * a}+${b * b}=${a * a + b * b}\).`,
+        key: S2(T`If \(z=a+bi\), its conjugate is \(\bar z=a-bi\), and \(z\bar z=a^2+b^2\) (because \(i^2=-1\)).`, T`បើ \(z=a+bi\) ចំនួនកុំផ្លិចឆ្លាស់គឺ \(\bar z=a-bi\) ហើយ \(z\bar z=a^2+b^2\) (ព្រោះ \(i^2=-1\))។`),
+        steps: [
+          S2('Change the sign of the imaginary part:', 'ប្តូរសញ្ញានៃផ្នែកនិម្មិត៖'),
+          DM(T`\bar z=${cTex(a, -b)}`),
+          S2(T`Multiply, using \(i^2=-1\):`, T`គុណ ដោយប្រើ \(i^2=-1\)៖`),
+          DM(T`z\bar z=(${cTex(a, b)})(${cTex(a, -b)})=${pr(a)}^2-(${b}i)^2=${a * a}+${b * b}=${a * a + b * b}`),
+        ],
       };
     return {
       q: T`Let the complex number \(z=${cTex(a, b)}\). Then \(z+\bar z=\)`,
       correct: String(2 * a),
       wrong: [cTex(0, 2 * b), cTex(2 * a, 2 * b), String(a * a + b * b), cTex(0, -2 * b)],
       sol: T`\(\bar z=${cTex(a, -b)}\), so \(z+\bar z=${2 * a}\) (the imaginary parts cancel).`,
+      key: S2(T`If \(z=a+bi\), then \(\bar z=a-bi\) and \(z+\bar z=2a\).`, T`បើ \(z=a+bi\) នោះ \(\bar z=a-bi\) ហើយ \(z+\bar z=2a\)។`),
+      steps: [
+        S2('Change the sign of the imaginary part:', 'ប្តូរសញ្ញានៃផ្នែកនិម្មិត៖'),
+        DM(T`\bar z=${cTex(a, -b)}`),
+        S2('Add: the imaginary parts cancel.', 'បូក៖ ផ្នែកនិម្មិតលុបគ្នា។'),
+        DM(T`z+\bar z=(${cTex(a, b)})+(${cTex(a, -b)})=${2 * a}`),
+      ],
     };
   }, XO);
 
@@ -2679,6 +3139,14 @@
       correct,
       wrong: [H(B2, A2, vert), H(A2, B2, !vert), H(B2, A2, !vert), H(A2, A2 + B2, vert), H(A2, B2 + 1, vert)],
       sol: T`\(a=${a}\), \(c=ea\), so \(c^2=${A2 + B2}\) and \(b^2=c^2-a^2=${B2}\). The vertices are on the \(${vert ? 'y' : 'x'}\)-axis: \(${correct}\).`,
+      key: S2(T`Hyperbola: \(e=\frac ca\), \(c^2=a^2+b^2\). Vertices on the \(x\)-axis \(\Rightarrow\frac{x^2}{a^2}-\frac{y^2}{b^2}=1\); on the \(y\)-axis \(\Rightarrow\frac{y^2}{a^2}-\frac{x^2}{b^2}=1\).`, T`អ៊ីពែបូល៖ \(e=\frac ca\), \(c^2=a^2+b^2\)។ កំពូលលើអ័ក្ស \(x\) \(\Rightarrow\frac{x^2}{a^2}-\frac{y^2}{b^2}=1\); លើអ័ក្ស \(y\) \(\Rightarrow\frac{y^2}{a^2}-\frac{x^2}{b^2}=1\)។`),
+      steps: [
+        S2(T`The vertices \(${vert ? T`(0,\pm${a})` : T`(\pm${a},0)`}\) give \(a=${a}\), \(a^2=${A2}\), on the \(${vert ? 'y' : 'x'}\)-axis.`, T`កំពូល \(${vert ? T`(0,\pm${a})` : T`(\pm${a},0)`}\) ផ្តល់ \(a=${a}\), \(a^2=${A2}\) នៅលើអ័ក្ស \(${vert ? 'y' : 'x'}\)។`),
+        S2(T`From \(e=\frac ca\): \(c=ea\), so`, T`ពី \(e=\frac ca\)៖ \(c=ea\) ដូច្នេះ`),
+        DM(T`c^2=e^2a^2=\left(${e}\right)^2\cdot${A2}=${A2 + B2}`),
+        DM(T`b^2=c^2-a^2=${A2 + B2}-${A2}=${B2}`),
+        DM(correct),
+      ],
     };
   }, XO);
 
@@ -2696,19 +3164,30 @@
       sol: par
         ? T`The line \(${lc([[A, 'x'], [B, 'y'], [C, '']])}=0\) has slope \(-\frac{A}{B}=${slope}\). Parallel lines have equal slopes: \(k=${val}\).`
         : T`The given line has slope \(${slope}\). Perpendicular slopes multiply to \(-1\): \(k=${val}\).`,
+      key: par
+        ? S2(T`The line \(Ax+By+C=0\) has slope \(-\frac AB\). Parallel lines have equal slopes: \(k_1=k_2\).`, T`បន្ទាត់ \(Ax+By+C=0\) មានមេគុណប្រាប់ទិស \(-\frac AB\)។ បន្ទាត់ស្របគ្នាមានមេគុណប្រាប់ទិសស្មើគ្នា៖ \(k_1=k_2\)។`)
+        : S2(T`The line \(Ax+By+C=0\) has slope \(-\frac AB\). Perpendicular lines: \(k_1\cdot k_2=-1\).`, T`បន្ទាត់ \(Ax+By+C=0\) មានមេគុណប្រាប់ទិស \(-\frac AB\)។ បន្ទាត់កែងគ្នា៖ \(k_1\cdot k_2=-1\)។`),
+      steps: [
+        S2(T`Slope of \(${lc([[A, 'x'], [B, 'y'], [C, '']])}=0\):`, T`មេគុណប្រាប់ទិសនៃ \(${lc([[A, 'x'], [B, 'y'], [C, '']])}=0\)៖`),
+        DM(T`k_1=-\frac{A}{B}=-\frac{${A}}{${B}}=${slope}`),
+        par
+          ? S2(T`The line \(y=kx${k(c)}\) has slope \(k\). Parallel \(\Rightarrow k=k_1\):`, T`បន្ទាត់ \(y=kx${k(c)}\) មានមេគុណប្រាប់ទិស \(k\)។ ស្របគ្នា \(\Rightarrow k=k_1\)៖`)
+          : S2(T`The line \(y=kx${k(c)}\) has slope \(k\). Perpendicular \(\Rightarrow k\cdot k_1=-1\):`, T`បន្ទាត់ \(y=kx${k(c)}\) មានមេគុណប្រាប់ទិស \(k\)។ កែងគ្នា \(\Rightarrow k\cdot k_1=-1\)៖`),
+        DM(par ? T`k=${val}` : T`k=-\frac{1}{k_1}=-\frac{1}{${slope}}=${val}`),
+      ],
     };
   }, XO);
 
   /* ---- real-paper style: Part 4 additions ---- */
   def('die-once', 'prob', (r) => {
     const evs = [
-      { e: 'an even number', n: 3 },
-      { e: 'an odd number', n: 3 },
-      { e: 'a multiple of 3', n: 2 },
-      { e: 'a prime number', n: 3 },
+      { e: 'an even number', n: 3, set: [2, 4, 6], km: 'ចំនួនគូ' },
+      { e: 'an odd number', n: 3, set: [1, 3, 5], km: 'ចំនួនសេស' },
+      { e: 'a multiple of 3', n: 2, set: [3, 6], km: 'ពហុគុណនៃ 3' },
+      { e: 'a prime number', n: 3, set: [2, 3, 5], km: 'ចំនួនបឋម' },
     ];
     const m = r.int(1, 4);
-    evs.push({ e: T`a number greater than \(${m}\)`, n: 6 - m });
+    evs.push({ e: T`a number greater than \(${m}\)`, n: 6 - m, set: range(m + 1, 6), km: T`ចំនួនធំជាង \(${m}\)` });
     const ev = r.pick(evs);
     const correct = F(ev.n, 6);
     return {
@@ -2716,6 +3195,12 @@
       correct,
       wrong: [F(1, 6), F(1, 3), F(1, 2), F(2, 3), F(5, 6)],
       sol: T`There are 6 equally likely outcomes, and ${ev.n} of them are favourable: \(\frac{${ev.n}}{6}=${correct}\).`,
+      key: S2(T`Classical probability: \(P=\dfrac{\text{favourable outcomes}}{\text{all equally likely outcomes}}\).`, T`ប្រូបាបបុរាណ៖ \(P=\dfrac{m}{n}\) ដែល \(m\) ជាចំនួនករណីស្រប និង \(n\) ជាចំនួនករណីអាចមានទាំងអស់ (អាចកើតមានស្មើៗគ្នា)។`),
+      steps: [
+        S2(T`All outcomes: \(\{1,2,3,4,5,6\}\), so \(n=6\) equally likely outcomes.`, T`ករណីអាចមានទាំងអស់៖ \(\{1,2,3,4,5,6\}\) ដូច្នេះ \(n=6\) ករណីស្មើៗគ្នា។`),
+        S2(T`Favourable outcomes (${ev.e}): \(\{${ev.set.join(',')}\}\), so \(m=${ev.n}\).`, T`ករណីស្រប (${ev.km})៖ \(\{${ev.set.join(',')}\}\) ដូច្នេះ \(m=${ev.n}\)។`),
+        DM(T`P=\frac{m}{n}=${eqf(ev.n, 6)}`),
+      ],
     };
   }, XO);
 
@@ -2730,6 +3215,12 @@
         correct: val,
         wrong: [F(red ? y : x, x + y), F(red ? x : y, red ? y : x), F(1, 2), F(1, x + y)],
         sol: T`${x + y} balls in total, ${red ? x : y} of them ${red ? 'red' : 'white'}: \(P=${val}\).`,
+        key: S2(T`Classical probability: \(P=\dfrac{\text{favourable outcomes}}{\text{all equally likely outcomes}}\).`, T`ប្រូបាបបុរាណ៖ \(P=\dfrac{m}{n}\) ដែល \(m\) ជាចំនួនករណីស្រប និង \(n\) ជាចំនួនករណីអាចមានទាំងអស់ (អាចកើតមានស្មើៗគ្នា)។`),
+        steps: [
+          S2(T`Total number of balls: \(n=${x}+${y}=${x + y}\).`, T`ចំនួនបាល់សរុប៖ \(n=${x}+${y}=${x + y}\)។`),
+          S2(T`Favourable (${red ? 'red' : 'white'} balls): \(m=${red ? x : y}\).`, T`ករណីស្រប (បាល់ពណ៌${red ? 'ក្រហម' : 'ស'})៖ \(m=${red ? x : y}\)។`),
+          DM(T`P=\frac{m}{n}=${eqf(red ? x : y, x + y)}`),
+        ],
       };
     }
     const girl = r.chance(0.6);
@@ -2739,6 +3230,12 @@
       correct: val,
       wrong: [F(girl ? x : y, x + y), F(girl ? y : x, girl ? x : y), F(1, 2), F(1, x + y)],
       sol: T`${x + y} people in total, ${girl ? y : x} of them ${girl ? 'girls' : 'boys'}: \(P=${val}\).`,
+      key: S2(T`Classical probability: \(P=\dfrac{\text{favourable outcomes}}{\text{all equally likely outcomes}}\).`, T`ប្រូបាបបុរាណ៖ \(P=\dfrac{m}{n}\) ដែល \(m\) ជាចំនួនករណីស្រប និង \(n\) ជាចំនួនករណីអាចមានទាំងអស់ (អាចកើតមានស្មើៗគ្នា)។`),
+      steps: [
+        S2(T`Total number of people: \(n=${x}+${y}=${x + y}\).`, T`ចំនួនមនុស្សសរុប៖ \(n=${x}+${y}=${x + y}\)។`),
+        S2(T`Favourable (${girl ? 'girls' : 'boys'}): \(m=${girl ? y : x}\).`, T`ករណីស្រប (សិស្ស${girl ? 'ស្រី' : 'ប្រុស'})៖ \(m=${girl ? y : x}\)។`),
+        DM(T`P=\frac{m}{n}=${eqf(girl ? y : x, x + y)}`),
+      ],
     };
   }
   def('pick-one', 'prob', (r) => pickOne(r), XO);
@@ -2756,12 +3253,22 @@
         correct: P(p + q),
         wrong: [dec(p * q, 100), P(Math.abs(p - q) || 1), P(Math.max(p, q)), dec(10 * (p + q) - p * q, 100)],
         sol: T`Mutually exclusive events cannot happen together, so \(P(A\cup B)=P(A)+P(B)=${P(p + q)}\).`,
+        key: S2(T`Mutually exclusive events (\(A\cap B=\varnothing\)): \(P(A\cup B)=P(A)+P(B)\).`, T`ព្រឹត្តិការណ៍មិនចុះសម្រុងគ្នា (\(A\cap B=\varnothing\))៖ \(P(A\cup B)=P(A)+P(B)\)។`),
+        steps: [
+          S2(T`\(A\) and \(B\) cannot happen at the same time, so add the probabilities:`, T`\(A\) និង \(B\) មិនអាចកើតឡើងព្រមគ្នាបានទេ ដូច្នេះបូកប្រូបាប៖`),
+          DM(T`P(A\cup B)=P(A)+P(B)=${P(p)}+${P(q)}=${P(p + q)}`),
+        ],
       };
     return {
       q: T`Events \(A\) and \(B\) are independent, \(P(A)=${P(p)}\) and \(P(B)=${P(q)}\). Then \(P(A\cap B)=\)`,
       correct: dec(p * q, 100),
       wrong: [P(p + q), P(Math.abs(p - q) || 1), P(Math.max(p, q)), dec(10 * (p + q) - p * q, 100)],
       sol: T`For independent events \(P(A\cap B)=P(A)P(B)=${P(p)}\times${P(q)}=${dec(p * q, 100)}\).`,
+      key: S2(T`Independent events: \(P(A\cap B)=P(A)\cdot P(B)\).`, T`ព្រឹត្តិការណ៍ឯករាជ្យ៖ \(P(A\cap B)=P(A)\cdot P(B)\)។`),
+      steps: [
+        S2(T`\(A\) and \(B\) are independent, so multiply the probabilities:`, T`\(A\) និង \(B\) ឯករាជ្យពីគ្នា ដូច្នេះគុណប្រូបាប៖`),
+        DM(T`P(A\cap B)=P(A)\cdot P(B)=${P(p)}\times${P(q)}=${dec(p * q, 100)}`),
+      ],
     };
   }
   def('events-rule', 'prob', (r) => eventsRule(r), XO);
@@ -2783,6 +3290,13 @@
         correct: String(mean),
         wrong: [String(sorted[2]), String(mean + 1), String(mean - 1), String(total + last), dec((total + last) * 10 / 4, 10)],
         sol: T`Mean \(=\frac{${data.join('+')}}{5}=\frac{${total + last}}{5}=${mean}\).`,
+        key: S2(T`Mean: \(\bar x=\dfrac{x_1+x_2+\cdots+x_n}{n}\) (sum of the values divided by how many there are).`, T`មធ្យមភាគ៖ \(\bar x=\dfrac{x_1+x_2+\cdots+x_n}{n}\) (ផលបូកតម្លៃ ចែកនឹងចំនួនតម្លៃ)។`),
+        steps: [
+          S2(T`There are \(n=5\) values. Add them:`, T`មានតម្លៃ \(n=5\)។ បូកវា៖`),
+          DM(T`${data.join('+')}=${total + last}`),
+          S2('Divide by the number of values:', 'ចែកនឹងចំនួនតម្លៃ៖'),
+          DM(T`\bar x=\frac{${total + last}}{5}=${mean}`),
+        ],
       };
     }
     if (v === 'median') {
@@ -2795,6 +3309,13 @@
         correct: String(med),
         wrong: [String(data[(n - 1) / 2]), String(sorted[(n - 1) / 2 + 1]), String(sorted[(n - 1) / 2 - 1]), String(sorted[n - 1])],
         sol: T`Sort first: \(${sorted.join(',\\ ')}\). The middle value is \(${med}\).`,
+        key: S2(T`Median: sort the data; if \(n\) is odd, the median is the middle value, in position \(\frac{n+1}{2}\).`, T`មេដ្យាន៖ តម្រៀបទិន្នន័យ; បើ \(n\) សេស មេដ្យានជាតម្លៃកណ្តាល នៅទីតាំង \(\frac{n+1}{2}\)។`),
+        steps: [
+          S2('Sort the data from smallest to largest:', 'តម្រៀបទិន្នន័យពីតូចទៅធំ៖'),
+          DM(sorted.map((x, i) => (i === (n - 1) / 2 ? T`\boxed{${x}}` : x)).join(',\\ ')),
+          S2(T`\(n=${n}\) is odd, so the median is in position \(\frac{${n}+1}{2}=${(n + 1) / 2}\).`, T`\(n=${n}\) ជាចំនួនសេស ដូច្នេះមេដ្យាននៅទីតាំង \(\frac{${n}+1}{2}=${(n + 1) / 2}\)។`),
+          DM(T`\text{Me}=${med}`),
+        ],
       };
     }
     if (v === 'variance') {
@@ -2806,6 +3327,15 @@
         correct: String(varv),
         wrong: [R(1, varv), String(varv + 1), R(1, varv + 1), String(5 * varv / 2), String(t * t)],
         sol: T`Mean \(=${a + 2 * t}\); deviations \(${[-2, -1, 0, 1, 2].map((d) => d * t).join(',\\ ')}\). \(s^2=\frac{${4 * t * t}+${t * t}+0+${t * t}+${4 * t * t}}{5}=${varv}\).`,
+        key: S2(T`Variance: \(s^2=\dfrac{(x_1-\bar x)^2+(x_2-\bar x)^2+\cdots+(x_n-\bar x)^2}{n}\).`, T`វ៉ារ្យង់៖ \(s^2=\dfrac{(x_1-\bar x)^2+(x_2-\bar x)^2+\cdots+(x_n-\bar x)^2}{n}\)។`),
+        steps: [
+          S2('Step 1: the mean.', 'ជំហានទី ១៖ មធ្យមភាគ។'),
+          DM(T`\bar x=\frac{${data.join('+')}}{5}=\frac{${5 * (a + 2 * t)}}{5}=${a + 2 * t}`),
+          S2(T`Step 2: the deviations \(x_i-\bar x\).`, T`ជំហានទី ២៖ គម្លាត \(x_i-\bar x\)។`),
+          DM([-2, -1, 0, 1, 2].map((d) => d * t).join(',\\ ')),
+          S2('Step 3: average of the squared deviations.', 'ជំហានទី ៣៖ មធ្យមភាគនៃការេគម្លាត។'),
+          DM(T`s^2=\frac{${pr(-2 * t)}^2+${pr(-t)}^2+0^2+${t}^2+${2 * t}^2}{5}=\frac{${10 * t * t}}{5}=${varv}`),
+        ],
       };
     }
     if (r.chance(0.4)) {
@@ -2815,6 +3345,12 @@
         correct: '0',
         wrong: ['1', String(c), String(c * c), String(5 * c)],
         sol: T`Every value equals the mean \(${c}\), so every deviation is 0 and the standard deviation is \(0\).`,
+        key: S2(T`Standard deviation \(s=\sqrt{s^2}\) measures how far the data are from the mean.`, T`គម្លាតគំរូ \(s=\sqrt{s^2}\) វាស់ថាទិន្នន័យនៅឆ្ងាយពីមធ្យមភាគប៉ុណ្ណា។`),
+        steps: [
+          S2(T`All values are equal, so \(\bar x=${c}\).`, T`តម្លៃទាំងអស់ស្មើគ្នា ដូច្នេះ \(\bar x=${c}\)។`),
+          S2(T`Every deviation \(x_i-\bar x=0\):`, T`គម្លាតទាំងអស់ \(x_i-\bar x=0\)៖`),
+          DM(T`s^2=\frac{0+0+0+0+0}{5}=0\ \Rightarrow\ s=0`),
+        ],
       };
     }
     const a = r.int(4, 10), t = r.int(1, 3);
@@ -2824,6 +3360,15 @@
       correct: String(t),
       wrong: [String(t * t), String(2 * t), '0', String(a)],
       sol: T`Mean \(=${a}\); every deviation is \(\pm${t}\), so the variance is \(${t * t}\) and the standard deviation is \(${t}\).`,
+      key: S2(T`Standard deviation: \(s=\sqrt{s^2}\), where \(s^2=\dfrac{\sum(x_i-\bar x)^2}{n}\).`, T`គម្លាតគំរូ៖ \(s=\sqrt{s^2}\) ដែល \(s^2=\dfrac{\sum(x_i-\bar x)^2}{n}\)។`),
+      steps: [
+        S2('Step 1: the mean.', 'ជំហានទី ១៖ មធ្យមភាគ។'),
+        DM(T`\bar x=\frac{${data.join('+')}}{4}=\frac{${4 * a}}{4}=${a}`),
+        S2(T`Step 2: every deviation is \(\pm${t}\), so every squared deviation is \(${t * t}\).`, T`ជំហានទី ២៖ គម្លាតនីមួយៗគឺ \(\pm${t}\) ដូច្នេះការេគម្លាតនីមួយៗគឺ \(${t * t}\)។`),
+        DM(T`s^2=\frac{${t * t}+${t * t}+${t * t}+${t * t}}{4}=${t * t}`),
+        S2('Step 3: take the square root.', 'ជំហានទី ៣៖ យកឫសការេ។'),
+        DM(T`s=\sqrt{${t * t}}=${t}`),
+      ],
     };
   }
   def('stats-simple', 'stats', (r) => statsSimple(r), XO);
@@ -2833,7 +3378,15 @@
     if (forced ? forced === 'feature' : r.chance(0.5)) {
       const yes = [T`It is symmetric about the line \(x=\mu\)`, 'The total area under the curve is 1', T`It has a single peak, at \(x=\mu\)`];
       const no = [T`It is not symmetric about the mean \(\mu\)`, 'It has two peaks', 'It is bounded on both sides', 'The total area under the curve is 2', T`It is lowest at \(x=\mu\)`];
-      return { q: 'Which of the following is a characteristic of the normal distribution curve?', math: false, correct: r.pick(yes), wrong: r.shuffle(no), sol: T`A normal curve is bell-shaped with one peak at \(x=\mu\), symmetric about \(x=\mu\), never touches the \(x\)-axis, and the total area under it is 1.` };
+      return { q: 'Which of the following is a characteristic of the normal distribution curve?', math: false, correct: r.pick(yes), wrong: r.shuffle(no), sol: T`A normal curve is bell-shaped with one peak at \(x=\mu\), symmetric about \(x=\mu\), never touches the \(x\)-axis, and the total area under it is 1.`,
+        key: S2(T`The normal curve \(N(\mu,\sigma^2)\) is a bell shape centred at \(x=\mu\).`, T`ខ្សែកោងណរម៉ាល់ \(N(\mu,\sigma^2)\) មានរាងកណ្តឹង ដែលមានផ្ចិតនៅ \(x=\mu\)។`),
+        steps: [
+          S2(T`It has a single peak, at \(x=\mu\) (the highest point).`, T`វាមានកំពូលតែមួយ នៅត្រង់ \(x=\mu\) (ចំណុចខ្ពស់បំផុត)។`),
+          S2(T`It is symmetric about the line \(x=\mu\).`, T`វាឆ្លុះធៀបបន្ទាត់ \(x=\mu\)។`),
+          S2(T`It gets closer and closer to the \(x\)-axis on both sides but never touches it (it is not bounded).`, T`វាខិតជិតអ័ក្ស \(x\) កាន់តែខ្លាំងទាំងសងខាង ប៉ុន្តែមិនប៉ះវាទេ (គ្មានព្រំដែនកំណត់)។`),
+          S2(T`The total area under the curve is \(1\) (total probability).`, T`ក្រឡាផ្ទៃសរុបនៅក្រោមខ្សែកោងស្មើ \(1\) (ប្រូបាបសរុប)។`),
+          S2(T`Options such as "two peaks", "not symmetric", "area 2", "lowest at \(x=\mu\)" or "bounded" contradict these facts.`, T`ជម្រើសដូចជា "មានកំពូលពីរ", "មិនឆ្លុះ", "ក្រឡាផ្ទៃ 2", "ទាបបំផុតត្រង់ \(x=\mu\)" ឬ "មានព្រំដែន" ផ្ទុយនឹងលក្ខណៈខាងលើ។`),
+        ] };
     }
     const opts = ['Shift to the right', 'Shift to the left', 'Become flatter (lower and wider)', 'Become steeper (taller and narrower)'];
     const which = r.pick(['sig+', 'sig-', 'mu+', 'mu-']);
@@ -2846,6 +3399,25 @@
       correct: opts[ans],
       wrong: opts.filter((_, i) => i !== ans),
       sol: isSig ? T`\(\sigma\) controls the spread: a larger \(\sigma\) gives a lower, wider curve; a smaller \(\sigma\) gives a taller, narrower one. The centre \(x=\mu\) does not move.` : T`\(\mu\) is the centre of the curve: changing \(\mu\) moves the curve left or right without changing its shape.`,
+      key: S2(T`In \(N(\mu,\sigma^2)\): \(\mu\) fixes the position (centre) of the curve; \(\sigma\) fixes its shape (spread).`, T`ក្នុង \(N(\mu,\sigma^2)\)៖ \(\mu\) កំណត់ទីតាំង (ផ្ចិត) នៃខ្សែកោង; \(\sigma\) កំណត់រាង (ការលាតសន្ធឹង)។`),
+      steps: {
+        'sig+': [
+          S2(T`\(\mu\) does not change, so the centre \(x=\mu\) stays in place.`, T`\(\mu\) មិនប្រែប្រួល ដូច្នេះផ្ចិត \(x=\mu\) នៅនឹងកន្លែង។`),
+          S2(T`A larger \(\sigma\) means the data are more spread out. The total area must stay \(1\), so the curve becomes lower and wider (flatter).`, T`\(\sigma\) ធំជាងមុន មានន័យថាទិន្នន័យលាតសន្ធឹងច្រើនជាងមុន។ ក្រឡាផ្ទៃសរុបត្រូវតែស្មើ \(1\) ដូច្នេះខ្សែកោងទាប និងរាលជាងមុន។`),
+        ],
+        'sig-': [
+          S2(T`\(\mu\) does not change, so the centre \(x=\mu\) stays in place.`, T`\(\mu\) មិនប្រែប្រួល ដូច្នេះផ្ចិត \(x=\mu\) នៅនឹងកន្លែង។`),
+          S2(T`A smaller \(\sigma\) means the data are more concentrated near \(\mu\). The total area stays \(1\), so the curve becomes taller and narrower (steeper).`, T`\(\sigma\) តូចជាងមុន មានន័យថាទិន្នន័យប្រមូលផ្តុំជិត \(\mu\) ជាងមុន។ ក្រឡាផ្ទៃសរុបនៅតែ \(1\) ដូច្នេះខ្សែកោងខ្ពស់ និងស្រួចជាងមុន។`),
+        ],
+        'mu+': [
+          S2(T`\(\sigma\) does not change, so the shape of the curve stays the same.`, T`\(\sigma\) មិនប្រែប្រួល ដូច្នេះរាងខ្សែកោងនៅដដែល។`),
+          S2(T`The centre \(x=\mu\) moves to a larger value, so the whole curve shifts to the right.`, T`ផ្ចិត \(x=\mu\) រំកិលទៅតម្លៃធំជាងមុន ដូច្នេះខ្សែកោងទាំងមូលរំកិលទៅខាងស្តាំ។`),
+        ],
+        'mu-': [
+          S2(T`\(\sigma\) does not change, so the shape of the curve stays the same.`, T`\(\sigma\) មិនប្រែប្រួល ដូច្នេះរាងខ្សែកោងនៅដដែល។`),
+          S2(T`The centre \(x=\mu\) moves to a smaller value, so the whole curve shifts to the left.`, T`ផ្ចិត \(x=\mu\) រំកិលទៅតម្លៃតូចជាងមុន ដូច្នេះខ្សែកោងទាំងមូលរំកិលទៅខាងឆ្វេង។`),
+        ],
+      }[which],
     };
   }
   def('normal-features', 'normal', (r) => normalFeatures(r), XO);
@@ -2887,7 +3459,7 @@
           if (wrong.length === 3) break;
         }
         if (wrong.length < 3) throw new Error('not enough distinct distractors');
-        if (/NaN|undefined|Infinity/.test(o.q + correct + o.sol)) throw new Error('bad value in text');
+        if (/NaN|undefined|Infinity/.test(o.q + correct + o.sol + JSON.stringify(o.steps || '') + JSON.stringify(o.key || ''))) throw new Error('bad value in text');
         const choices = r.shuffle([correct].concat(wrong));
         return {
           tpl: tpl.id,
@@ -2897,6 +3469,8 @@
           choices,
           answer: choices.indexOf(correct),
           sol: o.sol,
+          key: o.key,
+          steps: o.steps,
           math: o.math !== false,
         };
       } catch (e) {

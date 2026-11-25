@@ -4,8 +4,10 @@
  *   Lessons-Module-1..4.pdf   lessons, exercises, answers and solutions
  *   Exam-Sheet-01..20.pdf     48-question sheet modelled on the real paper,
  *                             answer sheet, answer key and solutions
+ *   Solutions-Sheet-01..20.pdf  answer key and step-by-step solutions in
+ *                             English and Khmer, one card per question
  * Uses MathJax CHTML with its own font files so the PDFs stay small.
- *   npm i mathjax@3 playwright && node tools/build-bilingual.js [lessons|sheets|all] [first] [last]
+ *   npm i mathjax@3 playwright && node tools/build-bilingual.js [lessons|sheets|solutions|all] [first] [last]
  */
 'use strict';
 const http = require('http');
@@ -22,7 +24,7 @@ const first = Number(process.argv[3] || 1);
 const last = Number(process.argv[4] || CSCA.EXAM_SHEET_COUNT);
 fs.mkdirSync(OUT, { recursive: true });
 const pad = (n) => String(n).padStart(2, '0');
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.woff': 'font/woff' };
+const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.woff': 'font/woff', '.svg': 'image/svg+xml' };
 const MODULE_FILE = ['Sets-and-Inequalities', 'Functions', 'Geometry-and-Algebra', 'Probability-and-Statistics'];
 
 const server = http
@@ -45,8 +47,8 @@ const server = http
     const page = await browser.newPage();
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
-    const render = async (query, file, label) => {
-      await page.goto(`http://localhost:${port}/tools/print-bilingual.html?${query}`);
+    const render = async (query, file, label, html = 'print-bilingual.html') => {
+      await page.goto(`http://localhost:${port}/tools/${html}?${query}`);
       await page.waitForFunction(() => window.__done === true, null, { timeout: 120000 });
       await page.pdf({
         path: file,
@@ -63,6 +65,8 @@ const server = http
       for (let m = 1; m <= 4; m++) await render(`doc=lessons&module=${m}`, path.join(OUT, `Lessons-Module-${m}-${MODULE_FILE[m - 1]}.pdf`), `Lessons · Module ${m}`);
     if (what === 'all' || what === 'sheets')
       for (let n = first; n <= last; n++) await render(`doc=sheet&n=${n}`, path.join(OUT, `Exam-Sheet-${pad(n)}.pdf`), `Exam Sheet ${n}`);
+    if (what === 'all' || what === 'solutions')
+      for (let n = first; n <= last; n++) await render(`n=${n}`, path.join(OUT, `Solutions-Sheet-${pad(n)}.pdf`), `Solutions · Exam Sheet ${n}`, 'print-solutions.html');
     if (errors.length) console.log('page errors:', errors);
     await browser.close();
     server.close();

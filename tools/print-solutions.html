@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<title>CSCA 2026 — answers and detailed solutions</title>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/fonts-km.css">
+<style>
+  /* Card style: navy + teal, rounded boxes, Khmer letter badges (ក ខ គ ឃ). */
+  :root {
+    --navy: #173a5e; --navy-2: #22507d; --teal: #23897f; --teal-2: #2fa597;
+    --teal-soft: #e8f5f2; --teal-line: #bfe2db; --ink: #1c2433; --muted: #5d6a7c;
+    --line: #dde5ee; --km: #1f4e79; --ok: #1d8a5a; --ok-soft: #e6f6ee; --gold: #b7791f; --gold-soft: #fdf5e6;
+  }
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "IBM Plex Sans", "Kantumruy Pro", system-ui, sans-serif; font-size: 9.6pt; line-height: 1.5; color: var(--ink); }
+  p { margin: 0; }
+  .km { font-family: "Kantumruy Pro", "IBM Plex Sans", sans-serif; line-height: 1.75; }
+  mjx-container { font-size: 104% !important; }
+  mjx-container[display="true"] { margin: 0 !important; }
+
+  /* ---------- cover ---------- */
+  .cover { position: relative; overflow: hidden; border: 1.6px solid var(--teal-line); border-radius: 18px; padding: 16px 22px 14px; text-align: center; margin-bottom: 10px; break-inside: avoid; }
+  .cover .bg { position: absolute; color: #d9ece8; font-family: "Times New Roman", serif; font-style: italic; font-size: 15pt; white-space: nowrap; }
+  .cover img.logo { width: 86px; height: 86px; display: block; margin: 0 auto 8px; position: relative; }
+  .pill { display: inline-block; background: linear-gradient(90deg, var(--navy), var(--teal)); color: #fff; border-radius: 999px; padding: 4px 18px; font-weight: 700; font-size: 10.5pt; position: relative; }
+  .cover h1 { position: relative; font-family: "Kantumruy Pro", sans-serif; font-weight: 700; color: var(--navy); font-size: 25pt; line-height: 1.5; margin: 6px 0 0; }
+  .cover h2 { position: relative; font-family: "IBM Plex Sans Condensed", sans-serif; color: var(--teal); font-size: 13pt; margin: 0 0 8px; letter-spacing: .02em; }
+  .keybox { position: relative; background: var(--teal-soft); border: 1.6px solid var(--teal-line); border-radius: 14px; padding: 9px 10px 8px; text-align: left; }
+  .keybox .t { font-weight: 700; color: var(--navy); font-size: 10pt; margin: 0 0 6px 2px; }
+  .keygrid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+  .keygrid div { background: #fff; border: 1px solid var(--teal-line); border-radius: 8px; text-align: center; padding: 2px 0 1px; line-height: 1.25; }
+  .keygrid .n { display: block; font-family: "IBM Plex Mono", monospace; font-size: 7.6pt; color: var(--muted); }
+  .keygrid .a { font-family: "Kantumruy Pro", sans-serif; font-weight: 700; color: var(--teal); font-size: 10.5pt; }
+  .keygrid .l { font-family: "IBM Plex Mono", monospace; font-size: 7.6pt; color: var(--navy); margin-left: 2px; }
+  .legend { position: relative; display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; font-size: 8.6pt; color: var(--muted); }
+  .legend b { color: var(--navy); }
+  .howto { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 9px; text-align: left; }
+  .howto div { border: 1px solid var(--line); border-radius: 12px; padding: 6px 9px; font-size: 8.5pt; }
+  .howto b { color: var(--navy); display: block; }
+
+  /* ---------- part header ---------- */
+  .part { break-after: avoid; display: flex; align-items: center; gap: 10px; margin: 12px 0 8px; }
+  .part .pill { font-size: 10pt; padding: 4px 16px; }
+  .part .km { color: var(--navy); font-weight: 700; font-size: 10.5pt; }
+  .part:after { content: ""; flex: 1; height: 2px; background: var(--teal-line); border-radius: 2px; }
+
+  /* ---------- question card ---------- */
+  .card { break-inside: avoid; border: 1.6px solid var(--teal-line); border-radius: 14px; padding: 7px 11px 8px; margin: 0 0 7px; background: #fff; }
+  .head { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .qno { flex: none; width: 27px; height: 27px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-family: "IBM Plex Sans Condensed", sans-serif; font-weight: 700; font-size: 11pt; }
+  .head .meta { flex: 1; line-height: 1.3; }
+  .head .meta b { color: var(--navy); font-size: 10.3pt; }
+  .head .meta span { color: var(--muted); font-size: 8.1pt; margin-left: 6px; }
+  .head .tag { flex: none; background: var(--teal-soft); color: var(--teal); border: 1px solid var(--teal-line); border-radius: 999px; padding: 1px 10px; font-size: 8.2pt; font-weight: 600; }
+  .qbox { background: var(--teal-soft); border: 1.6px solid var(--teal-2); border-radius: 12px; padding: 5px 11px; }
+  .qbox .en { font-size: 10.4pt; font-weight: 500; }
+  .qbox .km { color: var(--km); font-size: 10pt; margin-top: 1px; }
+  .lab { display: inline-block; font-size: 7.6pt; font-weight: 700; letter-spacing: .04em; color: var(--teal); background: #fff; border: 1px solid var(--teal-line); border-radius: 6px; padding: 0 5px; margin-right: 6px; vertical-align: 1px; font-family: "IBM Plex Sans", sans-serif; }
+  .lab.k { color: var(--km); font-family: "Kantumruy Pro", sans-serif; letter-spacing: 0; }
+  .opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 7px; margin: 5px 0 0; }
+  .opts.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .opts.one { grid-template-columns: minmax(0, 1fr); }
+  .opt { display: flex; align-items: center; gap: 6px; border: 1.3px solid var(--line); border-radius: 11px; padding: 3px 8px 3px 4px; min-height: 29px; }
+  .badge { flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-family: "Kantumruy Pro", sans-serif; font-weight: 700; font-size: 10.5pt; line-height: 1; }
+  .opt .lat { flex: none; font-family: "IBM Plex Mono", monospace; font-size: 7.8pt; color: var(--muted); }
+  .opt .v { flex: 1; min-width: 0; }
+  .opt .v .km { display: block; color: var(--km); font-size: 8.8pt; line-height: 1.5; }
+  .opt.right { border-color: var(--ok); background: var(--ok-soft); }
+  .opt.right .badge { background: var(--ok); }
+  .opt .tick { flex: none; width: 18px; height: 18px; }
+  .idea { margin-top: 6px; background: var(--gold-soft); border-left: 4px solid var(--gold); border-radius: 0 10px 10px 0; padding: 5px 10px; }
+  .idea .t { font-weight: 700; color: var(--gold); font-size: 8.6pt; display: flex; align-items: center; gap: 5px; }
+  .idea .t svg { width: 13px; height: 13px; }
+  .idea .km { color: var(--km); }
+  .sol-t { display: flex; align-items: center; gap: 8px; margin: 5px 0 2px; font-weight: 700; color: var(--navy); font-size: 9.6pt; }
+  .sol-t:after { content: ""; flex: 1; height: 1.5px; background: var(--line); }
+  .sol-t .km { font-weight: 700; }
+  .steps { margin: 0; padding: 0; list-style: none; }
+  .st { display: flex; gap: 8px; padding: 1px 0; }
+  .st .sn { flex: none; width: 19px; height: 19px; margin-top: 1px; border-radius: 50%; border: 1.5px solid var(--teal); color: var(--teal); display: inline-flex; align-items: center; justify-content: center; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 8pt; }
+  .st .tx { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .bi { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .st .km { color: var(--km); font-size: 9.3pt; }
+  .dm { margin: 2px 0 2px 27px; background: #f6f8fb; border: 1px solid var(--line); border-radius: 9px; padding: 2px 10px; text-align: center; overflow: hidden; }
+  .answer { margin-top: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: linear-gradient(90deg, var(--navy), var(--teal)); color: #fff; border-radius: 12px; padding: 3px 12px 3px 5px; }
+  .answer .badge { background: #fff; color: var(--ok); }
+  .answer .w { font-weight: 700; font-size: 9.6pt; }
+  .answer .w .km { font-weight: 700; }
+  .answer .v { font-size: 10pt; }
+  .answer .v .km { color: #e3f4f0; }
+  .answer mjx-container { color: #fff; }
+  footer.note { margin-top: 6px; font-size: 7.8pt; color: var(--muted); text-align: center; }
+</style>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+    chtml: { fontURL: '/__mjfonts', scale: 1, mtextInheritFont: true },
+    startup: { typeset: false },
+  };
+</script>
+<script src="/__mj/tex-chtml.js"></script>
+<script src="../js/engine.js"></script>
+<script src="../js/khmer.js"></script>
+</head>
+<body>
+<div id="out"></div>
+<script>
+(function () {
+  'use strict';
+  var E = window.CSCA, K = window.CSCA_KM;
+  var LAT = 'ABCD', KML = ['ក', 'ខ', 'គ', 'ឃ'];
+  var MOD_KM = ['សំណុំ និង វិសមភាព', 'អនុគមន៍', 'ធរណីមាត្រ និង ពីជគណិត', 'ប្រូបាប និង ស្ថិតិ'];
+  var TOPIC = {
+    sets: ['Sets', 'សំណុំ'], ineq: ['Inequalities', 'វិសមភាព'], func: ['Functions', 'អនុគមន៍'],
+    expolog: ['Power, exponential, log', 'ស្វ័យគុណ អិចស្ប៉ូណង់ស្យែល លោការីត'], trig: ['Trigonometry', 'ត្រីកោណមាត្រ'],
+    seq: ['Sequences', 'ស្វ៊ីត'], deriv: ['Derivatives', 'ដេរីវេ'], lines: ['Lines and circles', 'បន្ទាត់ និងរង្វង់'],
+    conics: ['Conic sections', 'កោនិក'], vectors: ['Vectors', 'វ៉ិចទ័រ'], complex: ['Complex numbers', 'ចំនួនកុំផ្លិច'],
+    solid: ['Solid geometry', 'ធរណីមាត្រលំហ'], prob: ['Probability', 'ប្រូបាប'], stats: ['Statistics', 'ស្ថិតិ'],
+    normal: ['Normal distribution', 'ច្បាប់ណរម៉ាល់'],
+  };
+  var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+  var TICK = '<svg class="tick" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#1d8a5a"/><path d="M5.5 10.4l3 3 6-6.4" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var BULB = '<svg viewBox="0 0 24 24"><path d="M9 21h6M10 18h4M12 3a6 6 0 0 0-3.6 10.8c.8.6 1.1 1.4 1.1 2.2h5c0-.8.3-1.6 1.1-2.2A6 6 0 0 0 12 3z" fill="none" stroke="#b7791f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function choiceHtml(q, c) {
+    if (q.math) return esc('\\(' + c + '\\)');
+    var km = K.translateChoice(c);
+    return esc(c) + (km ? '<span class="km">' + esc(km) + '</span>' : '');
+  }
+  function layout(q) {
+    if (!q.math) return '';
+    var maxLen = Math.max.apply(null, q.choices.map(function (c) { return c.length; }));
+    return maxLen < 22 ? ' four' : maxLen < 46 ? '' : ' one';
+  }
+  function steps(q) {
+    var n = 0;
+    return '<div class="steps">' + q.steps.map(function (s) {
+      if (s.m !== undefined) return '<div class="dm">' + esc('\\[' + s.m + '\\]') + '</div>';
+      n++;
+      return '<div class="st"><span class="sn">' + n + '</span><div class="tx"><p>' + esc(s.en) + '</p><p class="km">' + esc(s.km) + '</p></div></div>';
+    }).join('') + '</div>';
+  }
+  function card(q, sheetNo) {
+    var t = TOPIC[q.lesson] || ['', ''];
+    var opts = q.choices.map(function (c, i) {
+      var right = i === q.answer;
+      return '<div class="opt' + (right ? ' right' : '') + '"><span class="badge">' + KML[i] + '</span><span class="lat">' + LAT[i] + '</span><span class="v">' + choiceHtml(q, c) + '</span>' + (right ? TICK : '') + '</div>';
+    }).join('');
+    var c = q.choices[q.answer];
+    return '<article class="card">' +
+      '<div class="head"><span class="qno">' + q.no + '</span><div class="meta"><b>Question ' + q.no + ' · <span class="km">សំណួរទី ' + q.no + '</span></b>' +
+      '<span>Exam Sheet ' + sheetNo + ' · Part ' + q.module + '</span></div>' +
+      '<span class="tag">' + esc(t[0]) + ' · <span class="km">' + esc(t[1]) + '</span></span></div>' +
+      '<div class="qbox"><p class="en"><span class="lab">EN</span>' + esc(q.q) + '</p><p class="km"><span class="lab k">ខ្មែរ</span>' + esc(K.translate(q.q)) + '</p></div>' +
+      '<div class="opts' + layout(q) + '">' + opts + '</div>' +
+      '<div class="idea"><div class="t">' + BULB + 'Key idea · <span class="km">គំនិតគន្លឹះ</span></div><div class="bi"><p>' + esc(q.key.en) + '</p><p class="km">' + esc(q.key.km) + '</p></div></div>' +
+      '<div class="sol-t">Solution · <span class="km">ដំណោះស្រាយ</span></div>' + steps(q) +
+      '<div class="answer"><span class="badge">' + KML[q.answer] + '</span><span class="w">Answer · <span class="km">ចម្លើយ</span>: ' + KML[q.answer] + ' (' + LAT[q.answer] + ')</span><span class="v">' + choiceHtml(q, c) + '</span></div>' +
+      '</article>';
+  }
+
+  function cover(p) {
+    var bg = [
+      ['a^2+b^2=c^2', 4, 3], ['\\Delta=b^2-4ac', 72, 6], ['|a|\\ge0', 3, 36], ['A=\\pi r^2', 80, 40],
+      ['(a+b)^2=a^2+2ab+b^2', 5, 88], ['\\sqrt{2}', 88, 86], ['y=kx+b', 70, 70], ['S_n=\\frac{n(a_1+a_n)}{2}', 8, 62],
+    ].map(function (f) { return '<span class="bg" style="left:' + f[1] + '%;top:' + f[2] + '%">' + esc('\\(' + f[0] + '\\)') + '</span>'; }).join('');
+    var grid = p.questions.map(function (q) {
+      return '<div><span class="n">' + q.no + '</span><span class="a">' + KML[q.answer] + '</span><span class="l">' + LAT[q.answer] + '</span></div>';
+    }).join('');
+    return '<section class="cover">' + bg +
+      '<img class="logo" src="../logo/csca-2026-logo-circle.svg" alt="CSCA 2026">' +
+      '<span class="pill">QCM · CSCA 2026 · គណិតវិទ្យា · វិញ្ញាសាទី ' + p.n + '</span>' +
+      '<h1>ចម្លើយ និងដំណោះស្រាយលម្អិត</h1>' +
+      '<h2>Exam Sheet ' + p.n + ' · Answers and step-by-step solutions</h2>' +
+      '<div class="keybox"><p class="t">Answer key · <span class="km">តារាងចម្លើយ</span></p><div class="keygrid">' + grid + '</div></div>' +
+      '<div class="legend"><span><b>ក</b> = A</span><span><b>ខ</b> = B</span><span><b>គ</b> = C</span><span><b>ឃ</b> = D</span>' +
+      '<span>Score = correct × 100 ÷ 48 · <span class="km">ពិន្ទុ = ចំនួនត្រូវ × ១០០ ÷ ៤៨</span></span></div>' +
+      '<div class="howto">' +
+      '<div><b>1 · Key idea <span class="km">គំនិតគន្លឹះ</span></b>The rule or formula the question tests. <span class="km">ច្បាប់ ឬរូបមន្តដែលសំណួរនេះប្រើ។</span></div>' +
+      '<div><b>2 · Solution <span class="km">ដំណោះស្រាយ</span></b>Each step in English, then in Khmer. <span class="km">ជំហាននីមួយៗជាភាសាអង់គ្លេស បន្ទាប់មកជាភាសាខ្មែរ។</span></div>' +
+      '<div><b>3 · Answer <span class="km">ចម្លើយ</span></b>The correct choice is marked green in the options. <span class="km">ជម្រើសត្រឹមត្រូវមានពណ៌បៃតង។</span></div>' +
+      '</div></section>';
+  }
+
+  function render(n) {
+    var p = E.makeExamSheet(n);
+    var h = cover(p), last = 0;
+    p.questions.forEach(function (q) {
+      if (q.module !== last) {
+        last = q.module;
+        h += '<div class="part"><span class="pill">Part ' + q.module + ' · ' + esc(E.MODULES[q.module - 1].en) + '</span><span class="km">ផ្នែកទី ' + q.module + '៖ ' + MOD_KM[q.module - 1] + '</span></div>';
+      }
+      h += card(q, n);
+    });
+    h += '<footer class="note">Mock paper modelled on the CSCA Mathematics paper (2025 syllabus); not an official paper. <span class="km">វិញ្ញាសាសាកល្បង មិនមែនជាវិញ្ញាសាផ្លូវការទេ។</span></footer>';
+    return h;
+  }
+
+  var qs = new URLSearchParams(location.search);
+  document.getElementById('out').innerHTML = render(Number(qs.get('n') || 1));
+  MathJax.startup.promise.then(function () { return MathJax.typesetPromise(); }).then(function () { return document.fonts.ready; }).then(function () {
+    return Promise.all(Array.prototype.map.call(document.images, function (im) { return im.complete ? 0 : new Promise(function (r) { im.onload = im.onerror = r; }); }));
+  }).then(function () { window.__done = true; });
+})();
+</script>
+</body>
+</html>

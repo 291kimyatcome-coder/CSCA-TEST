@@ -63,6 +63,12 @@ for (let n = 1; n <= CSCA.EXAM_SHEET_COUNT; n++) {
   if (p.questions.length !== 48) note(`sheet ${n}`, `has ${p.questions.length} questions`);
   const mods = [0, 0, 0, 0];
   p.questions.forEach((q) => { mods[q.module - 1]++; checkQuestion(q, `sheet ${n} Q${q.no} (${q.tpl})`); });
+  p.questions.forEach((q) => {
+    // the printed solutions book needs a bilingual worked solution for every question
+    const steps = [q.key].concat(q.steps || []);
+    if (!q.key || !q.steps || !q.steps.length) note(`sheet ${n} Q${q.no} (${q.tpl})`, 'no worked solution (key/steps)');
+    else if (steps.some((st) => !st || (st.m === undefined && (!st.en || !st.km)))) note(`sheet ${n} Q${q.no} (${q.tpl})`, 'step without English and Khmer text');
+  });
   if (mods.join() !== '12,12,12,12') note(`sheet ${n}`, 'module split ' + mods.join('/'));
   const seq = p.questions.map((q) => q.module).join('');
   if (seq !== '1'.repeat(12) + '2'.repeat(12) + '3'.repeat(12) + '4'.repeat(12)) note(`sheet ${n}`, 'parts out of order');
@@ -123,10 +129,18 @@ async function texCheck() {
     let m;
     while ((m = re.exec(s))) formulas.push(m[1]);
   };
+  // worked solutions: key idea + steps (English and Khmer text, displayed formulas)
+  const collectSteps = (q) => {
+    for (const st of [q.key].concat(q.steps || []).filter(Boolean)) {
+      if (st.m !== undefined) formulas.push(st.m);
+      else { collect(st.en); collect(st.km); }
+    }
+  };
   for (const p of papers.concat(sheets))
     for (const q of p.questions) {
       collect(q.q);
       collect(q.sol);
+      collectSteps(q);
       if (q.math) q.choices.forEach((c) => formulas.push(c));
       else q.choices.forEach(collect);
     }
@@ -136,6 +150,7 @@ async function texCheck() {
       const q = CSCA._build(t, r);
       collect(q.q);
       collect(q.sol);
+      collectSteps(q);
       if (q.math) q.choices.forEach((c) => formulas.push(c));
     }
   let bad = 0;
