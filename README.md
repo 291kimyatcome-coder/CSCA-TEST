@@ -29,6 +29,10 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 
 `All-Lessons-Modules-1-4.pdf` (68 pages) puts all 15 lessons in one file. `All-Exam-Sheets-1-20.pdf` (240 pages) puts all 20 sheets in one file with bookmarks, and `All-Exam-Sheets-1-10.pdf` / `All-Exam-Sheets-11-20.pdf` are half-size versions. Each single file is under 0.5 MB. These sheets are not on the website, so students have not seen them. Rebuild with `node tools/build-bilingual.js` (needs `mathjax@3` and Playwright). Question translations live in `js/khmer.js` and the lesson translations in `js/lessons-km.js`. `node tools/validate.js` checks that every question has a Khmer translation.
 
+## Statistics TD1 & TD2 solutions (Khmer)
+
+`statistics-td/TD1-TD2-Solutions.pdf` (12 pages) has step-by-step answers in Khmer for the ITC Statistics tutorials I3-TD1 (descriptive statistics, exercises 1–9) and I3-TD2 (point estimation and confidence intervals, exercises 1–26), including the R code and Excel formulas with their expected output. The source is `statistics-td/TD1-TD2-Solutions.html`; rebuild with `node tools/build-td-solutions.js` (needs `mathjax@3` and Playwright).
+
 ## Collect students' results
 
 **No setup needed:** after each paper the student sees a result summary (name, class, score, correct/wrong/blank, missed questions, score by module) with **Copy result**, **Send on Telegram** and **Share** buttons, and sends it to the teacher.
