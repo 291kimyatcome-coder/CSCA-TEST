@@ -31,7 +31,7 @@ Practice material for the **CSCA Mathematics** exam (China Scholastic Competency
 
 ## Statistics TD1 & TD2 solutions (Khmer)
 
-`statistics-td/TD1-TD2-Solutions.pdf` (12 pages) has step-by-step answers in Khmer for the ITC Statistics tutorials I3-TD1 (descriptive statistics, exercises 1–9) and I3-TD2 (point estimation and confidence intervals, exercises 1–26), including the R code and Excel formulas with their expected output. The source is `statistics-td/TD1-TD2-Solutions.html`; rebuild with `node tools/build-td-solutions.js` (needs `mathjax@3` and Playwright).
+`statistics-td/TD1-TD2-Solutions.pdf` (27 pages) has step-by-step answers in English and Khmer, with a note for every formula (F1–F21) and a formula summary, for the ITC Statistics tutorials I3-TD1 (descriptive statistics, exercises 1–9) and I3-TD2 (point estimation and confidence intervals, exercises 1–26), including the R code and Excel formulas with their expected output. The source is `statistics-td/TD1-TD2-Solutions.html`; rebuild with `node tools/build-td-solutions.js` (needs `mathjax@3` and Playwright).
 
 ## Collect students' results
 

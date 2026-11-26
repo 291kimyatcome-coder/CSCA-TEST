@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="km">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,35 +8,56 @@
 <link rel="stylesheet" href="../css/fonts-km.css">
 <style>
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: "IBM Plex Sans", "Kantumruy Pro", system-ui, sans-serif; font-size: 10.2pt; line-height: 1.75; color: #111; background: #fff; }
+  body { margin: 0; font-family: "IBM Plex Sans", "Kantumruy Pro", system-ui, sans-serif; font-size: 10pt; line-height: 1.6; color: #111; background: #fff; }
   .wrap { max-width: 820px; margin: 0 auto; padding: 0 4px; }
   h1, h2, h3 { line-height: 1.35; margin: 0; }
   mjx-container { font-size: 104% !important; }
+  .km { font-family: "Kantumruy Pro", "IBM Plex Sans", sans-serif; line-height: 1.85; color: #1f3a8a; }
+  .en, .km { display: block; }
+  .en::before { content: "EN"; }
+  .km::before { content: "ខ្មែរ"; }
+  .en::before, .km::before { display: inline-block; min-width: 30px; margin-right: 6px; font-family: "IBM Plex Mono", "Kantumruy Pro", monospace; font-size: 7.6pt; font-weight: 700; color: #888; }
+  .km::before { color: #2446a6; }
+  .plain .en::before, .plain .km::before, td .en::before, td .km::before, th .en::before, th .km::before, .fn .en::before, .fn .km::before, h3 .km::before, h3 .en::before, h1 .km::before, h2 .km::before { content: none; display: none; }
   .cover { border: 1.5px solid #c8472e; border-radius: 4px; padding: 12px 16px; margin-bottom: 12px; }
   .cover h1 { font-family: "IBM Plex Sans Condensed", "Kantumruy Pro", sans-serif; font-size: 20pt; }
-  .cover .sub { color: #2446a6; font-weight: 700; font-size: 12.5pt; }
+  .cover h1 .km { font-size: 15pt; color: #2446a6; }
   .cover p { margin: 6px 0 0; }
-  .rules { background: #f3f5fa; border-left: 3px solid #2446a6; padding: 6px 12px; margin: 10px 0; font-size: 9.6pt; }
-  .rules ul { margin: 2px 0; padding-left: 18px; }
+  .legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; font-size: 9pt; }
+  .legend div { border: 1px solid #ddd; border-radius: 4px; padding: 5px 8px; }
   h1.td { font-family: "IBM Plex Sans Condensed", "Kantumruy Pro", sans-serif; font-size: 17pt; color: #c8472e; border-bottom: 2px solid #c8472e; padding-bottom: 4px; margin: 6px 0 8px; break-before: page; }
-  h1.td.first { break-before: auto; }
+  h1.td .km { font-size: 12.5pt; }
   h2.part { font-size: 12.5pt; color: #2446a6; margin: 12px 0 4px; border-bottom: 1.5px solid #2446a6; padding-bottom: 2px; break-after: avoid; }
-  .ex { margin: 10px 0 12px; }
-  .ex > h3 { font-size: 11.6pt; background: #f6f1ef; border-left: 4px solid #c8472e; padding: 3px 10px; margin-bottom: 4px; break-after: avoid; }
-  .q { break-inside: avoid; margin: 6px 0 8px; }
+  h2.part .km { font-size: 11pt; display: inline; }
+  .ex { margin: 10px 0 14px; }
+  .ex > h3 { font-size: 11.4pt; background: #f6f1ef; border-left: 4px solid #c8472e; padding: 3px 10px; margin-bottom: 5px; break-after: avoid; }
+  .ex > h3 .km { font-size: 10.4pt; font-weight: 700; }
+  .q { margin: 6px 0 9px; }
   .q > b.lbl { color: #c8472e; font-family: "IBM Plex Mono", monospace; margin-right: 4px; }
   ol.steps { margin: 2px 0 4px; padding-left: 24px; }
-  ol.steps li { margin: 1px 0; }
-  ol.steps li::marker { color: #2446a6; font-weight: 700; }
-  .ans { display: inline-block; border: 1.3px solid #1d7a46; background: #eef8f1; border-radius: 4px; padding: 1px 9px; margin: 2px 0; }
-  .ans::before { content: "ចម្លើយ ✓ "; color: #1d7a46; font-weight: 700; }
-  .note { font-size: 9.3pt; color: #444; border-left: 3px solid #ccc; padding-left: 8px; margin: 3px 0; }
-  table { border-collapse: collapse; margin: 4px 0 6px; font-size: 9.6pt; }
-  th, td { border: 1px solid #bbb; padding: 3px 8px; text-align: left; vertical-align: top; }
+  ol.steps > li { margin: 3px 0; break-inside: avoid; }
+  ol.steps > li::marker { color: #c8472e; font-weight: 700; }
+  .calc { display: block; padding-left: 36px; }
+  .ans { border: 1.3px solid #1d7a46; background: #eef8f1; border-radius: 4px; padding: 3px 10px; margin: 4px 0; break-inside: avoid; }
+  .ans > b.h { color: #1d7a46; font-size: 9pt; display: block; }
+  /* formula notes */
+  .fn { border: 1px solid #e3c27a; border-left: 5px solid #d89614; background: #fffaf0; border-radius: 4px; padding: 5px 11px 6px; margin: 6px 0 8px; break-inside: avoid; font-size: 9.4pt; }
+  .fn .fh { font-weight: 700; color: #8a5a00; }
+  .fn .fh .tag { display: inline-block; background: #d89614; color: #fff; border-radius: 3px; padding: 0 6px; margin-right: 6px; font-family: "IBM Plex Mono", monospace; font-size: 8.5pt; }
+  .fn .fh .km { display: inline; color: #8a5a00; }
+  .fn .f { text-align: center; margin: 2px 0; }
+  .fn p { margin: 2px 0; }
+  .fn ul { margin: 1px 0; padding-left: 18px; }
+  .fn .lab { font-weight: 700; color: #8a5a00; }
+  .see { font-size: 9pt; color: #8a5a00; }
+  table { border-collapse: collapse; margin: 4px 0 6px; font-size: 9.2pt; width: 100%; }
+  th, td { border: 1px solid #bbb; padding: 3px 7px; text-align: left; vertical-align: top; }
   th { background: #f3f5fa; }
-  pre { background: #f6f7f9; border: 1px solid #dde; border-radius: 4px; padding: 6px 10px; font-family: "IBM Plex Mono", monospace; font-size: 8.6pt; line-height: 1.45; white-space: pre-wrap; break-inside: avoid; margin: 4px 0 6px; }
+  tr { break-inside: avoid; }
+  pre { background: #f6f7f9; border: 1px solid #dde; border-radius: 4px; padding: 6px 10px; font-family: "IBM Plex Mono", monospace; font-size: 8.5pt; line-height: 1.45; white-space: pre-wrap; break-inside: avoid; margin: 4px 0 6px; }
   .c { color: #2a7a3a; }
   .muted { color: #666; }
+  .sum td:first-child { white-space: nowrap; font-family: "IBM Plex Mono", monospace; color: #8a5a00; font-weight: 700; }
   @media print { .wrap { max-width: none; padding: 0; } }
 </style>
 <script>
@@ -51,434 +72,542 @@
 <body>
 <div class="wrap">
 
-<header class="cover">
-  <h1>Statistics · TD1 &amp; TD2 — ចម្លើយ និងការពន្យល់តាមជំហាន</h1>
-  <div class="sub">I3–TD1 Descriptive Statistics · I3–TD2 Point Estimation and Confidence Intervals</div>
-  <p>ឯកសារនេះផ្តល់ចម្លើយ និងការពន្យល់ជាជំហានៗ សម្រាប់លំហាត់ទាំងអស់នៃ TD1 (1–9) និង TD2 (1–26)។ ពាក្យបច្ចេកទេសសំខាន់ៗរក្សាទុកជាភាសាអង់គ្លេសក្នុងវង់ក្រចក ដើម្បីងាយផ្ទៀងជាមួយមេរៀន។ លេខទាំងអស់ត្រូវបានគណនាឡើងវិញ ហើយត្រូវគ្នានឹង \(\sum x_i\), \(\sum x_i^2\) ដែលលំហាត់ផ្តល់ឲ្យ។</p>
-  <div class="rules">
-    <b>វិធានដែលប្រើក្នុងឯកសារនេះ៖</b>
-    <ul>
-      <li><b>Percentile \(P_k\) (និង quartile)៖</b> តម្រៀបទិន្នន័យពីតូចទៅធំ រួចគណនា \(i = n\cdot\frac{k}{100}\)។ បើ \(i\) ជាចំនួនគត់ → យកមធ្យមនៃតម្លៃទី \(i\) និងទី \(i+1\)។ បើ \(i\) មិនមែនជាចំនួនគត់ → បង្គត់ឡើង ហើយយកតម្លៃនៅទីតាំងនោះ។ \(Q_1=P_{25}\), \(Q_2=\) median, \(Q_3=P_{75}\)។ (នេះគឺ <code>quantile(..., type = 2)</code> ក្នុង R។)</li>
-      <li><b>Outlier តាម IQR៖</b> \(IQR=Q_3-Q_1\); របង (fences) \(Q_1-1.5\,IQR\) និង \(Q_3+1.5\,IQR\)។ តម្លៃនៅក្រៅរបង = outlier។</li>
-      <li><b>Outlier តាម z-score៖</b> \(z=\frac{x-\bar x}{s}\); outlier បើ \(|z|&gt;3\)។</li>
-      <li><b>វ៉ារ្យង់គំរូ (sample variance)៖</b> \(s^2=\frac{\sum x_i^2-\frac{(\sum x_i)^2}{n}}{n-1}\)។</li>
-    </ul>
+<header class="cover plain">
+  <h1>Statistics · TD1 &amp; TD2 — Solutions with Explanations<span class="km">ចម្លើយ និងការពន្យល់តាមជំហាន (អង់គ្លេស–ខ្មែរ)</span></h1>
+  <p class="en">I3–TD1 Descriptive Statistics (exercises 1–9) and I3–TD2 Point Estimation and Confidence Intervals (exercises 1–26). Every step is written in English and then in Khmer. Each formula has a numbered note (F1, F2, …) explaining what it means, what every symbol is, and when to use it. All formula notes are collected in a summary table at the end.</p>
+  <p class="km">I3–TD1 ស្ថិតិពិពណ៌នា (លំហាត់ 1–9) និង I3–TD2 ការប៉ាន់ស្មានចំណុច និងចន្លោះទំនុកចិត្ត (លំហាត់ 1–26)។ ជំហាននីមួយៗសរសេរជាភាសាអង់គ្លេស រួចជាភាសាខ្មែរ។ រូបមន្តនីមួយៗមានកំណត់ចំណាំមានលេខ (F1, F2, …) ពន្យល់អត្ថន័យ និមិត្តសញ្ញា និងពេលណាត្រូវប្រើ។ កំណត់ចំណាំទាំងអស់ត្រូវបានប្រមូលក្នុងតារាងសង្ខេបនៅចុងឯកសារ។</p>
+  <div class="legend">
+    <div><b>EN</b> English explanation<br><span class="km" style="display:inline">ការពន្យល់ជាអង់គ្លេស</span></div>
+    <div><b style="color:#2446a6">ខ្មែរ</b> Khmer explanation<br><span class="km" style="display:inline">ការពន្យល់ជាខ្មែរ</span></div>
+    <div><b style="color:#8a5a00">F#</b> Formula note<br><span class="km" style="display:inline">កំណត់ចំណាំរូបមន្ត</span></div>
   </div>
+  <p class="en muted">All numbers were recomputed and agree with the sums \(\sum x_i\), \(\sum x_i^2\) given in the sheets. Small rounding differences from your teacher's key are normal.</p>
+  <p class="km muted">លេខទាំងអស់ត្រូវបានគណនាឡើងវិញ ហើយត្រូវគ្នានឹង \(\sum x_i\), \(\sum x_i^2\) ក្នុងសន្លឹក TD។ ការខុសគ្នាបន្តិចដោយសារការបង្គត់ ជារឿងធម្មតា។</p>
 </header>
 
-<!-- =============================================================== -->
-<h1 class="td first">I3–TD1 · Descriptive Statistics</h1>
-<h2 class="part">Part A. Tutorial Problems</h2>
+<!-- =================================================================== -->
+<h1 class="td" style="break-before:auto">I3–TD1 · Descriptive Statistics <span class="km">ស្ថិតិពិពណ៌នា</span></h1>
+<h2 class="part">Part A. Tutorial Problems <span class="km">· លំហាត់អនុវត្ត</span></h2>
 
-<div class="ex"><h3>លំហាត់ 1. Descriptive ឬ Inferential?</h3>
-<p><b>គន្លឹះ៖</b> <i>Descriptive</i> = គ្រាន់តែរៀបរាប់ទិន្នន័យដែលបានវាស់ (មិនទាញសេចក្តីសន្និដ្ឋានហួសពីទិន្នន័យ)។ <i>Inferential</i> = ប្រើគំរូ (sample) ដើម្បីទាញសេចក្តីសន្និដ្ឋាន ប៉ាន់ស្មាន ឬទស្សន៍ទាយអំពីប្រជាជន (population) ទាំងមូល ឬអនាគត។</p>
+<div class="ex"><h3>Exercise 1. Descriptive or inferential? <span class="km">លំហាត់ 1. ពិពណ៌នា ឬ សន្និដ្ឋាន?</span></h3>
+<div class="fn"><div class="fh"><span class="tag">Key idea</span>Descriptive vs inferential <span class="km">· ពិពណ៌នា និង សន្និដ្ឋាន</span></div>
+<p class="en"><b>Descriptive statistics</b> only summarise the data that were actually collected (a mean, a count, a percentage of the observed group). <b>Inferential statistics</b> use a <i>sample</i> to draw conclusions about a larger <i>population</i>, or to predict the future.</p>
+<p class="km"><b>ស្ថិតិពិពណ៌នា</b> គ្រាន់តែសង្ខេបទិន្នន័យដែលបានប្រមូលរួច (មធ្យមភាគ ចំនួន ភាគរយនៃក្រុមដែលបានសង្កេត)។ <b>ស្ថិតិសន្និដ្ឋាន</b> ប្រើ<i>គំរូ (sample)</i> ដើម្បីទាញសេចក្តីសន្និដ្ឋានអំពី<i>ប្រជាជន (population)</i> ធំជាង ឬទស្សន៍ទាយអនាគត។</p></div>
 <table>
-<tr><th></th><th>ចម្លើយ</th><th>ហេតុផល</th></tr>
-<tr><td>(a)</td><td><b>Descriptive</b></td><td>ជាមធ្យមភាគនៃទឹកភ្លៀងដែលបានកត់ត្រារួច (ខែ 1–6 ឆ្នាំ 2025)។</td></tr>
-<tr><td>(b)</td><td><b>Inferential</b></td><td>ពីគំរូ 500 គ្រួសារ ប៉ាន់ស្មានទៅ “គ្រួសារទាំងអស់” នៅភ្នំពេញ។</td></tr>
-<tr><td>(c)</td><td><b>Descriptive</b></td><td>គ្រាន់តែរាប់ចំនួនខូចក្នុងគំរូ 200 គ្រាប់ (មិនបានទាញសេចក្តីសន្និដ្ឋានទៅផលិតកម្មទាំងមូល)។</td></tr>
-<tr><td>(d)</td><td><b>Inferential</b></td><td>ជាការទស្សន៍ទាយអនាគត (ឆ្នាំ 2035)។</td></tr>
-<tr><td>(e)</td><td><b>Descriptive</b></td><td>សិស្ស 35 នាក់ គឺជាថ្នាក់ទាំងមូល; មធ្យមភាគ 14.2 រៀបរាប់ពួកគេផ្ទាល់។</td></tr>
-<tr><td>(f)</td><td><b>Inferential</b></td><td>ពីអ្នកបើកបរ 1200 នាក់ ទាញសេចក្តីសន្និដ្ឋានទូទៅអំពីហានិភ័យសម្រាប់អ្នកបើកបរទាំងអស់។</td></tr>
+<tr><th style="width:5%"></th><th style="width:15%">Answer<br><span class="km">ចម្លើយ</span></th><th>Reason (EN)</th><th>ហេតុផល (ខ្មែរ)</th></tr>
+<tr><td>(a)</td><td><b>Descriptive</b></td><td>Average of rainfall already recorded (Jan–Jun 2025).</td><td class="km">មធ្យមភាគទឹកភ្លៀងដែលបានកត់ត្រារួច។</td></tr>
+<tr><td>(b)</td><td><b>Inferential</b></td><td>From a sample of 500 households to <i>all</i> households.</td><td class="km">ពីគំរូ 500 គ្រួសារ ទៅគ្រួសារ<i>ទាំងអស់</i>។</td></tr>
+<tr><td>(c)</td><td><b>Descriptive</b></td><td>Only counts defects in the 200 bolts inspected.</td><td class="km">គ្រាន់តែរាប់គ្រាប់ខូចក្នុង 200 គ្រាប់ដែលបានពិនិត្យ។</td></tr>
+<tr><td>(d)</td><td><b>Inferential</b></td><td>A prediction about the future (2035).</td><td class="km">ការទស្សន៍ទាយអនាគត (ឆ្នាំ 2035)។</td></tr>
+<tr><td>(e)</td><td><b>Descriptive</b></td><td>The 35 students are the whole class; the mean describes them.</td><td class="km">សិស្ស 35 នាក់ជាថ្នាក់ទាំងមូល; មធ្យមភាគរៀបរាប់ពួកគេផ្ទាល់។</td></tr>
+<tr><td>(f)</td><td><b>Inferential</b></td><td>Generalises from 1200 drivers to drivers in general.</td><td class="km">ពីអ្នកបើកបរ 1200 នាក់ ទាញសេចក្តីសន្និដ្ឋានទៅអ្នកបើកបរទូទៅ។</td></tr>
 </table>
 </div>
 
-<div class="ex"><h3>លំហាត់ 2. ប្រភេទអថេរ និងកម្រិតរង្វាស់ (level of measurement)</h3>
-<p><b>គន្លឹះ៖</b> <i>Nominal</i> = ឈ្មោះ/ប្រភេទ គ្មានលំដាប់; <i>Ordinal</i> = មានលំដាប់ តែគម្លាតមិនមានន័យ; <i>Interval</i> = គម្លាតមានន័យ តែ 0 មិនមែន “គ្មាន” (មិនអាចនិយាយ “ពីរដង”); <i>Ratio</i> = មាន 0 ពិតប្រាកដ (0 = គ្មាន) អាចប្រៀបធៀបជាផលធៀប។</p>
+<div class="ex"><h3>Exercise 2. Type of variable and level of measurement <span class="km">លំហាត់ 2. ប្រភេទអថេរ និងកម្រិតរង្វាស់</span></h3>
+<div class="fn"><div class="fh"><span class="tag">Key idea</span>Four levels of measurement <span class="km">· កម្រិតរង្វាស់ទាំងបួន</span></div>
+<ul>
+<li><span class="en"><b>Nominal</b>: names or categories, no order.</span><span class="km">ឈ្មោះ ឬប្រភេទ គ្មានលំដាប់។</span></li>
+<li><span class="en"><b>Ordinal</b>: ordered, but differences are not meaningful.</span><span class="km">មានលំដាប់ តែគម្លាតរវាងតម្លៃមិនមានន័យ។</span></li>
+<li><span class="en"><b>Interval</b>: differences are meaningful, but 0 is not “nothing” (no ratios: 20°C is not twice 10°C).</span><span class="km">គម្លាតមានន័យ តែ 0 មិនមែន “គ្មាន” (មិនអាចនិយាយ “ពីរដង”)។</span></li>
+<li><span class="en"><b>Ratio</b>: true zero (0 = none), so ratios make sense.</span><span class="km">មាន 0 ពិត (0 = គ្មាន) អាចប្រៀបធៀបជាផលធៀប។</span></li>
+<li><span class="en"><b>Discrete</b> = counted (0, 1, 2, …); <b>continuous</b> = measured (any value in an interval).</span><span class="km"><b>Discrete</b> = រាប់បាន; <b>Continuous</b> = វាស់បាន (តម្លៃណាក៏បានក្នុងចន្លោះ)។</span></li>
+</ul></div>
 <table>
-<tr><th></th><th>Qualitative / Quantitative</th><th>Discrete / Continuous</th><th>Level</th><th>ហេតុផល</th></tr>
-<tr><td>(a) កម្លាំងសង្កត់បេតុង (MPa)</td><td>Quantitative</td><td>Continuous</td><td><b>Ratio</b></td><td>វាស់បាន តម្លៃណាក៏បាន; 0 MPa = គ្មានកម្លាំង។</td></tr>
-<tr><td>(b) ចំនួនរណ្តៅ / km</td><td>Quantitative</td><td>Discrete</td><td><b>Ratio</b></td><td>រាប់បាន (0, 1, 2, …); 0 = គ្មានរណ្តៅ។</td></tr>
-<tr><td>(c) ប្រភេទដី</td><td>Qualitative</td><td>—</td><td><b>Nominal</b></td><td>ជាឈ្មោះប្រភេទ គ្មានលំដាប់។</td></tr>
-<tr><td>(d) ចំណាត់ថ្នាក់ក្រុម</td><td>Qualitative</td><td>—</td><td><b>Ordinal</b></td><td>មានលំដាប់ (1st, 2nd…) តែគម្លាតរវាងលេខ 1 និង 2 មិនស្មើនឹង 2 និង 3។</td></tr>
-<tr><td>(e) សីតុណ្ហភាព (°C)</td><td>Quantitative</td><td>Continuous</td><td><b>Interval</b></td><td>0°C មិនមែន “គ្មានកម្តៅ”; 20°C មិនមែនក្តៅ “ពីរដង” នៃ 10°C។</td></tr>
-<tr><td>(f) លេខសម្គាល់និស្សិត</td><td>Qualitative</td><td>—</td><td><b>Nominal</b></td><td>លេខគ្រាន់តែជាស្លាកសម្គាល់ មិនអាចបូក ឬគណនាមធ្យមបានន័យ។</td></tr>
+<tr><th>Variable<br><span class="km">អថេរ</span></th><th>Type</th><th>Level</th><th>Reason (EN)</th><th>ហេតុផល (ខ្មែរ)</th></tr>
+<tr><td>(a) Concrete strength (MPa)</td><td>Quantitative, continuous</td><td><b>Ratio</b></td><td>Measured; 0 MPa = no strength.</td><td class="km">វាស់បាន; 0 MPa = គ្មានកម្លាំង។</td></tr>
+<tr><td>(b) Potholes per km</td><td>Quantitative, discrete</td><td><b>Ratio</b></td><td>Counted; 0 = no potholes.</td><td class="km">រាប់បាន; 0 = គ្មានរណ្តៅ។</td></tr>
+<tr><td>(c) Soil type</td><td>Qualitative</td><td><b>Nominal</b></td><td>Categories with no order.</td><td class="km">ប្រភេទ គ្មានលំដាប់។</td></tr>
+<tr><td>(d) Team rankings</td><td>Qualitative</td><td><b>Ordinal</b></td><td>Ordered, but the gap 1st→2nd ≠ 2nd→3rd.</td><td class="km">មានលំដាប់ តែគម្លាតមិនស្មើគ្នា។</td></tr>
+<tr><td>(e) Oven temperature (°C)</td><td>Quantitative, continuous</td><td><b>Interval</b></td><td>0°C is not “no heat”; no meaningful ratios.</td><td class="km">0°C មិនមែន “គ្មានកម្តៅ”។</td></tr>
+<tr><td>(f) Student ID number</td><td>Qualitative</td><td><b>Nominal</b></td><td>Numbers are only labels.</td><td class="km">លេខគ្រាន់តែជាស្លាកសម្គាល់។</td></tr>
 </table>
 </div>
 
-<div class="ex"><h3>លំហាត់ 3. កម្ពស់សិស្ស 14 នាក់</h3>
+<div class="ex"><h3>Exercise 3. Heights of 14 students <span class="km">លំហាត់ 3. កម្ពស់សិស្ស 14 នាក់</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F1</span>Sample mean <span class="km">· មធ្យមភាគគំរូ</span></div>
+<div class="f">\(\displaystyle \bar x=\frac{\sum x_i}{n}\)</div>
+<p class="en"><span class="lab">Symbols:</span> \(x_i\) = each value, \(\sum x_i\) = sum of all values, \(n\) = number of values. <span class="lab">Use:</span> the “centre of gravity” of the data; sensitive to outliers.</p>
+<p class="km"><span class="lab">និមិត្តសញ្ញា៖</span> \(x_i\) = តម្លៃនីមួយៗ, \(\sum x_i\) = ផលបូកតម្លៃទាំងអស់, \(n\) = ចំនួនតម្លៃ។ <span class="lab">ប្រើ៖</span> ចំណុចកណ្តាលនៃទិន្នន័យ; រងឥទ្ធិពលខ្លាំងពី outlier។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F2</span>Median and mode <span class="km">· មេដ្យាន និង ម៉ូត</span></div>
+<div class="f">\(n\) odd: median \(=x_{\left(\frac{n+1}{2}\right)}\) &nbsp;&nbsp;·&nbsp;&nbsp; \(n\) even: median \(=\dfrac{x_{(n/2)}+x_{(n/2+1)}}{2}\)</div>
+<p class="en"><span class="lab">Symbols:</span> \(x_{(k)}\) = the \(k\)-th value after sorting from smallest to largest. The <b>mode</b> is the value that occurs most often. <span class="lab">Use:</span> the median is the middle value; it is resistant to outliers.</p>
+<p class="km"><span class="lab">និមិត្តសញ្ញា៖</span> \(x_{(k)}\) = តម្លៃទី \(k\) ក្រោយតម្រៀបពីតូចទៅធំ។ <b>ម៉ូត</b> = តម្លៃដែលលេចឡើងញឹកញាប់ជាងគេ។ <span class="lab">ប្រើ៖</span> មេដ្យានជាតម្លៃកណ្តាល មិនសូវរងឥទ្ធិពលពី outlier។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F3</span>Percentiles and quartiles <span class="km">· ភាគរយទី និង ក្វាទីល</span></div>
+<div class="f">\(\displaystyle i=n\cdot\frac{k}{100}\) &nbsp;→&nbsp; \(i\) integer: \(P_k=\dfrac{x_{(i)}+x_{(i+1)}}{2}\); &nbsp; \(i\) not integer: \(P_k=x_{(\lceil i\rceil)}\)</div>
+<p class="en"><span class="lab">Symbols:</span> \(P_k\) = \(k\)-th percentile (about \(k\%\) of the data lie below it); \(\lceil i\rceil\) = round \(i\) up. \(Q_1=P_{25}\), \(Q_2=\) median, \(Q_3=P_{75}\). This is R's <code>quantile(..., type = 2)</code>.</p>
+<p class="km"><span class="lab">និមិត្តសញ្ញា៖</span> \(P_k\) = ភាគរយទី \(k\) (ប្រហែល \(k\%\) នៃទិន្នន័យនៅក្រោមវា); \(\lceil i\rceil\) = បង្គត់ឡើង។ \(Q_1=P_{25}\), \(Q_2=\) មេដ្យាន, \(Q_3=P_{75}\)។ ដូច <code>type = 2</code> ក្នុង R។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F4</span>Range, midrange, interquartile range <span class="km">· វិសាលភាព ចំណុចកណ្តាលវិសាលភាព និង IQR</span></div>
+<div class="f">\(R=\max-\min,\qquad \text{midrange}=\dfrac{\min+\max}{2},\qquad IQR=Q_3-Q_1\)</div>
+<p class="en"><span class="lab">Use:</span> the IQR is the spread of the middle 50% of the data (resistant to outliers).</p>
+<p class="km"><span class="lab">ប្រើ៖</span> IQR ជាវិសាលភាពនៃ 50% កណ្តាលនៃទិន្នន័យ (មិនសូវរងឥទ្ធិពលពី outlier)។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F5</span>Sample variance and standard deviation <span class="km">· វ៉ារ្យង់ និងគម្លាតស្តង់ដារគំរូ</span></div>
+<div class="f">\(\displaystyle s^2=\frac{\sum(x_i-\bar x)^2}{n-1}=\frac{\sum x_i^2-\frac{(\sum x_i)^2}{n}}{n-1},\qquad s=\sqrt{s^2}\)</div>
+<p class="en"><span class="lab">Symbols:</span> \(\sum x_i^2\) = sum of the squares, \((\sum x_i)^2\) = square of the sum (not the same!). <span class="lab">Use:</span> average squared distance from the mean. The second form (shortcut) is easiest when \(\sum x_i\) and \(\sum x_i^2\) are given. Divide by \(n-1\) for a sample.</p>
+<p class="km"><span class="lab">និមិត្តសញ្ញា៖</span> \(\sum x_i^2\) = ផលបូកការេ, \((\sum x_i)^2\) = ការេនៃផលបូក (មិនដូចគ្នា!)។ <span class="lab">ប្រើ៖</span> មធ្យមនៃការេគម្លាតពីមធ្យមភាគ។ រូបមន្តទីពីរ (shortcut) ងាយប្រើពេលគេឲ្យ \(\sum x_i\) និង \(\sum x_i^2\)។ សម្រាប់គំរូ ចែកនឹង \(n-1\)។</p></div>
 <ol class="steps">
-<li><b>តម្រៀប៖</b> 155, 158, 160, 162, 163, 165, 165, 165, 168, 169, 170, 172, 175, 180 (\(n=14\))។</li>
-<li><b>Mean៖</b> \(\bar x=\frac{\sum x_i}{n}=\frac{2327}{14}=166.21\) cm។</li>
-<li><b>Mode៖</b> 165 លេចឡើង 3 ដង (ច្រើនជាងគេ) → mode \(=165\) cm។</li>
-<li><b>Median៖</b> \(n\) គូ → មធ្យមនៃតម្លៃទី 7 និងទី 8៖ \(\frac{165+165}{2}=165\) cm។</li>
-<li><b>Quartiles៖</b> \(Q_1\): \(14\times0.25=3.5\) → បង្គត់ឡើងជាទី 4 → \(Q_1=162\)។ \(Q_3\): \(14\times0.75=10.5\) → ទី 11 → \(Q_3=170\)។ <br>\(IQR=170-162=8\) cm។ <span class="muted">(វិធី “median នៃពាក់កណ្តាលនីមួយៗ” ក៏ផ្តល់ 162 និង 170 ដូចគ្នា។)</span></li>
-<li><b>Midrange៖</b> \(\frac{\min+\max}{2}=\frac{155+180}{2}=167.5\) cm។</li>
-<li><b>Variance៖</b> \(s^2=\frac{\sum x_i^2-\frac{(\sum x_i)^2}{n}}{n-1}=\frac{387371-\frac{2327^2}{14}}{13}=\frac{387371-386780.64}{13}=\frac{590.36}{13}=45.41\) cm²។</li>
-<li><b>Standard deviation៖</b> \(s=\sqrt{45.41}=6.74\) cm។</li>
+<li><span class="en"><b>Sort the data</b> (\(n=14\)): 155, 158, 160, 162, 163, 165, 165, 165, 168, 169, 170, 172, 175, 180.</span><span class="km"><b>តម្រៀបទិន្នន័យ</b>ពីតូចទៅធំ។</span></li>
+<li><span class="en"><b>Mean</b> (F1): \(\bar x=\frac{2327}{14}=166.21\) cm.</span><span class="km"><b>មធ្យមភាគ</b>៖ ចែកផលបូក 2327 នឹង 14 → 166.21 cm។</span></li>
+<li><span class="en"><b>Mode</b> (F2): 165 occurs 3 times, more than any other value → mode \(=165\) cm.</span><span class="km"><b>ម៉ូត</b>៖ 165 លេចឡើង 3 ដង (ច្រើនជាងគេ) → 165 cm។</span></li>
+<li><span class="en"><b>Median</b> (F2): \(n=14\) is even → average of the 7th and 8th values: \(\frac{165+165}{2}=165\) cm.</span><span class="km"><b>មេដ្យាន</b>៖ \(n\) គូ → មធ្យមនៃតម្លៃទី 7 និងទី 8 → 165 cm។</span></li>
+<li><span class="en"><b>Quartiles</b> (F3): \(Q_1\): \(14\times0.25=3.5\) → round up to 4 → \(Q_1=162\). \(Q_3\): \(14\times0.75=10.5\) → 11th value → \(Q_3=170\). (F4) \(IQR=170-162=8\) cm.</span><span class="km"><b>ក្វាទីល</b>៖ 3.5 បង្គត់ឡើងជាទី 4 → \(Q_1=162\); 10.5 → ទី 11 → \(Q_3=170\); \(IQR=8\) cm។ (វិធី “median នៃពាក់កណ្តាលនីមួយៗ” ក៏បាន 162 និង 170 ដូចគ្នា។)</span></li>
+<li><span class="en"><b>Midrange</b> (F4): \(\frac{155+180}{2}=167.5\) cm.</span><span class="km"><b>ចំណុចកណ្តាលវិសាលភាព</b>៖ មធ្យមនៃតម្លៃតូចបំផុត និងធំបំផុត → 167.5 cm។</span></li>
+<li><span class="en"><b>Variance</b> (F5, shortcut):</span><span class="calc">\(s^2=\dfrac{387371-\frac{2327^2}{14}}{13}=\dfrac{387371-386780.64}{13}=\dfrac{590.36}{13}=45.41\ \text{cm}^2\)</span><span class="km"><b>វ៉ារ្យង់</b>៖ ប្រើរូបមន្ត shortcut ជាមួយ \(\sum x_i=2327\), \(\sum x_i^2=387371\) → 45.41 cm²។</span></li>
+<li><span class="en"><b>Standard deviation</b>: \(s=\sqrt{45.41}=6.74\) cm.</span><span class="km"><b>គម្លាតស្តង់ដារ</b>៖ ឫសការេនៃវ៉ារ្យង់ → 6.74 cm។</span></li>
 </ol>
-<span class="ans">\(\bar x=166.21\); mode \(=165\); median \(=165\); \(IQR=8\); midrange \(=167.5\); \(s^2=45.41\); \(s=6.74\)</span>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\bar x=166.21\) · mode \(=165\) · median \(=165\) · \(IQR=8\) · midrange \(=167.5\) · \(s^2=45.41\) · \(s=6.74\) (cm)</div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 4. ពិន្ទុណាមានទីតាំងធៀប (relative position) ល្អជាងគេ?</h3>
-<p>ប្រៀបធៀបដោយ z-score \(z=\frac{x-\bar x}{s}\) (ចំនួន standard deviation ខាងលើមធ្យមភាគ)៖</p>
+<div class="ex"><h3>Exercise 4. Exam grades: best relative position <span class="km">លំហាត់ 4. ពិន្ទុណាមានទីតាំងធៀបល្អជាងគេ</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F6</span>z-score (standard score) <span class="km">· ពិន្ទុស្តង់ដារ</span></div>
+<div class="f">\(\displaystyle z=\frac{x-\bar x}{s}\)</div>
+<p class="en"><span class="lab">Meaning:</span> how many standard deviations \(x\) lies above (\(z&gt;0\)) or below (\(z&lt;0\)) the mean. <span class="lab">Use:</span> compare values from different scales; detect outliers (\(|z|&gt;3\)).</p>
+<p class="km"><span class="lab">អត្ថន័យ៖</span> \(x\) នៅខាងលើ (\(z&gt;0\)) ឬខាងក្រោម (\(z&lt;0\)) មធ្យមភាគប៉ុន្មានដងនៃគម្លាតស្តង់ដារ។ <span class="lab">ប្រើ៖</span> ប្រៀបធៀបតម្លៃដែលមានខ្នាតខុសគ្នា; រក outlier (\(|z|&gt;3\))។</p></div>
 <ol class="steps">
-<li>Physics: \(z=\frac{72-65}{10}=0.70\)</li>
-<li>Mathematics: \(z=\frac{80-74}{6}=1.00\)</li>
-<li>Programming: \(z=\frac{15-12}{4}=0.75\)</li>
+<li><span class="en">Physics: \(z=\frac{72-65}{10}=0.70\); Mathematics: \(z=\frac{80-74}{6}=1.00\); Programming: \(z=\frac{15-12}{4}=0.75\).</span><span class="km">គណនា z-score សម្រាប់មុខវិជ្ជានីមួយៗ។</span></li>
+<li><span class="en">The largest \(z\) is the best relative position.</span><span class="km">z ធំជាងគេ = ទីតាំងធៀបល្អជាងគេ។</span></li>
 </ol>
-<span class="ans">Mathematics (\(z=1.00\) ធំជាងគេ) — ពិន្ទុ 80 ស្ថិតខាងលើមធ្យមភាគ 1 standard deviation</span>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">Mathematics (\(z=1.00\)): the grade 80 is one standard deviation above the mean.</span><span class="km">គណិតវិទ្យា (\(z=1.00\))៖ ពិន្ទុ 80 ខ្ពស់ជាងមធ្យមភាគ 1 គម្លាតស្តង់ដារ។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 5. ពិនិត្យ outlier ដោយ IQR និង z-score</h3>
-<div class="q"><b class="lbl">(a)</b> 48, 52, 50, 55, 51, 49, 85 (\(\bar x=55.71\), \(s=13.11\))
+<div class="ex"><h3>Exercise 5. Outliers: IQR method and z-score method <span class="km">លំហាត់ 5. រក outlier ដោយ IQR និង z-score</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F7</span>Outlier rules <span class="km">· ច្បាប់រក outlier</span></div>
+<div class="f">IQR fences: \(\;Q_1-1.5\,IQR\;\) and \(\;Q_3+1.5\,IQR\;\) &nbsp;&nbsp;·&nbsp;&nbsp; z-score rule: \(|z|&gt;3\)</div>
+<p class="en"><span class="lab">Use:</span> a value outside the fences (or with \(|z|&gt;3\)) is an outlier. The IQR rule uses quartiles, so it is resistant; the z rule uses \(\bar x\) and \(s\), which the outlier itself pulls.</p>
+<p class="km"><span class="lab">ប្រើ៖</span> តម្លៃនៅក្រៅរបង (ឬ \(|z|&gt;3\)) ជា outlier។ ច្បាប់ IQR ប្រើក្វាទីល ដូច្នេះមិនសូវរងឥទ្ធិពល; ច្បាប់ z ប្រើ \(\bar x\) និង \(s\) ដែល outlier ខ្លួនឯងទាញ។</p></div>
+<div class="q"><b class="lbl">(a)</b> 48, 52, 50, 55, 51, 49, 85 &nbsp;(\(\bar x=55.71\), \(s=13.11\))
 <ol class="steps">
-<li>តម្រៀប៖ 48, 49, 50, 51, 52, 55, 85 (\(n=7\))។</li>
-<li>\(Q_1\): \(7\times0.25=1.75\) → ទី 2 → \(Q_1=49\)។ \(Q_3\): \(7\times0.75=5.25\) → ទី 6 → \(Q_3=55\)។ \(IQR=6\)។</li>
-<li>របង៖ \(49-1.5(6)=40\) និង \(55+1.5(6)=64\)។ 85 &gt; 64 → <b>85 ជា outlier (IQR)</b>។</li>
-<li>z-score នៃ 85៖ \(z=\frac{85-55.71}{13.11}=2.23\)។ \(|z|&lt;3\) → <b>មិនមែន outlier (z-score)</b>។</li>
+<li><span class="en">Sorted (\(n=7\)): 48, 49, 50, 51, 52, 55, 85.</span><span class="km">តម្រៀប។</span></li>
+<li><span class="en">(F3) \(7\times0.25=1.75\) → 2nd → \(Q_1=49\); \(7\times0.75=5.25\) → 6th → \(Q_3=55\); \(IQR=6\).</span><span class="km">\(Q_1=49\), \(Q_3=55\), \(IQR=6\)។</span></li>
+<li><span class="en">(F7) Fences: \(49-9=40\) and \(55+9=64\). Since \(85&gt;64\), <b>85 is an outlier (IQR)</b>.</span><span class="km">របង 40 និង 64; 85 &gt; 64 → <b>85 ជា outlier តាម IQR</b>។</span></li>
+<li><span class="en">(F6) \(z(85)=\frac{85-55.71}{13.11}=2.23&lt;3\) → <b>not an outlier (z)</b>.</span><span class="km">\(z=2.23&lt;3\) → <b>មិនមែន outlier តាម z-score</b>។</span></li>
 </ol></div>
-<div class="q"><b class="lbl">(b)</b> 12, 15, 9, 14, 30, 11, 13, 10, 16, 2 (\(\bar x=13.2\), \(s=7.10\))
+<div class="q"><b class="lbl">(b)</b> 12, 15, 9, 14, 30, 11, 13, 10, 16, 2 &nbsp;(\(\bar x=13.2\), \(s=7.10\))
 <ol class="steps">
-<li>តម្រៀប៖ 2, 9, 10, 11, 12, 13, 14, 15, 16, 30 (\(n=10\))។</li>
-<li>\(Q_1\): \(10\times0.25=2.5\) → ទី 3 → \(Q_1=10\)។ \(Q_3\): \(7.5\) → ទី 8 → \(Q_3=15\)។ \(IQR=5\)។</li>
-<li>របង៖ \(10-7.5=2.5\) និង \(15+7.5=22.5\)។ <b>2 និង 30 ជា outliers (IQR)</b>។</li>
-<li>z-score៖ \(z(30)=\frac{30-13.2}{7.10}=2.37\), \(z(2)=\frac{2-13.2}{7.10}=-1.58\)។ គ្មាន \(|z|&gt;3\) → <b>គ្មាន outlier (z-score)</b>។</li>
+<li><span class="en">Sorted (\(n=10\)): 2, 9, 10, 11, 12, 13, 14, 15, 16, 30.</span><span class="km">តម្រៀប។</span></li>
+<li><span class="en">(F3) \(10\times0.25=2.5\) → 3rd → \(Q_1=10\); \(7.5\) → 8th → \(Q_3=15\); \(IQR=5\).</span><span class="km">\(Q_1=10\), \(Q_3=15\), \(IQR=5\)។</span></li>
+<li><span class="en">(F7) Fences: \(10-7.5=2.5\) and \(15+7.5=22.5\) → <b>2 and 30 are outliers (IQR)</b>.</span><span class="km">របង 2.5 និង 22.5 → <b>2 និង 30 ជា outliers តាម IQR</b>។</span></li>
+<li><span class="en">(F6) \(z(30)=\frac{30-13.2}{7.10}=2.37\), \(z(2)=\frac{2-13.2}{7.10}=-1.58\) → <b>no outlier (z)</b>.</span><span class="km">គ្មាន \(|z|&gt;3\) → <b>គ្មាន outlier តាម z-score</b>។</span></li>
 </ol></div>
-<p><b>តើវិធីទាំងពីរផ្តល់លទ្ធផលដូចគ្នាទេ?</b> <span class="ans">ទេ — IQR រកឃើញ outlier តែ z-score មិនរកឃើញ</span></p>
-<p><b>ពន្យល់៖</b> \(\bar x\) និង \(s\) ខ្លួនឯងត្រូវបាន outlier ទាញ (outlier ធ្វើឲ្យ \(s\) ធំ) ដូច្នេះ z-score របស់ outlier តូចជាងការពិត (masking)។ សម្រាប់គំរូតូច \(|z|\) មិនអាចលើស \(\frac{n-1}{\sqrt n}\) បានទេ៖ \(n=7\) → \(2.27\); \(n=10\) → \(2.85\)។ ដូច្នេះច្បាប់ \(|z|&gt;3\) មិនអាចរកឃើញ outlier ណាមួយបានឡើយក្នុងករណីនេះ។ Quartiles មិនសូវរងឥទ្ធិពលពី outlier (resistant) ដូច្នេះវិធី IQR គួរទុកចិត្តជាងសម្រាប់គំរូតូច។</p>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">No, the two methods disagree. The outlier inflates \(s\) and shifts \(\bar x\), so its own z-score looks small (“masking”). In a sample of size \(n\), \(|z|\) can never exceed \(\frac{n-1}{\sqrt n}\): 2.27 for \(n=7\) and 2.85 for \(n=10\), so \(|z|&gt;3\) is impossible here. The IQR method is more reliable for small samples.</span><span class="km">ទេ វិធីទាំងពីរមិនដូចគ្នា។ Outlier ធ្វើឲ្យ \(s\) ធំ និងរំកិល \(\bar x\) ដូច្នេះ z-score របស់វាមើលទៅតូច (masking)។ ក្នុងគំរូទំហំ \(n\), \(|z|\) មិនអាចលើស \(\frac{n-1}{\sqrt n}\) (2.27 ពេល \(n=7\), 2.85 ពេល \(n=10\)) ដូច្នេះ \(|z|&gt;3\) មិនអាចកើតឡើងទេ។ វិធី IQR គួរទុកចិត្តជាងសម្រាប់គំរូតូច។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 6. ប្រាក់ខែចាប់ផ្តើម (\(n=20\), តម្រៀបរួច)</h3>
+<div class="ex"><h3>Exercise 6. Starting salaries (\(n=20\), already sorted) <span class="km">លំហាត់ 6. ប្រាក់ខែចាប់ផ្តើម</span></h3>
+<p class="see">Formulas used: F2, F3, F4, F7 · រូបមន្តដែលប្រើ៖ F2, F3, F4, F7</p>
 <div class="q"><b class="lbl">(a)</b>
 <ol class="steps">
-<li>Median៖ \(n=20\) គូ → មធ្យមនៃទី 10 និងទី 11៖ \(\frac{540+550}{2}=545\)។</li>
-<li>\(Q_1\): \(20\times0.25=5\) (ចំនួនគត់) → មធ្យមនៃទី 5 និងទី 6៖ \(\frac{460+480}{2}=470\)។</li>
-<li>\(Q_3\): \(20\times0.75=15\) → មធ្យមនៃទី 15 និងទី 16៖ \(\frac{620+650}{2}=635\)។</li>
-</ol><span class="ans">median \(=\$545\), \(Q_1=\$470\), \(Q_3=\$635\)</span></div>
+<li><span class="en">Median (F2): average of the 10th and 11th values: \(\frac{540+550}{2}=545\).</span><span class="km">មេដ្យាន៖ មធ្យមនៃទី 10 និងទី 11 → 545។</span></li>
+<li><span class="en">\(Q_1\) (F3): \(20\times0.25=5\) is an integer → average of 5th and 6th: \(\frac{460+480}{2}=470\).</span><span class="km">\(Q_1\)៖ 5 ជាចំនួនគត់ → មធ្យមនៃទី 5 និងទី 6 → 470។</span></li>
+<li><span class="en">\(Q_3\): \(20\times0.75=15\) → average of 15th and 16th: \(\frac{620+650}{2}=635\).</span><span class="km">\(Q_3\)៖ មធ្យមនៃទី 15 និងទី 16 → 635។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>median \(=\$545\), \(Q_1=\$470\), \(Q_3=\$635\)</div></div>
 <div class="q"><b class="lbl">(b)</b>
 <ol class="steps">
-<li>\(P_{26}\): \(20\times0.26=5.2\) → បង្គត់ឡើងជាទី 6 → \(480\)។</li>
-<li>\(P_{83}\): \(20\times0.83=16.6\) → ទី 17 → \(700\)។</li>
-</ol><span class="ans">\(P_{26}=\$480\), \(P_{83}=\$700\)</span></div>
+<li><span class="en">\(P_{26}\): \(20\times0.26=5.2\) → round up to 6 → 480.</span><span class="km">5.2 បង្គត់ឡើងជាទី 6 → 480។</span></li>
+<li><span class="en">\(P_{83}\): \(20\times0.83=16.6\) → 17th value → 700.</span><span class="km">16.6 → ទី 17 → 700។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(P_{26}=\$480\), \(P_{83}=\$700\)</div></div>
 <div class="q"><b class="lbl">(c)</b>
 <ol class="steps">
-<li>\(IQR=635-470=165\); \(1.5\,IQR=247.5\)។</li>
-<li>របង៖ \(470-247.5=222.5\) និង \(635+247.5=882.5\)។</li>
-<li>មានតែ 1200 &gt; 882.5។</li>
-</ol><span class="ans">$1200 ជា outlier</span></div>
-<div class="q"><b class="lbl">(d)</b> Mean \(=\$585\) &gt; median \(=\$545\)។ ប្រាក់ខែ $1200 (outlier) ទាញ mean ឡើងលើ (ទិន្នន័យ skewed ទៅស្តាំ)។ Median មិនរងឥទ្ធិពលពី outlier។ <span class="ans">Median ($545) តំណាងប្រាក់ខែ “ធម្មតា” បានល្អជាង</span></div>
+<li><span class="en">\(IQR=635-470=165\), \(1.5\,IQR=247.5\). Fences: \(222.5\) and \(882.5\).</span><span class="km">របង 222.5 និង 882.5។</span></li>
+<li><span class="en">Only 1200 is above 882.5.</span><span class="km">មានតែ 1200 នៅខាងលើ 882.5។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>$1200 is an outlier / $1200 ជា outlier</div></div>
+<div class="q"><b class="lbl">(d)</b>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">The mean ($585) is larger than the median ($545) because the outlier $1200 pulls the mean up (right-skewed data). The median is resistant, so <b>the median better describes a typical salary</b>.</span><span class="km">មធ្យមភាគ ($585) ធំជាងមេដ្យាន ($545) ព្រោះ $1200 ទាញមធ្យមភាគឡើង (skew ទៅស្តាំ)។ មេដ្យានមិនរងឥទ្ធិពល ដូច្នេះ<b>មេដ្យានតំណាងប្រាក់ខែធម្មតាបានល្អជាង</b>។</span></div></div>
 </div>
 
-<h2 class="part">Part B. Practice Problems with R</h2>
+<h2 class="part">Part B. Practice Problems with R <span class="km">· លំហាត់អនុវត្តជាមួយ R</span></h2>
 
-<div class="ex"><h3>លំហាត់ 7. Basic measures (ផ្ទៀងលំហាត់ 3)</h3>
+<div class="ex"><h3>Exercise 7. Basic measures (check Exercise 3) <span class="km">លំហាត់ 7. រង្វាស់មូលដ្ឋាន</span></h3>
 <pre>h &lt;- c(158, 165, 170, 162, 175, 168, 160, 165, 172, 180, 155, 165, 169, 163)
 mean(h)                    <span class="c"># 166.2143</span>
 median(h)                  <span class="c"># 165</span>
-var(h)                     <span class="c"># 45.41209</span>
+var(h)                     <span class="c"># 45.41209   (divisor n-1, F5)</span>
 sd(h)                      <span class="c"># 6.738849</span>
 min(h); max(h)             <span class="c"># 155  180</span>
 (min(h) + max(h)) / 2      <span class="c"># midrange = 167.5</span>
 
-<span class="c"># (b) mode</span>
+<span class="c"># (b) mode: R has no mode() for data, so count with table()</span>
 tab &lt;- table(h); tab
-names(tab)[tab == max(tab)]   <span class="c"># "165"  (appears 3 times)</span>
+names(tab)[tab == max(tab)]   <span class="c"># "165"  (3 times)</span>
 
 <span class="c"># (c) quartiles</span>
-quantile(h, c(0.25, 0.75))            <span class="c"># 162.25  169.75   (default type = 7)</span>
+quantile(h, c(0.25, 0.75))            <span class="c"># 162.25 169.75  (default type 7)</span>
 diff(quantile(h, c(0.25, 0.75)))      <span class="c"># IQR = 7.5</span>
-quantile(h, c(0.25, 0.75), type = 2)  <span class="c"># 162  170</span>
+quantile(h, c(0.25, 0.75), type = 2)  <span class="c"># 162 170</span>
 IQR(h, type = 2)                      <span class="c"># 8</span></pre>
-<p><b>(c)</b> <span class="ans"><code>type = 2</code> ផ្តល់ \(Q_1=162\), \(Q_3=170\), \(IQR=8\) ដូចការគណនាដោយដៃ</span> <span class="muted">Type 7 (default) ប្រើការ interpolate រវាងតម្លៃពីរ ដូច្នេះបាន 162.25 និង 169.75។</span></p>
+<div class="ans"><b class="h">Answer (c) / ចម្លើយ (c)</b><span class="en"><code>type = 2</code> gives \(Q_1=162\), \(Q_3=170\), \(IQR=8\), the same as the hand calculation (F3). The default type 7 interpolates between neighbouring values, so it gives 162.25 and 169.75.</span><span class="km"><code>type = 2</code> ផ្តល់ 162, 170, IQR = 8 ដូចការគណនាដោយដៃ។ Type 7 (default) គណនាតម្លៃចន្លោះ (interpolate) ដូច្នេះបាន 162.25 និង 169.75។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 8. Percentiles និង outliers (ផ្ទៀងលំហាត់ 5 និង 6)</h3>
-<p class="note">ចំណាំ៖ ប្រាក់ខែស្ថិតក្នុងលំហាត់ 6 (មិនមែន 7) ហើយទិន្នន័យពីរ “of Exercise 6” គឺទិន្នន័យ (a), (b) នៃលំហាត់ 5។</p>
+<div class="ex"><h3>Exercise 8. Percentiles and outliers <span class="km">លំហាត់ 8. ភាគរយទី និង outlier</span></h3>
+<p class="en muted">Note: the salaries are in Exercise 6 (the sheet says 7), and “the two data sets of Exercise 6” are data sets (a) and (b) of Exercise 5.</p>
+<p class="km muted">ចំណាំ៖ ប្រាក់ខែនៅក្នុងលំហាត់ 6 (សន្លឹកសរសេរ 7) ហើយ “ទិន្នន័យពីរ” គឺ (a) និង (b) នៃលំហាត់ 5។</p>
 <pre>s &lt;- c(380, 410, 420, 450, 460, 480, 500, 510, 520, 540,
        550, 560, 580, 600, 620, 650, 700, 750, 820, 1200)
 quantile(s, c(0.25, 0.50, 0.75, 0.26, 0.83), type = 2)
 <span class="c">#  25%  50%  75%  26%  83%</span>
 <span class="c">#  470  545  635  480  700</span>
 
-<span class="c"># (b)</span>
+<span class="c"># (b) values outside the IQR fences (F7)</span>
 outliers_iqr &lt;- function(v) {
   q   &lt;- quantile(v, c(0.25, 0.75), type = 2)
   iqr &lt;- q[2] - q[1]
   v[v &lt; q[1] - 1.5 * iqr | v &gt; q[2] + 1.5 * iqr]
 }
-outliers_iqr(s)                                    <span class="c"># 1200</span>
-outliers_iqr(c(48, 52, 50, 55, 51, 49, 85))        <span class="c"># 85</span>
-outliers_iqr(c(12, 15, 9, 14, 30, 11, 13, 10, 16, 2))  <span class="c"># 30  2</span>
+outliers_iqr(s)                                        <span class="c"># 1200</span>
+outliers_iqr(c(48, 52, 50, 55, 51, 49, 85))            <span class="c"># 85</span>
+outliers_iqr(c(12, 15, 9, 14, 30, 11, 13, 10, 16, 2))  <span class="c"># 30 2</span>
 
-<span class="c"># (c)</span>
+<span class="c"># (c) z-scores (F6): scale() computes (x - mean) / sd</span>
 z &lt;- scale(s)
-round(z[s == 1200], 2)                             <span class="c"># 3.34</span></pre>
-<p><b>(c)</b> \(\bar x=585\), \(s=184.29\) → \(z=\frac{1200-585}{184.29}=3.34\)។ <span class="ans">\(|z|=3.34&gt;3\) → $1200 ជា outlier តាមច្បាប់ \(|z|&gt;3\) ផងដែរ</span></p>
+round(z[s == 1200], 2)                                 <span class="c"># 3.34</span></pre>
+<div class="ans"><b class="h">Answer (c) / ចម្លើយ (c)</b><span class="en">\(\bar x=585\), \(s=184.29\), \(z=\frac{1200-585}{184.29}=3.34&gt;3\) → $1200 is also an outlier by the \(|z|&gt;3\) rule (with \(n=20\), \(|z|\) can reach 3).</span><span class="km">\(z=3.34&gt;3\) → $1200 ក៏ជា outlier តាមច្បាប់ \(|z|&gt;3\) ដែរ (ពេល \(n=20\), \(|z|\) អាចដល់ 3)។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 9. ទិន្នន័យពិត៖ <code>mtcars</code></h3>
+<div class="ex"><h3>Exercise 9. A real data set: <code>mtcars</code> <span class="km">លំហាត់ 9. ទិន្នន័យពិត mtcars</span></h3>
 <pre>head(mtcars)
 summary(mtcars$mpg)
 <span class="c">#   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.</span>
-<span class="c">#  10.40   15.43   19.20   20.09   22.80   33.90</span></pre>
-<div class="q"><b class="lbl">(a)</b> <code>head()</code> បង្ហាញ 6 ជួរដំបូង (ឡាន 6 ម៉ូដែល)។ <code>summary()</code>៖ <b>Min</b> = តូចបំផុត (10.4 mpg); <b>1st Qu.</b> = \(Q_1\) (25% នៃឡានមាន mpg ≤ 15.43); <b>Median</b> = 19.2 (ពាក់កណ្តាលនៃឡាន ≤ 19.2); <b>Mean</b> = មធ្យមភាគ 20.09; <b>3rd Qu.</b> = \(Q_3\) (75% ≤ 22.8); <b>Max</b> = ធំបំផុត 33.9។</div>
-<div class="q"><b class="lbl">(b)</b> <b>mpg</b>: quantitative, continuous (ratio)។ <b>cyl</b>: quantitative, discrete (តែ 4, 6, 8; អាចចាត់ទុកជា categorical ផងដែរ)។ <b>hp</b>: quantitative, continuous (កម្លាំងម៉ាស៊ីន វាស់បាន ទោះបីកត់ត្រាជាចំនួនគត់)។</div>
-<div class="q"><b class="lbl">(c)</b>
-<pre>tapply(mtcars$mpg, mtcars$cyl, mean)     <span class="c">#     4: 26.66   6: 19.74   8: 15.10</span>
-tapply(mtcars$mpg, mtcars$cyl, median)   <span class="c">#     4: 26.0    6: 19.7    8: 15.2</span>
-tapply(mtcars$mpg, mtcars$cyl, sd)       <span class="c">#     4: 4.51    6: 1.45    8: 2.56</span></pre>
-<span class="ans">ស៊ីឡាំងកាន់តែច្រើន → mpg កាន់តែតិច (ស៊ីសាំងច្រើន)។ ក្រុម 4 ស៊ីឡាំងប្រែប្រួលច្រើនជាងគេ (SD = 4.51)</span></div>
-<div class="q"><b class="lbl">(d)</b>
-<pre>outliers_iqr(mtcars$hp)                          <span class="c"># 335</span>
+<span class="c">#  10.40   15.43   19.20   20.09   22.80   33.90</span>
+tapply(mtcars$mpg, mtcars$cyl, mean)     <span class="c">#  4: 26.66   6: 19.74   8: 15.10</span>
+tapply(mtcars$mpg, mtcars$cyl, median)   <span class="c">#  4: 26.0    6: 19.7    8: 15.2</span>
+tapply(mtcars$mpg, mtcars$cyl, sd)       <span class="c">#  4: 4.51    6: 1.45    8: 2.56</span>
+outliers_iqr(mtcars$hp)                          <span class="c"># 335</span>
 mtcars[mtcars$hp %in% outliers_iqr(mtcars$hp), ]  <span class="c"># Maserati Bora</span></pre>
-\(Q_1=96\), \(Q_3=180\), \(IQR=84\), របងខាងលើ \(=180+126=306\)។ <span class="ans">hp = 335 &gt; 306 → Maserati Bora</span></div>
+<div class="q"><b class="lbl">(a)</b><span class="en"><code>head()</code> shows the first 6 rows. In <code>summary()</code>: Min = smallest (10.4 mpg); 1st Qu. = \(Q_1\), 25% of cars have mpg ≤ 15.43; Median = 19.2, half the cars are at or below it; Mean = 20.09; 3rd Qu. = \(Q_3\), 75% ≤ 22.8; Max = largest (33.9).</span><span class="km"><code>head()</code> បង្ហាញ 6 ជួរដំបូង។ Min = តូចបំផុត; 1st Qu. = \(Q_1\) (25% នៃឡាន ≤ 15.43); Median = 19.2 (ពាក់កណ្តាល ≤ 19.2); Mean = មធ្យមភាគ 20.09; 3rd Qu. = \(Q_3\) (75% ≤ 22.8); Max = ធំបំផុត 33.9។</span></div>
+<div class="q"><b class="lbl">(b)</b><span class="en"><b>mpg</b>: quantitative, continuous. <b>cyl</b>: quantitative, discrete (only 4, 6, 8; it can also be treated as a category). <b>hp</b>: quantitative, continuous (measured, even though it is recorded as whole numbers).</span><span class="km"><b>mpg</b>: បរិមាណ ជាប់ (continuous)។ <b>cyl</b>: បរិមាណ ដាច់ (discrete; អាចចាត់ទុកជាប្រភេទក៏បាន)។ <b>hp</b>: បរិមាណ ជាប់ (វាស់បាន)។</span></div>
+<div class="q"><b class="lbl">(c)</b><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">More cylinders → lower mpg (worse fuel efficiency). The 4-cylinder group is the most variable (largest SD, 4.51).</span><span class="km">ស៊ីឡាំងច្រើន → mpg តិច (ស៊ីសាំងច្រើន)។ ក្រុម 4 ស៊ីឡាំងប្រែប្រួលច្រើនជាងគេ (SD ធំជាងគេ 4.51)។</span></div></div>
+<div class="q"><b class="lbl">(d)</b><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">\(Q_1=96\), \(Q_3=180\), \(IQR=84\), upper fence \(=180+126=306\). Only hp = 335 is above it: the <b>Maserati Bora</b>.</span><span class="km">របងខាងលើ 306; មានតែ hp = 335 → <b>Maserati Bora</b>។</span></div></div>
 </div>
 
-<!-- =============================================================== -->
-<h1 class="td">I3–TD2 · Point Estimation and Confidence Intervals for the Mean</h1>
-<h2 class="part">Part A. Point Estimation — A.1 Estimators and their properties</h2>
+<!-- =================================================================== -->
+<h1 class="td">I3–TD2 · Point Estimation and Confidence Intervals <span class="km">ការប៉ាន់ស្មានចំណុច និងចន្លោះទំនុកចិត្ត</span></h1>
+<h2 class="part">A.1 Estimators and their properties <span class="km">· អង្គប៉ាន់ស្មាន និងលក្ខណៈរបស់វា</span></h2>
 
-<div class="ex"><h3>លំហាត់ 1. Concepts (True/False)</h3>
+<div class="ex"><h3>Exercise 1. Concepts: true or false <span class="km">លំហាត់ 1. ពិត ឬ មិនពិត</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F8</span>Bias, unbiased, efficient, consistent <span class="km">· លម្អៀង គ្មានលម្អៀង ប្រសិទ្ធភាព ភាពស៊ីសង្វាក់</span></div>
+<div class="f">\(\text{bias}(\hat\theta)=E(\hat\theta)-\theta,\qquad \mathrm{MSE}(\hat\theta)=E[(\hat\theta-\theta)^2]=\mathrm{Var}(\hat\theta)+\text{bias}^2\)</div>
+<ul>
+<li><span class="en"><b>Unbiased</b>: \(E(\hat\theta)=\theta\), correct on average over many samples.</span><span class="km"><b>គ្មានលម្អៀង</b>៖ \(E(\hat\theta)=\theta\) ត្រឹមត្រូវជាមធ្យមលើគំរូច្រើន។</span></li>
+<li><span class="en"><b>More efficient</b>: among unbiased estimators, the one with the smaller variance.</span><span class="km"><b>ប្រសិទ្ធភាពជាង</b>៖ ក្នុងចំណោមអង្គគ្មានលម្អៀង មួយដែលមានវ៉ារ្យង់តូចជាង។</span></li>
+<li><span class="en"><b>Consistent</b>: \(\hat\theta\to\theta\) as \(n\to\infty\). Simple check: unbiased (or bias → 0) and \(\mathrm{Var}(\hat\theta)\to0\).</span><span class="km"><b>ស៊ីសង្វាក់</b>៖ \(\hat\theta\to\theta\) ពេល \(n\to\infty\)។ ពិនិត្យ៖ គ្មានលម្អៀង (ឬលម្អៀង → 0) ហើយ \(\mathrm{Var}\to0\)។</span></li>
+<li><span class="en">An <b>estimator</b> is a random variable (a formula of the sample, e.g. \(\bar X\)); an <b>estimate</b> is the number it gives for the observed data.</span><span class="km"><b>អង្គប៉ាន់ស្មាន (estimator)</b> ជាអថេរចៃដន្យ (រូបមន្តនៃគំរូ ឧ. \(\bar X\)); <b>តម្លៃប៉ាន់ស្មាន (estimate)</b> ជាលេខដែលទទួលបានពីទិន្នន័យ។</span></li>
+</ul></div>
 <table>
-<tr><th></th><th>ចម្លើយ</th><th>ពន្យល់ / កែតម្រូវ</th></tr>
-<tr><td>(a)</td><td><b>False</b></td><td>ច្រាសគ្នា៖ <i>estimator</i> ជាអថេរចៃដន្យ (រូបមន្តនៃគំរូ ឧ. \(\bar X\)); <i>estimate</i> ជាលេខដែលគណនាពីទិន្នន័យជាក់ស្តែង (ឧ. \(\bar x=75.6\))។</td></tr>
-<tr><td>(b)</td><td><b>False</b></td><td>Unbiased មានន័យថា \(E(\hat\theta)=\theta\) ជាមធ្យម (លើគំរូច្រើន) មិនមែនស្មើ \(\theta\) គ្រប់គំរូទេ។</td></tr>
-<tr><td>(c)</td><td><b>True</b></td><td>រវាង estimators unbiased ពីរ មួយដែល variance តូចជាង គឺ efficient ជាង។</td></tr>
-<tr><td>(d)</td><td><b>True</b></td><td>\(E(\hat\sigma^2)=\frac{n-1}{n}\sigma^2&lt;\sigma^2\) → ប៉ាន់ស្មានទាបជាងការពិតជាមធ្យម។</td></tr>
-<tr><td>(e)</td><td><b>True</b></td><td>Consistent៖ \(\hat\theta\) ខិតជិត \(\theta\) (តាមប្រូបាប) ពេល \(n\to\infty\)។</td></tr>
-<tr><td>(f)</td><td><b>True</b></td><td>\(SE(\bar X)=\frac{\sigma}{\sqrt n}\) ថយចុះពេល \(n\) កើន។</td></tr>
+<tr><th style="width:5%"></th><th style="width:9%">Answer</th><th>Explanation / correction (EN)</th><th>ពន្យល់ / កែតម្រូវ (ខ្មែរ)</th></tr>
+<tr><td>(a)</td><td><b>False</b></td><td>Reversed: the estimator is the random variable; the estimate is the number.</td><td class="km">ច្រាសគ្នា៖ estimator ជាអថេរចៃដន្យ; estimate ជាលេខ។</td></tr>
+<tr><td>(b)</td><td><b>False</b></td><td>Unbiased means \(E(\hat\theta)=\theta\) on average, not \(\hat\theta=\theta\) for every sample.</td><td class="km">គ្មានលម្អៀង = ត្រូវជាមធ្យម មិនមែនត្រូវគ្រប់គំរូទេ។</td></tr>
+<tr><td>(c)</td><td><b>True</b></td><td>Definition of efficiency.</td><td class="km">និយមន័យនៃប្រសិទ្ធភាព។</td></tr>
+<tr><td>(d)</td><td><b>True</b></td><td>\(E(\hat\sigma^2)=\frac{n-1}{n}\sigma^2&lt;\sigma^2\) (see F11).</td><td class="km">ជាមធ្យមវាតូចជាង \(\sigma^2\) (មើល F11)។</td></tr>
+<tr><td>(e)</td><td><b>True</b></td><td>Definition of consistency.</td><td class="km">និយមន័យនៃភាពស៊ីសង្វាក់។</td></tr>
+<tr><td>(f)</td><td><b>True</b></td><td>\(SE(\bar X)=\sigma/\sqrt n\) decreases as \(n\) grows (F9).</td><td class="km">\(SE=\sigma/\sqrt n\) ថយពេល \(n\) កើន (F9)។</td></tr>
 </table>
 </div>
 
-<div class="ex"><h3>លំហាត់ 2. Pull-off force (\(n=26\), \(\sum x_i=1966.0\), \(\sum x_i^2=148728.30\))</h3>
-<div class="q"><b class="lbl">(a)</b> ប្រើ sample mean \(\bar X\) ព្រោះវា unbiased (\(E(\bar X)=\mu\)), consistent និងមាន variance តូច (\(\sigma^2/n\))។
-\[\bar x=\frac{1966.0}{26}=75.615\]
-<span class="ans">\(\hat\mu=\bar x\approx75.62\) pounds</span></div>
-<div class="q"><b class="lbl">(b)</b> តម្លៃដែលបំបែក 50% ខ្សោយ និង 50% ខ្លាំង = <b>median</b>។ តម្រៀប៖ 72.9, 73.8, 73.8, 73.9, 74.0, 74.1, 74.2, 74.6, 74.7, 74.9, 75.0, 75.1, <b>75.1, 75.3</b>, 75.4, 75.5, 75.9, 76.2, 76.3, 76.8, 77.3, 77.6, 78.0, 78.1, 78.2, 79.3។ \(n=26\) → មធ្យមនៃទី 13 និងទី 14៖ \(\frac{75.1+75.3}{2}\)។ <span class="ans">\(\tilde x=75.2\) pounds</span></div>
+<div class="ex"><h3>Exercise 2. Pull-off force (\(n=26\), \(\sum x_i=1966.0\), \(\sum x_i^2=148728.30\)) <span class="km">លំហាត់ 2. កម្លាំងទាញ</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F9</span>Standard error of the mean <span class="km">· កំហុសស្តង់ដារនៃមធ្យមភាគ</span></div>
+<div class="f">\(\displaystyle E(\bar X)=\mu,\qquad \mathrm{Var}(\bar X)=\frac{\sigma^2}{n},\qquad SE(\bar X)=\frac{\sigma}{\sqrt n}\approx\frac{s}{\sqrt n}\)</div>
+<p class="en"><span class="lab">Meaning:</span> the typical distance between the sample mean \(\bar x\) and the true mean \(\mu\). Larger \(n\) → smaller SE.</p>
+<p class="km"><span class="lab">អត្ថន័យ៖</span> គម្លាតធម្មតារវាង \(\bar x\) និង \(\mu\) ពិត។ \(n\) កាន់តែធំ → SE កាន់តែតូច។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F10</span>Sample proportion <span class="km">· សមាមាត្រគំរូ</span></div>
+<div class="f">\(\displaystyle \hat p=\frac{X}{n}\ \ (\text{number with the property} / n),\qquad SE(\hat p)=\sqrt{\frac{p(1-p)}{n}}\approx\sqrt{\frac{\hat p(1-\hat p)}{n}}\)</div>
+<p class="en"><span class="lab">Use:</span> estimate the proportion \(p\) of the population that has a property.</p>
+<p class="km"><span class="lab">ប្រើ៖</span> ប៉ាន់ស្មានសមាមាត្រ \(p\) នៃប្រជាជនដែលមានលក្ខណៈណាមួយ។</p></div>
+<div class="q"><b class="lbl">(a)</b>
+<ol class="steps"><li><span class="en">Use the sample mean \(\bar X\) (F1): it is unbiased (\(E(\bar X)=\mu\)), consistent, and has small variance \(\sigma^2/n\) (F9).</span><span class="km">ប្រើ \(\bar X\) ព្រោះគ្មានលម្អៀង ស៊ីសង្វាក់ និងមានវ៉ារ្យង់តូច។</span><span class="calc">\(\bar x=\dfrac{1966.0}{26}=75.615\)</span></li></ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu=\bar x\approx75.62\) pounds</div></div>
+<div class="q"><b class="lbl">(b)</b>
+<ol class="steps"><li><span class="en">The value separating the weakest 50% from the strongest 50% is the <b>median</b> (F2). Sorted: 72.9, 73.8, 73.8, 73.9, 74.0, 74.1, 74.2, 74.6, 74.7, 74.9, 75.0, 75.1, <b>75.1, 75.3</b>, 75.4, 75.5, 75.9, 76.2, 76.3, 76.8, 77.3, 77.6, 78.0, 78.1, 78.2, 79.3.</span><span class="km">តម្លៃដែលបំបែក 50% ខ្សោយ និង 50% ខ្លាំង គឺ<b>មេដ្យាន</b>។</span></li>
+<li><span class="en">\(n=26\) even → average of the 13th and 14th values: \(\frac{75.1+75.3}{2}=75.2\).</span><span class="km">មធ្យមនៃទី 13 និងទី 14 → 75.2។</span></li></ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\tilde x=75.2\) pounds</div></div>
 <div class="q"><b class="lbl">(c)</b>
-\[s^2=\frac{148728.30-\frac{1966^2}{26}}{25}=\frac{148728.30-148659.85}{25}=\frac{68.45}{25}=2.738,\qquad s=\sqrt{2.738}=1.655\]
-<span class="ans">\(\hat\sigma^2=s^2\approx2.738\) pound², \(\hat\sigma=s\approx1.655\) pounds</span></div>
-<div class="q"><b class="lbl">(d)</b> \(SE=\frac{s}{\sqrt n}=\frac{1.655}{\sqrt{26}}=0.325\)។ <span class="ans">\(SE\approx0.32\) pound</span> — ជាទូទៅ \(\bar x\) ខុសពី \(\mu\) ពិតប្រហែល 0.32 pound ប៉ុណ្ណោះ ដូច្នេះការប៉ាន់ស្មាន 75.62 មានភាពជាក់លាក់ខ្ពស់។</div>
-<div class="q"><b class="lbl">(e)</b> មានតែ 72.9 ដែល &lt; 73។ \(\hat p=\frac{1}{26}\)។ <span class="ans">\(\hat p\approx0.038\) (3.8%)</span></div>
+<ol class="steps"><li><span class="en">Use \(s^2\) (F5), which is unbiased for \(\sigma^2\):</span><span class="calc">\(s^2=\dfrac{148728.30-\frac{1966^2}{26}}{25}=\dfrac{148728.30-148659.85}{25}=\dfrac{68.45}{25}=2.738,\quad s=1.655\)</span><span class="km">ប្រើ \(s^2\) (គ្មានលម្អៀងសម្រាប់ \(\sigma^2\)) ជាមួយរូបមន្ត shortcut។</span></li></ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\sigma^2=s^2\approx2.738\) pound², \(\hat\sigma=s\approx1.655\) pounds</div></div>
+<div class="q"><b class="lbl">(d)</b>
+<ol class="steps"><li><span class="en">(F9) \(SE=\frac{1.655}{\sqrt{26}}=0.325\).</span><span class="km">ចែក \(s\) នឹង \(\sqrt{26}\)។</span></li></ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">\(SE\approx0.32\) pound: \(\bar x\) is typically within about 0.32 pound of the true mean, so 75.62 is a precise estimate.</span><span class="km">\(SE\approx0.32\)៖ \(\bar x\) ជាទូទៅខុសពី \(\mu\) ប្រហែល 0.32 pound ប៉ុណ្ណោះ → ការប៉ាន់ស្មានជាក់លាក់។</span></div></div>
+<div class="q"><b class="lbl">(e)</b>
+<ol class="steps"><li><span class="en">(F10) Only 72.9 is below 73, so \(\hat p=\frac{1}{26}\).</span><span class="km">មានតែ 72.9 ដែលតិចជាង 73។</span></li></ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat p\approx0.038\) (3.8%)</div></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 3. Natural gas usage (\(n=10\))</h3>
-<div class="q"><b class="lbl">(a)</b> \(\sum x_i=1206\) → \(\bar x=\frac{1206}{10}\)។ <span class="ans">\(\hat\mu=120.6\) therms</span></div>
-<div class="q"><b class="lbl">(b)</b> \(\tau=N\mu\) ដូច្នេះប្រើ estimator \(\hat\tau=N\bar X\) (unbiased ព្រោះ \(E(N\bar X)=N\mu\))។ \(\hat\tau=10000\times120.6\)។ <span class="ans">\(\hat\tau=1\,206\,000\) therms</span></div>
-<div class="q"><b class="lbl">(c)</b> ផ្ទះដែលប្រើ ≥ 100៖ 103, 156, 118, 125, 147, 122, 109, 138 → 8 ផ្ទះ (89 និង 99 មិនរាប់)។ <span class="ans">\(\hat p=\frac{8}{10}=0.8\)</span></div>
-<div class="q"><b class="lbl">(d)</b> ប្រើ sample median។ តម្រៀប៖ 89, 99, 103, 109, <b>118, 122</b>, 125, 138, 147, 156 → \(\frac{118+122}{2}\)។ <span class="ans">\(\tilde x=120\) therms</span></div>
+<div class="ex"><h3>Exercise 3. Natural gas usage (\(n=10\)) <span class="km">លំហាត់ 3. ការប្រើឧស្ម័នធម្មជាតិ</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F10b</span>Estimating a population total <span class="km">· ប៉ាន់ស្មានចំនួនសរុបនៃប្រជាជន</span></div>
+<div class="f">\(\tau=N\mu\quad\Rightarrow\quad\hat\tau=N\bar X,\qquad E(\hat\tau)=N\mu\ (\text{unbiased})\)</div>
+<p class="en"><span class="lab">Symbols:</span> \(N\) = number of units in the population (10 000 houses), \(\tau\) = total.</p>
+<p class="km"><span class="lab">និមិត្តសញ្ញា៖</span> \(N\) = ចំនួនឯកតាក្នុងប្រជាជន (10 000 ផ្ទះ), \(\tau\) = ចំនួនសរុប។</p></div>
+<div class="q"><b class="lbl">(a)</b><span class="en">\(\sum x_i=1206\) → \(\bar x=\frac{1206}{10}=120.6\) (F1).</span><span class="km">ផលបូក 1206 ចែកនឹង 10។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu=120.6\) therms</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">Estimator \(\hat\tau=N\bar X\) (F10b): \(10000\times120.6\).</span><span class="km">ប្រើ \(\hat\tau=N\bar X\)៖ គុណមធ្យមភាគនឹងចំនួនផ្ទះ។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\tau=1\,206\,000\) therms</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">(F10) Houses with at least 100 therms: 103, 156, 118, 125, 147, 122, 109, 138 → 8 (89 and 99 do not count).</span><span class="km">ផ្ទះដែលប្រើ ≥ 100 មាន 8 (89 និង 99 មិនរាប់)។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat p=8/10=0.8\)</div></div>
+<div class="q"><b class="lbl">(d)</b><span class="en">Sample median (F2). Sorted: 89, 99, 103, 109, <b>118, 122</b>, 125, 138, 147, 156 → \(\frac{118+122}{2}\).</span><span class="km">ប្រើមេដ្យានគំរូ៖ មធ្យមនៃទី 5 និងទី 6។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\tilde x=120\) therms</div></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 4. Asphalt density៖ ហេតុអ្វីចែកនឹង \(n-1\)?</h3>
+<div class="ex"><h3>Exercise 4. Asphalt density: why divide by \(n-1\)? <span class="km">លំហាត់ 4. ហេតុអ្វីចែកនឹង \(n-1\)?</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F11</span>Divisor \(n-1\) versus divisor \(n\) <span class="km">· ចែកនឹង \(n-1\) ធៀបនឹងចែកនឹង \(n\)</span></div>
+<div class="f">\(\displaystyle S^2=\frac{\sum(X_i-\bar X)^2}{n-1},\ E(S^2)=\sigma^2;\qquad \hat\sigma_1^2=\frac{\sum(X_i-\bar X)^2}{n}=\frac{n-1}{n}S^2,\ E(\hat\sigma_1^2)=\frac{n-1}{n}\sigma^2\)</div>
+<p class="en"><span class="lab">Meaning:</span> \(S^2\) is unbiased; \(\hat\sigma_1^2\) is biased with \(\text{bias}=-\sigma^2/n\) (too small on average).</p>
+<p class="km"><span class="lab">អត្ថន័យ៖</span> \(S^2\) គ្មានលម្អៀង; \(\hat\sigma_1^2\) មានលម្អៀង \(-\sigma^2/n\) (តូចពេកជាមធ្យម)។</p></div>
 <div class="q"><b class="lbl">(a)</b>
 <ol class="steps">
-<li>\(\sum x_i=18.46\) → \(\bar x=\frac{18.46}{8}=2.3075\) g/cm³។</li>
-<li>\(\sum x_i^2=42.602\) → \(\sum(x_i-\bar x)^2=42.602-\frac{18.46^2}{8}=42.602-42.59645=0.00555\)។</li>
-<li>\(S^2=\frac{0.00555}{7}=0.000793\)។</li>
-</ol><span class="ans">\(\hat\mu=2.3075\) g/cm³, \(S^2\approx7.93\times10^{-4}\) (\(S\approx0.028\))</span></div>
-<div class="q"><b class="lbl">(b)</b> \(\hat\sigma_1^2=\frac{0.00555}{8}=0.000694\) &lt; \(S^2\)។ ដោយ \(E(\hat\sigma_1^2)=\frac{n-1}{n}\sigma^2\)៖
-\[\text{bias}(\hat\sigma_1^2)=E(\hat\sigma_1^2)-\sigma^2=-\frac{\sigma^2}{n}=-\frac{\sigma^2}{8}\]
-<span class="ans">\(\hat\sigma_1^2\approx6.94\times10^{-4}\) តូចជាង; bias \(=-\sigma^2/8\)</span></div>
-<div class="q"><b class="lbl">(c)</b> គម្លាតត្រូវបានវាស់ពី \(\bar x\) ដែលគណនាចេញពីទិន្នន័យដដែល ដូច្នេះ \(\bar x\) “ស្ថិតនៅកណ្តាល” ទិន្នន័យជានិច្ច ហើយ \(\sum(x_i-\bar x)^2\le\sum(x_i-\mu)^2\)។ ការចែកនឹង \(n\) ធ្វើឲ្យ variance តូចជាងការពិត។ ម្យ៉ាងទៀត គម្លាតទាំង \(n\) មានផលបូកស្មើ 0 ដូច្នេះមានតែ \(n-1\) ប៉ុណ្ណោះដែលឯករាជ្យ (degrees of freedom)។ ចែកនឹង \(n-1\) ធ្វើឲ្យ \(E(S^2)=\sigma^2\) (unbiased)។</div>
-<div class="q"><b class="lbl">(d)</b> ដង់ស៊ីតេមធ្យមប្រហែល 2.31 g/cm³ ហើយការប្រែប្រួលតូចណាស់ (\(S\approx0.028\) ≈ 1.2% នៃមធ្យមភាគ) → ការបង្ហាប់ asphalt មានភាពស្មើគ្នាល្អ។ បើប្រើ \(\hat\sigma_1^2\) យើងនឹងប៉ាន់ស្មានការប្រែប្រួលទាបពេក ហើយវាយតម្លៃគុណភាពល្អហួសការពិត ដូច្នេះត្រូវប្រើ \(S^2\) សម្រាប់ quality assurance។</div>
+<li><span class="en">\(\sum x_i=18.46\) → \(\bar x=\frac{18.46}{8}=2.3075\) g/cm³.</span><span class="km">មធ្យមភាគ 2.3075។</span></li>
+<li><span class="en">\(\sum x_i^2=42.602\) → \(\sum(x_i-\bar x)^2=42.602-\frac{18.46^2}{8}=42.602-42.59645=0.00555\).</span><span class="km">ផលបូកការេគម្លាត 0.00555។</span></li>
+<li><span class="en">\(S^2=\frac{0.00555}{7}=0.000793\), \(S=0.028\).</span><span class="km">ចែកនឹង \(n-1=7\)។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu=2.3075\) g/cm³, \(S^2\approx7.93\times10^{-4}\)</div></div>
+<div class="q"><b class="lbl">(b)</b>
+<ol class="steps"><li><span class="en">\(\hat\sigma_1^2=\frac{0.00555}{8}=0.000694\), smaller than \(S^2\). (F11) \(\text{bias}=E(\hat\sigma_1^2)-\sigma^2=-\frac{\sigma^2}{n}=-\frac{\sigma^2}{8}\).</span><span class="km">ចែកនឹង 8 → 0.000694 តូចជាង \(S^2\)។ លម្អៀង \(=-\sigma^2/8\)។</span></li></ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\sigma_1^2\approx6.94\times10^{-4}\) is smaller; bias \(=-\sigma^2/8\)</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">Deviations are measured from \(\bar x\), which is computed from the same data and always sits in the middle of them, so \(\sum(x_i-\bar x)^2\le\sum(x_i-\mu)^2\). Dividing by \(n\) therefore underestimates \(\sigma^2\). Also the \(n\) deviations sum to 0, so only \(n-1\) of them are free (degrees of freedom). Dividing by \(n-1\) makes \(E(S^2)=\sigma^2\).</span><span class="km">គម្លាតវាស់ពី \(\bar x\) ដែលគណនាពីទិន្នន័យដដែល ហើយនៅកណ្តាលទិន្នន័យជានិច្ច ដូច្នេះ \(\sum(x_i-\bar x)^2\le\sum(x_i-\mu)^2\)។ ចែកនឹង \(n\) ធ្វើឲ្យតូចពេក។ ម្យ៉ាងទៀត គម្លាតទាំង \(n\) បូកគ្នាស្មើ 0 ដូច្នេះមានតែ \(n-1\) ដែលសេរី (degrees of freedom)។ ចែកនឹង \(n-1\) ធ្វើឲ្យ \(E(S^2)=\sigma^2\)។</span></div>
+<div class="q"><b class="lbl">(d)</b><span class="en">The mean density is about 2.31 g/cm³ with very small variation (\(S\approx0.028\), about 1.2% of the mean): compaction is uniform. Using \(\hat\sigma_1^2\) would understate the variability and make the quality look better than it is, so \(S^2\) should be used for quality assurance.</span><span class="km">ដង់ស៊ីតេមធ្យម ≈ 2.31 g/cm³ ប្រែប្រួលតិចណាស់ (≈ 1.2%) → ការបង្ហាប់ស្មើគ្នាល្អ។ ប្រើ \(\hat\sigma_1^2\) នឹងបង្ហាញការប្រែប្រួលតិចពេក ហើយគុណភាពល្អហួសការពិត ដូច្នេះត្រូវប្រើ \(S^2\)។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 5. ប្រៀបធៀប estimators បួន</h3>
-<p>\(\hat\mu_1=X_1\), \(\hat\mu_2=\frac{X_1+2X_2+X_3}{4}\), \(\hat\mu_3=\bar X=\frac{X_1+X_2+X_3}{3}\), \(\hat\mu_4=\frac{X_1+X_2+X_3}{4}\)។</p>
-<div class="q"><b class="lbl">(a)</b> ប្រើ \(E(aX_1+bX_2+cX_3)=(a+b+c)\mu\)៖
-<ol class="steps">
-<li>\(E(\hat\mu_1)=\mu\) → unbiased។</li>
-<li>\(E(\hat\mu_2)=\frac{1+2+1}{4}\mu=\mu\) → unbiased។</li>
-<li>\(E(\hat\mu_3)=\frac{3}{3}\mu=\mu\) → unbiased។</li>
-<li>\(E(\hat\mu_4)=\frac34\mu\) → biased; bias \(=\frac34\mu-\mu=-\frac{\mu}{4}\)។</li>
-</ol><span class="ans">\(\hat\mu_1,\hat\mu_2,\hat\mu_3\) unbiased; \(\hat\mu_4\) biased ដោយ bias \(-\mu/4\)</span></div>
-<div class="q"><b class="lbl">(b)</b> \(\mathrm{Var}(aX_1+bX_2+cX_3)=(a^2+b^2+c^2)\sigma^2\)៖
-\[\mathrm{Var}(\hat\mu_1)=\sigma^2,\quad \mathrm{Var}(\hat\mu_2)=\tfrac{1+4+1}{16}\sigma^2=\tfrac{3}{8}\sigma^2,\quad \mathrm{Var}(\hat\mu_3)=\tfrac{3}{9}\sigma^2=\tfrac{\sigma^2}{3},\quad \mathrm{Var}(\hat\mu_4)=\tfrac{3}{16}\sigma^2\]</div>
-<div class="q"><b class="lbl">(c)</b> ក្នុងចំណោម unbiased៖ \(\frac{\sigma^2}{3}&lt;\frac{3\sigma^2}{8}&lt;\sigma^2\)។ <span class="ans">\(\hat\mu_3=\bar X\) efficient ជាងគេ</span></div>
-<div class="q"><b class="lbl">(d)</b> \(\mathrm{MSE}=\mathrm{Var}+\text{bias}^2\)៖
-\[\mathrm{MSE}(\hat\mu_3)=\frac{\sigma^2}{3},\qquad \mathrm{MSE}(\hat\mu_4)=\frac{3\sigma^2}{16}+\frac{\mu^2}{16}\]
-\(\hat\mu_4\) ល្អជាងពេល \(\frac{3\sigma^2+\mu^2}{16}&lt;\frac{\sigma^2}{3}\) ⇔ \(\mu^2&lt;\left(\frac{16}{3}-3\right)\sigma^2=\frac73\sigma^2\)។ <span class="ans">\(\mu^2/\sigma^2&lt;7/3\approx2.33\)</span></div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 6. Sample proportion</h3>
-<div class="q"><b class="lbl">(a)</b> \(E(\hat p)=E\!\left(\frac{X}{n}\right)=\frac{E(X)}{n}=\frac{np}{n}=p\) → \(\hat p\) unbiased។</div>
-<div class="q"><b class="lbl">(b)</b> \(\mathrm{Var}(\hat p)=\frac{\mathrm{Var}(X)}{n^2}=\frac{np(1-p)}{n^2}=\frac{p(1-p)}{n}\) → \(SE(\hat p)=\sqrt{\frac{p(1-p)}{n}}\)។ ក្នុងការអនុវត្ត \(p\) មិនស្គាល់ ដូច្នេះជំនួសដោយ \(\hat p\)៖ \(\widehat{SE}=\sqrt{\frac{\hat p(1-\hat p)}{n}}\)។</div>
-<div class="q"><b class="lbl">(c)</b> \(\hat p\) unbiased ហើយ \(\mathrm{Var}(\hat p)=\frac{p(1-p)}{n}\to0\) ពេល \(n\to\infty\) → <span class="ans">\(\hat p\) consistent</span></div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 7. Network delay (\(n=12\))</h3>
-<div class="q"><b class="lbl">(a)</b> \(\sum x_i=236\), \(\sum x_i^2=4658\)។ \(\bar x=\frac{236}{12}=19.667\) ms; \(s^2=\frac{4658-\frac{236^2}{12}}{11}=\frac{4658-4641.33}{11}=\frac{16.67}{11}=1.515\) (\(s=1.231\))។ <span class="ans">\(\bar x\approx19.67\) ms, \(s^2\approx1.52\) ms²</span></div>
-<div class="q"><b class="lbl">(b)</b> \(E(A)=\mu\), \(E(B)=\mu\) → ទាំងពីរ unbiased។ \(\mathrm{Var}(A)=\frac{\sigma^2}{5}\), \(\mathrm{Var}(B)=\frac{\sigma^2}{12}\)។ <span class="ans">B efficient ជាង (variance តូចជាង 2.4 ដង)</span> ព្រោះប្រើទិន្នន័យទាំងអស់។</div>
-<div class="q"><b class="lbl">(c)</b> \(SE(B)=\frac{s}{\sqrt{12}}=\frac{1.231}{3.464}=0.355\) ms។ <span class="ans">\(SE\approx0.36\) ms</span> — latency មធ្យមត្រូវបានប៉ាន់ស្មានបានជាក់លាក់ (ខុសប្រហែល ±0.36 ms) ហើយ packets មានពេលពន្យារស្ថិរភាព (18–22 ms) → ការបញ្ជូនទិន្នន័យអាចទុកចិត្តបាន។</div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 8. ★ ផ្ទៃដីការ៉េ</h3>
-<div class="q"><b class="lbl">(a)</b> ដោយ \(E(Y^2)=\mathrm{Var}(Y)+[E(Y)]^2\) ជាមួយ \(Y=\bar X\)៖
-\[E(\bar X^2)=\mathrm{Var}(\bar X)+[E(\bar X)]^2=\frac{\sigma^2}{n}+\mu^2\ne\mu^2\]
-ដូច្នេះ \(\bar X^2\) biased (bias \(=\sigma^2/n&gt;0\), ប៉ាន់ស្មានធំជាងការពិត)។</div>
-<div class="q"><b class="lbl">(b)</b> \(E(\bar X^2-kS^2)=\frac{\sigma^2}{n}+\mu^2-k\sigma^2\)។ ចង់បាន \(=\mu^2\) ⇔ \(\frac{\sigma^2}{n}-k\sigma^2=0\)។ <span class="ans">\(k=\frac1n\)</span></div>
-</div>
-
-<h2 class="part">A.2 Method of Moments (MOM) and Maximum Likelihood (MLE)</h2>
-
-<div class="ex"><h3>លំហាត់ 9. Waiting times (MOM)</h3>
+<div class="ex"><h3>Exercise 5. Comparing four estimators <span class="km">លំហាត់ 5. ប្រៀបធៀបអង្គប៉ាន់ស្មានបួន</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F12</span>Mean and variance of a linear combination <span class="km">· មធ្យម និងវ៉ារ្យង់នៃបន្សំលីនេអ៊ែរ</span></div>
+<div class="f">\(E(aX_1+bX_2+cX_3)=(a+b+c)\mu,\qquad \mathrm{Var}(aX_1+bX_2+cX_3)=(a^2+b^2+c^2)\sigma^2\ \ (X_i\ \text{independent})\)</div>
+<p class="en"><span class="lab">Note:</span> constants come out of \(E\) unchanged but come out of Var <b>squared</b>. Combine with F8: \(\mathrm{MSE}=\mathrm{Var}+\text{bias}^2\).</p>
+<p class="km"><span class="lab">ចំណាំ៖</span> ចំនួនថេរចេញពី \(E\) ដដែល តែចេញពី Var ជា<b>ការេ</b>។ ប្រើជាមួយ F8៖ \(\mathrm{MSE}=\mathrm{Var}+\text{bias}^2\)។</p></div>
 <div class="q"><b class="lbl">(a)</b>
 <ol class="steps">
-<li>Exponential(\(\lambda\))៖ \(E(X)=\frac1\lambda\)។</li>
-<li>MOM៖ យក moment នៃគំរូ = moment នៃប្រជាជន៖ \(\bar X=\frac{1}{\lambda}\) → \(\hat\lambda=\frac{1}{\bar X}\)។</li>
-<li>\(\bar x=\frac{3.5+8.1+0.9+4.4+0.5}{5}=\frac{17.4}{5}=3.48\) នាទី → \(\hat\lambda=\frac{1}{3.48}=0.287\)។</li>
-</ol><span class="ans">\(\hat\lambda\approx0.287\) ក្នុងមួយនាទី</span> — ប្រហែល 0.29 អតិថិជនត្រូវបានបម្រើក្នុងមួយនាទី ឬរង់ចាំជាមធ្យម 3.48 នាទី។</div>
-<div class="q"><b class="lbl">(b)</b> \(E(\bar X)=E(X)=\theta\) → unbiased។ \(\mathrm{Var}(\bar X)=\frac{\mathrm{Var}(X)}{n}=\frac{\theta^2}{n}\)។</div>
-<div class="q"><b class="lbl">(c)</b> unbiased ហើយ \(\mathrm{Var}(\bar X)=\frac{\theta^2}{n}\to0\) → consistent។ <span class="ans">\(\hat\theta=\bar x=3.48\) នាទី</span></div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 10. Weld strength (MOM ពីរ parameters)</h3>
-<div class="q"><b class="lbl">(a)</b>
+<li><span class="en">\(E(\hat\mu_1)=\mu\); \(E(\hat\mu_2)=\frac{1+2+1}{4}\mu=\mu\); \(E(\hat\mu_3)=\frac33\mu=\mu\) → unbiased.</span><span class="km">បីដំបូងគ្មានលម្អៀង (ផលបូកមេគុណ = 1)។</span></li>
+<li><span class="en">\(E(\hat\mu_4)=\frac34\mu\) → bias \(=\frac34\mu-\mu=-\frac\mu4\).</span><span class="km">\(\hat\mu_4\) មានលម្អៀង \(-\mu/4\) (ផលបូកមេគុណ = 3/4)។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu_1,\hat\mu_2,\hat\mu_3\) unbiased; \(\hat\mu_4\) biased, bias \(-\mu/4\)</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">(F12) sum the squared coefficients:</span><span class="calc">\(\mathrm{Var}(\hat\mu_1)=\sigma^2,\ \ \mathrm{Var}(\hat\mu_2)=\tfrac{1+4+1}{16}\sigma^2=\tfrac38\sigma^2,\ \ \mathrm{Var}(\hat\mu_3)=\tfrac39\sigma^2=\tfrac{\sigma^2}{3},\ \ \mathrm{Var}(\hat\mu_4)=\tfrac{3}{16}\sigma^2\)</span><span class="km">បូកការេនៃមេគុណ រួចគុណនឹង \(\sigma^2\)។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">Among the unbiased ones, \(\frac{\sigma^2}3&lt;\frac38\sigma^2&lt;\sigma^2\).</span><span class="km">ក្នុងចំណោមអង្គគ្មានលម្អៀង \(\hat\mu_3\) មានវ៉ារ្យង់តូចជាងគេ។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu_3=\bar X\) is the most efficient / មានប្រសិទ្ធភាពជាងគេ</div></div>
+<div class="q"><b class="lbl">(d)</b>
 <ol class="steps">
-<li>Moment ទី 1៖ \(\bar X=\mu\) → \(\hat\mu=\frac{3844}{10}=384.4\) psi។</li>
-<li>Moment ទី 2៖ \(\frac1n\sum X_i^2=\sigma^2+\mu^2\) → \(\hat\sigma^2=\frac1n\sum x_i^2-\bar x^2=\frac{1481190}{10}-384.4^2=148119-147763.36=355.64\)។</li>
-</ol><span class="ans">\(\hat\mu=384.4\) psi, \(\hat\sigma^2=355.64\) (\(\hat\sigma\approx18.86\))</span></div>
-<div class="q"><b class="lbl">(b)</b> MOM estimator ចែកនឹង \(n\) → biased (\(E=\frac{n-1}{n}\sigma^2\))។ \(s^2=\frac{n}{n-1}\hat\sigma^2=\frac{10}{9}(355.64)\)។ <span class="ans">\(s^2\approx395.16\) (\(s\approx19.88\))</span></div>
-<div class="q"><b class="lbl">(c)</b> \(\hat x_{0.95}=\hat\mu+1.645\,\hat\sigma=384.4+1.645(18.86)\)។ <span class="ans">≈ 415.4 psi</span> <span class="muted">(បើប្រើ \(s\)៖ ≈ 417.1 psi)</span></div>
+<li><span class="en">(F8) \(\mathrm{MSE}(\hat\mu_3)=\frac{\sigma^2}{3}+0\); \(\mathrm{MSE}(\hat\mu_4)=\frac{3\sigma^2}{16}+\left(\frac{\mu}{4}\right)^2=\frac{3\sigma^2+\mu^2}{16}\).</span><span class="km">MSE = វ៉ារ្យង់ + ការេនៃលម្អៀង។</span></li>
+<li><span class="en">\(\hat\mu_4\) is better when \(\frac{3\sigma^2+\mu^2}{16}&lt;\frac{\sigma^2}{3}\iff \mu^2&lt;\left(\frac{16}{3}-3\right)\sigma^2=\frac73\sigma^2\).</span><span class="km">ដោះស្រាយវិសមភាព ដើម្បីរកលក្ខខណ្ឌ។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\mu^2/\sigma^2&lt;7/3\approx2.33\)</div></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 11. Flaws in tape (MLE, Poisson)</h3>
-<div class="q"><b class="lbl">(a)</b>
-<ol class="steps">
-<li>\(L(\lambda)=\prod\frac{e^{-\lambda}\lambda^{x_i}}{x_i!}=\frac{e^{-n\lambda}\lambda^{\sum x_i}}{\prod x_i!}\)។</li>
-<li>\(\ell(\lambda)=-n\lambda+\left(\sum x_i\right)\ln\lambda-\sum\ln(x_i!)\)។</li>
-<li>\(\ell'(\lambda)=-n+\frac{\sum x_i}{\lambda}=0\) → \(\hat\lambda=\frac{\sum x_i}{n}=\bar X\)។</li>
-<li>\(\ell''(\lambda)=-\frac{\sum x_i}{\lambda^2}&lt;0\) → ជាអតិបរមា។</li>
-</ol></div>
-<div class="q"><b class="lbl">(b)</b> \(E(\bar X)=\lambda\) → unbiased។ MOM៖ \(E(X)=\lambda\) → \(\hat\lambda_{MOM}=\bar X\) (ដូចគ្នានឹង MLE)។</div>
-<div class="q"><b class="lbl">(c)</b> \(\sum x_i=0(5)+1(7)+2(12)+3(9)+4(5)+5(1)+6(1)=0+7+24+27+20+5+6=89\); \(n=40\)។ <span class="ans">\(\hat\lambda=\frac{89}{40}=2.225\) ស្នាមខូចក្នុង 100 feet</span></div>
+<div class="ex"><h3>Exercise 6. Sample proportion <span class="km">លំហាត់ 6. សមាមាត្រគំរូ</span></h3>
+<p class="see">Formulas used: F10, F8, F12 · រូបមន្តដែលប្រើ៖ F10, F8, F12</p>
+<div class="q"><b class="lbl">(a)</b><span class="en">\(E(\hat p)=E\!\left(\frac Xn\right)=\frac{E(X)}{n}=\frac{np}{n}=p\) → unbiased.</span><span class="km">\(1/n\) ជាចំនួនថេរ ចេញពី \(E\) → \(E(\hat p)=p\) → គ្មានលម្អៀង។</span></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(\mathrm{Var}(\hat p)=\frac{\mathrm{Var}(X)}{n^2}=\frac{np(1-p)}{n^2}=\frac{p(1-p)}{n}\), so \(SE(\hat p)=\sqrt{p(1-p)/n}\). In practice \(p\) is unknown, so replace it by \(\hat p\): \(\widehat{SE}=\sqrt{\hat p(1-\hat p)/n}\).</span><span class="km">\(1/n\) ចេញពី Var ជា \(1/n^2\)។ ក្នុងការអនុវត្ត \(p\) មិនស្គាល់ ដូច្នេះជំនួសដោយ \(\hat p\)។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">\(\hat p\) is unbiased and \(\mathrm{Var}(\hat p)=p(1-p)/n\to0\) as \(n\to\infty\).</span><span class="km">គ្មានលម្អៀង ហើយវ៉ារ្យង់ → 0។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat p\) is consistent / ស៊ីសង្វាក់</div></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 12. False positives (MLE, proportion)</h3>
-<div class="q"><b class="lbl">(a)</b>
-<ol class="steps">
-<li>\(\ell(p)=\ln\binom nx+x\ln p+(n-x)\ln(1-p)\)។</li>
-<li>\(\ell'(p)=\frac xp-\frac{n-x}{1-p}=0\) → \(x(1-p)=(n-x)p\) → \(\hat p=\frac xn\)។ (\(\ell''&lt;0\) → អតិបរមា)</li>
-<li>\(n=20\), \(x=3\) → \(\hat p=\frac{3}{20}\)។</li>
-</ol><span class="ans">\(\hat p=0.15\)</span></div>
-<div class="q"><b class="lbl">(b)</b> បាទ/ចាស៖ ដូចលំហាត់ 6(a) \(E(X/n)=p\) → <span class="ans">unbiased</span></div>
-<div class="q"><b class="lbl">(c)</b> \((1-\hat p)^5=0.85^5\)។ <span class="ans">≈ 0.444</span> (ប្រហែល 44%)</div>
+<div class="ex"><h3>Exercise 7. Network delay (\(n=12\)) <span class="km">លំហាត់ 7. ពេលពន្យារបណ្តាញ</span></h3>
+<p class="see">Formulas used: F1, F5, F9, F12 · រូបមន្តដែលប្រើ៖ F1, F5, F9, F12</p>
+<div class="q"><b class="lbl">(a)</b><span class="en">\(\sum x_i=236\), \(\sum x_i^2=4658\). \(\bar x=\frac{236}{12}=19.667\); \(s^2=\frac{4658-236^2/12}{11}=\frac{16.67}{11}=1.515\), \(s=1.231\).</span><span class="km">គណនាមធ្យមភាគ និងវ៉ារ្យង់ដោយរូបមន្ត shortcut។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\bar x\approx19.67\) ms, \(s^2\approx1.52\) ms²</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(E(A)=E(B)=\mu\) → both unbiased. \(\mathrm{Var}(A)=\frac{\sigma^2}{5}\), \(\mathrm{Var}(B)=\frac{\sigma^2}{12}\).</span><span class="km">ទាំងពីរគ្មានលម្អៀង; B មានវ៉ារ្យង់តូចជាង ព្រោះប្រើទិន្នន័យទាំង 12។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>B is more efficient (variance 2.4 times smaller) / B មានប្រសិទ្ធភាពជាង</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">(F9) \(SE(B)=\frac{1.231}{\sqrt{12}}=0.355\) ms. The mean latency is estimated to within about ±0.36 ms and the packets are stable (18–22 ms), so transmission is reliable.</span><span class="km">\(SE\approx0.36\) ms៖ latency មធ្យមត្រូវបានប៉ាន់ស្មានជាក់លាក់ ហើយ packets មានស្ថិរភាព → ការបញ្ជូនអាចទុកចិត្តបាន។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 13. API response time (MLE, Exponential)</h3>
-<div class="q"><b class="lbl">(a)</b> \(L(\lambda)=\prod\lambda e^{-\lambda x_i}=\lambda^n e^{-\lambda\sum x_i}\); \(\ell(\lambda)=n\ln\lambda-\lambda\sum x_i\)។</div>
-<div class="q"><b class="lbl">(b)</b> \(\ell'(\lambda)=\frac n\lambda-\sum x_i=0\) → \(\hat\lambda_{MLE}=\frac{n}{\sum x_i}=\frac{1}{\bar X}\)។ \(\ell''(\lambda)=-\frac{n}{\lambda^2}&lt;0\) → អតិបរមា។</div>
-<div class="q"><b class="lbl">(c)</b> \(\sum x_i=1706\) → \(\bar x=213.25\) ms → \(\hat\lambda=\frac{1}{213.25}\)។ <span class="ans">\(\hat\lambda\approx0.00469\) requests/ms (≈ 4.7 requests/s); response time មធ្យម \(=213.25\) ms</span></div>
-<div class="q"><b class="lbl">(d)</b> MOM៖ \(E(X)=\frac1\lambda\) → \(\hat\lambda=\frac1{\bar X}\)។ <span class="ans">ដូចគ្នា (0.00469)</span></div>
-<div class="q"><b class="lbl">(e)</b> <span class="ans">មិនសមរម្យ</span> — Exponential មាន SD = mean (≈ 213 ms) ហើយតម្លៃភាគច្រើននៅជិត 0 (mode = 0)។ តែទិន្នន័យទាំងអស់នៅចន្លោះ 208–219 ms (\(s\approx3.7\) ms) ដែលប្រែប្រួលតិចណាស់។ Normal distribution (ឬ distribution ដែលរំកិល) សមជាង។</div>
+<div class="ex"><h3>Exercise 8. ★ Area of a square plot <span class="km">លំហាត់ 8. ★ ផ្ទៃដីការ៉េ</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F13</span>Second moment identity <span class="km">· រូបមន្ត moment ទីពីរ</span></div>
+<div class="f">\(E(Y^2)=\mathrm{Var}(Y)+[E(Y)]^2\)</div>
+<p class="en"><span class="lab">Use:</span> comes from \(\mathrm{Var}(Y)=E(Y^2)-[E(Y)]^2\). Very useful for checking whether a squared estimator is unbiased, and for MOM (F14).</p>
+<p class="km"><span class="lab">ប្រើ៖</span> មកពី \(\mathrm{Var}(Y)=E(Y^2)-[E(Y)]^2\)។ ប្រើពិនិត្យថាអង្គការេគ្មានលម្អៀងឬទេ និងសម្រាប់ MOM (F14)។</p></div>
+<div class="q"><b class="lbl">(a)</b><span class="en">With \(Y=\bar X\): \(E(\bar X^2)=\frac{\sigma^2}{n}+\mu^2\ne\mu^2\). So \(\bar X^2\) is biased, with bias \(\sigma^2/n&gt;0\) (it overestimates the area).</span><span class="km">ដាក់ \(Y=\bar X\)៖ \(E(\bar X^2)=\sigma^2/n+\mu^2\) ≠ \(\mu^2\) → មានលម្អៀង \(\sigma^2/n\) (ធំពេក)។</span></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(E(\bar X^2-kS^2)=\frac{\sigma^2}{n}+\mu^2-k\sigma^2\). This equals \(\mu^2\) when \(\frac{\sigma^2}{n}=k\sigma^2\).</span><span class="km">ប្រើ \(E(S^2)=\sigma^2\) ហើយដាក់ឲ្យលម្អៀងស្មើ 0។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(k=1/n\)</div></div>
 </div>
 
-<h2 class="part">Part B. Confidence Intervals for the Mean — B.1 σ known (z-interval)</h2>
-<p class="note">រូបមន្ត៖ \(\bar x\pm z_{\alpha/2}\frac{\sigma}{\sqrt n}\) (σ ស្គាល់) និង \(\bar x\pm t_{\alpha/2,\,n-1}\frac{s}{\sqrt n}\) (σ មិនស្គាល់)។ ទំហំគំរូ៖ \(n=\left(\frac{z_{\alpha/2}\,\sigma}{E}\right)^2\) រួចបង្គត់ឡើង។</p>
+<h2 class="part">A.2 Method of Moments and Maximum Likelihood <span class="km">· វិធី moment និង likelihood អតិបរមា</span></h2>
 
-<div class="ex"><h3>លំហាត់ 14. Conceptual understanding</h3>
-<div class="q"><b class="lbl">(a)</b> យើងជឿជាក់ 99% លើ <b>វិធីសាស្ត្រ</b>៖ បើយកគំរូច្រើនដង ហើយសង់ interval តាមរបៀបនេះ ប្រហែល 99% នៃ intervals នឹងមាន \(\mu\) ពិត។ \(\mu\) ជាចំនួនថេរ មិនមែនអថេរចៃដន្យទេ។</div>
-<div class="q"><b class="lbl">(b)</b> <span class="ans">99% ធំទូលាយជាង</span> ព្រោះ critical value ធំជាង (2.576 ធៀបនឹង 1.645)៖ ដើម្បីជឿជាក់ច្រើនជាង ត្រូវបើក interval ឲ្យធំ។</div>
-<div class="q"><b class="lbl">(c)</b> ប្រើ <b>z</b> ពេល σ ស្គាល់ (ឬ \(n\) ធំ ឧ. \(n\ge30\) ប្រើ \(s\) ជំនួសបានប្រហាក់ប្រហែល)។ ប្រើ <b>t</b> (df \(=n-1\)) ពេល σ មិនស្គាល់ ប្រើ \(s\) ហើយ population ប្រហែល normal (ជាពិសេសពេល \(n\) តូច)។</div>
-<div class="q"><b class="lbl">(d)</b> \(E=z\frac{\sigma}{\sqrt n}\)៖ \(n\) កាន់តែធំ → interval កាន់តែតូច។ បើ \(n\) គុណនឹង 4 → \(\sqrt n\) គុណនឹង 2 → <span class="ans">margin of error ថយចុះពាក់កណ្តាល</span></div>
-<div class="q"><b class="lbl">(e)</b> ការនិយាយនោះ<b>មិនត្រឹមត្រូវ</b>៖ ក្រោយពេលគណនា interval [52.3, 55.7] រួច វាមាន \(\mu\) ឬអត់មាន (ប្រូបាប 1 ឬ 0)។ 95% សំដៅលើវិធីសាស្ត្រ (95% នៃ intervals ដែលសង់តាមរបៀបនេះមាន \(\mu\)) មិនមែនលើ interval មួយនេះទេ។</div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 15. Number of faculty (σ = 165.1, 92%)</h3>
-<ol class="steps">
-<li>\(\bar x=\frac{11080}{32}=346.25\)។</li>
-<li>\(1-\alpha=0.92\) → \(\alpha/2=0.04\) → \(z_{0.04}=1.75\) (តារាង; ច្បាស់ជាង 1.7507)។</li>
-<li>\(E=1.7507\times\frac{165.1}{\sqrt{32}}=1.7507\times29.186=51.10\)។</li>
-<li>\(346.25\pm51.10\)។</li>
-</ol>
-<span class="ans">92% CI: [295.15, 397.35] នាក់</span> <span class="muted">(z = 1.75 → [295.2, 397.3])</span>
-</div>
-
-<div class="ex"><h3>លំហាត់ 16. Tea packet weight</h3>
-<div class="q"><b class="lbl">(a)</b> \(E=1.96\times\frac{0.59}{\sqrt{50}}=1.96\times0.0834=0.1635\) → \(15.65\pm0.16\)។ <span class="ans">95% CI: [15.49, 15.81] ounces</span></div>
-<div class="q"><b class="lbl">(b)</b> 16 មិននៅក្នុង interval (interval ទាំងមូលទាបជាង 16)។ <span class="ans">មិនគាំទ្រស្លាក “16 ounces”</span> — ទម្ងន់មធ្យមពិតទំនងជាតិចជាង 16 ounces។</div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 17. Sample size (99% → \(z_{0.005}=2.576\))</h3>
-<div class="q"><b class="lbl">(a)</b> \(\sigma=\sqrt{28}=5.292\), \(E=3\)៖ \(n=\left(\frac{2.576\times5.292}{3}\right)^2=(4.544)^2=20.64\)។ <span class="ans">\(n=21\) ថ្ងៃ (បង្គត់ឡើងជានិច្ច)</span></div>
-<div class="q"><b class="lbl">(b)</b> \(n=\left(\frac{2.576\times2.6}{0.5}\right)^2=(13.395)^2=179.4\)។ <span class="ans">\(n=180\) និស្សិត</span></div>
-<div class="q"><b class="lbl">(c)</b> \(E=1\)៖ \(n=(2.576\times2.6)^2=44.86\)។ <span class="ans">\(n=45\)</span> — \(E\) ធំឡើង 2 ដង → \(n\) ថយចុះប្រហែល 4 ដង (\(n\propto1/E^2\))។</div>
-</div>
-
-<h2 class="part">B.2 σ unknown (t-interval)</h2>
-
-<div class="ex"><h3>លំហាត់ 18. Reaction time (\(n=16\), \(\bar x=0.214\), \(s=0.036\))</h3>
-<div class="q"><b class="lbl">(a)</b> df \(=15\), \(t_{0.05,15}=1.753\)។ \(E=1.753\times\frac{0.036}{\sqrt{16}}=1.753\times0.009=0.0158\)។ <span class="ans">90% CI: [0.198, 0.230] s</span></div>
-<div class="q"><b class="lbl">(b)</b> យើងជឿជាក់ 90% ថា reaction time មធ្យមពិតនៃប្រព័ន្ធស្ថិតនៅចន្លោះ 0.198 s និង 0.230 s (ប្រហែល 0.2 វិនាទី)។</div>
-<div class="q"><b class="lbl">(c)</b> ប្រវែង \(=2E\le0.02\) → \(E=0.01\)។ \(n=\left(\frac{1.645\times0.036}{0.01}\right)^2=(5.922)^2=35.07\)។ <span class="ans">\(n=36\)</span></div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 19. Employee ages (\(n=20\))</h3>
-<ol class="steps">
-<li>\(\bar x=\frac{881}{20}=44.05\)។</li>
-<li>\(s^2=\frac{41573-\frac{881^2}{20}}{19}=\frac{41573-38808.05}{19}=\frac{2764.95}{19}=145.52\) → \(s=12.06\)។</li>
-<li>df \(=19\), \(t_{0.025,19}=2.093\)។ \(E=2.093\times\frac{12.06}{\sqrt{20}}=2.093\times2.697=5.65\)។</li>
-<li>\(44.05\pm5.65\)។</li>
-</ol>
-<span class="ans">95% CI: [38.40, 49.70] ឆ្នាំ</span> — យើងជឿជាក់ 95% ថាអាយុមធ្យមនៃបុគ្គលិកទាំងអស់នៃសាកលវិទ្យាល័យ ស្ថិតនៅចន្លោះ 38.4 និង 49.7 ឆ្នាំ។
-</div>
-
-<div class="ex"><h3>លំហាត់ 20. Newt skin healing rate (\(n=20\))</h3>
-<div class="q"><b class="lbl">(a)</b> តម្រៀប៖ 12, 14, 18, 18, 20, 21, 21, 22, 23, 23, 23, 24, 25, 25, 28, 28, 31, 32, 33, 39។
-<ol class="steps">
-<li>Five-number summary៖ min \(=12\), \(Q_1=\frac{20+21}{2}=20.5\), median \(=\frac{23+23}{2}=23\), \(Q_3=\frac{28+28}{2}=28\), max \(=39\)។</li>
-<li>\(IQR=7.5\); របង \(9.25\) និង \(39.25\) → គ្មាន outlier (39 នៅក្នុងរបង)។</li>
-<li>Box plot៖ ប្រអប់ពី 20.5 ដល់ 28 បន្ទាត់ median នៅ 23; whiskers ពី 12 ដល់ 39។ ផ្នែកខាងស្តាំវែងជាងបន្តិច (skew ស្តាំតិចតួច)។</li>
-</ol>
-<span class="ans">ប្រហែល normal អាចទទួលយកបាន (ស៊ីមេទ្រីប្រហាក់ប្រហែល គ្មាន outlier)</span></div>
-<div class="q"><b class="lbl">(b)</b> \(\sum x_i=480\), \(\sum x_i^2=12330\) → \(\bar x=24\); \(s^2=\frac{12330-\frac{480^2}{20}}{19}=\frac{810}{19}=42.63\), \(s=6.529\)។ \(t_{0.025,19}=2.093\) → \(E=2.093\times\frac{6.529}{\sqrt{20}}=3.06\)។ <span class="ans">95% CI: [20.94, 27.06] μm/h</span></div>
-<div class="q"><b class="lbl">(c)</b> \(t_{0.005,19}=2.861\) → \(E=2.861\times1.460=4.18\)។ <span class="ans">99% CI: [19.82, 28.18] μm/h</span></div>
-<div class="q"><b class="lbl">(d)</b> <span class="ans">99% ធំទូលាយជាង</span> ព្រោះ \(t_{0.005}=2.861&gt;t_{0.025}=2.093\)៖ កម្រិតទំនុកចិត្តខ្ពស់ → ត្រូវការ interval ធំ។</div>
-</div>
-
-<div class="ex"><h3>លំហាត់ 21. From point estimate to interval (\(n=25\))</h3>
-<div class="q"><b class="lbl">(a)</b> \(\sum x_i=2431\), \(\sum x_i^2=239953\)។ \(\bar x=\frac{2431}{25}=97.24\); \(s^2=\frac{239953-\frac{2431^2}{25}}{24}=\frac{239953-236390.44}{24}=\frac{3562.56}{24}=148.44\) (\(s=12.18\))។ <span class="ans">\(\hat\mu=97.24\), \(s^2=148.44\)</span></div>
-<div class="q"><b class="lbl">(b)</b> df \(=24\), \(t_{0.005,24}=2.797\) → \(E=2.797\times\frac{12.18}{5}=6.82\)។ <span class="ans">99% CI: [90.42, 104.06]</span></div>
-<div class="q"><b class="lbl">(c)</b> z-interval៖ \(E=2.576\times\frac{12.18}{5}=6.28\) → [90.96, 103.52] <b>តូចជាង</b>។ ប៉ុន្តែវាមិនគិតពីភាពមិនប្រាកដដែលកើតពីការប្រើ \(s\) ជំនួស σ (ជាពិសេសពេល \(n=25\) តូច) ដូច្នេះ coverage ពិតតិចជាង 99%។ <span class="ans">t-interval ត្រឹមត្រូវ (σ មិនស្គាល់, population normal)</span></div>
-</div>
-
-<h2 class="part">Part C. Practice Problems with Excel and R</h2>
-
-<div class="ex"><h3>លំហាត់ 22. Point estimates ក្នុង Excel (ផ្ទៀងលំហាត់ 2 និង 4)</h3>
+<div class="fn"><div class="fh"><span class="tag">F14</span>Method of moments (MOM) <span class="km">· វិធី moment</span></div>
+<div class="f">Set \(E(X)=\bar X\) (and, for two parameters, \(E(X^2)=\frac1n\sum X_i^2\)), then solve for the parameters.</div>
+<p class="en"><span class="lab">Idea:</span> population moments are replaced by the matching sample moments. One equation per unknown parameter.</p>
+<p class="km"><span class="lab">គំនិត៖</span> ជំនួស moment នៃប្រជាជនដោយ moment នៃគំរូ។ សមីការមួយសម្រាប់ parameter មិនស្គាល់នីមួយៗ។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F15</span>Maximum likelihood (MLE): 4 steps <span class="km">· likelihood អតិបរមា៖ 4 ជំហាន</span></div>
+<div class="f">\(L(\theta)=\prod_{i=1}^n f(x_i;\theta)\ \to\ \ell(\theta)=\ln L(\theta)\ \to\ \ell'(\theta)=0\ \to\ \ell''(\hat\theta)&lt;0\)</div>
+<p class="en"><span class="lab">Meaning:</span> choose the parameter that makes the observed data most probable. Taking \(\ln\) turns the product into a sum, which is easier to differentiate. The second-derivative check confirms a maximum.</p>
+<p class="km"><span class="lab">អត្ថន័យ៖</span> ជ្រើស parameter ដែលធ្វើឲ្យទិន្នន័យដែលបានសង្កេតមានប្រូបាបខ្ពស់បំផុត។ \(\ln\) ប្តូរផលគុណជាផលបូក ងាយធ្វើដេរីវេ។ ដេរីវេទីពីរអវិជ្ជមាន → អតិបរមា។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F16</span>Distributions used <span class="km">· ច្បាប់ប្រូបាបដែលប្រើ</span></div>
 <table>
-<tr><th>កោសិកា / Formula</th><th>លទ្ធផល</th><th>អត្ថន័យ</th></tr>
-<tr><td><code>=COUNT(A2:A27)</code></td><td>26</td><td>\(n\)</td></tr>
-<tr><td><code>=AVERAGE(A2:A27)</code></td><td>75.615</td><td>\(\bar x\)</td></tr>
-<tr><td><code>=MEDIAN(A2:A27)</code></td><td>75.2</td><td>median</td></tr>
-<tr><td><code>=VAR.S(A2:A27)</code></td><td>2.738</td><td>\(s^2\)</td></tr>
-<tr><td><code>=STDEV.S(A2:A27)</code></td><td>1.655</td><td>\(s\)</td></tr>
-<tr><td><code>=STDEV.S(A2:A27)/SQRT(COUNT(A2:A27))</code></td><td>0.3245</td><td>SE</td></tr>
-<tr><td>(b) <code>=COUNTIF(A2:A27,"&lt;73")/COUNT(A2:A27)</code></td><td>0.0385</td><td>\(\hat p\)</td></tr>
-<tr><td>(c) asphalt <code>=VAR.S(...)</code></td><td>0.000793</td><td>\(S^2\) (ចែកនឹង \(n-1\))</td></tr>
-<tr><td>(c) asphalt <code>=VAR.P(...)</code></td><td>0.000694</td><td>\(\hat\sigma_1^2\) (ចែកនឹង \(n\))</td></tr>
+<tr><th>Distribution</th><th>\(f(x)\)</th><th>\(E(X)\)</th><th>\(\mathrm{Var}(X)\)</th></tr>
+<tr><td>Exponential(\(\lambda\))</td><td>\(\lambda e^{-\lambda x},\ x\ge0\)</td><td>\(1/\lambda\)</td><td>\(1/\lambda^2\)</td></tr>
+<tr><td>Poisson(\(\lambda\))</td><td>\(e^{-\lambda}\lambda^x/x!,\ x=0,1,\ldots\)</td><td>\(\lambda\)</td><td>\(\lambda\)</td></tr>
+<tr><td>Binomial(\(n,p\))</td><td>\(\binom nx p^x(1-p)^{n-x}\)</td><td>\(np\)</td><td>\(np(1-p)\)</td></tr>
+<tr><td>Normal(\(\mu,\sigma^2\))</td><td>bell curve</td><td>\(\mu\)</td><td>\(\sigma^2\)</td></tr>
 </table>
-<p><b>(c)</b> ផ្ទៀង៖ \(\frac{7}{8}\times0.000793=0.000694\) = VAR.P ✓។ <b>(d)</b> Data → Data Analysis → Descriptive Statistics (ធីក Summary statistics)៖ Mean 75.615, Standard Error 0.3245 (= SE), Median 75.2, Mode 75.1, Standard Deviation 1.655 (= \(s\)), Sample Variance 2.738 (= \(s^2\)), Range 6.4, Minimum 72.9, Maximum 79.3, Sum 1966, Count 26 (= \(n\))។ <span class="muted">(ប្រសិនបើ Data Analysis មិនមាន៖ File → Options → Add-ins → Analysis ToolPak។)</span></p>
+<p class="en">Exponential: waiting times (rate \(\lambda\)); Poisson: counts of events; Binomial: number of successes in \(n\) trials.</p>
+<p class="km">Exponential៖ ពេលរង់ចាំ; Poisson៖ ចំនួនព្រឹត្តិការណ៍; Binomial៖ ចំនួនជោគជ័យក្នុង \(n\) ដង។</p></div>
+
+<div class="ex"><h3>Exercise 9. Waiting times (MOM) <span class="km">លំហាត់ 9. ពេលរង់ចាំ (MOM)</span></h3>
+<div class="q"><b class="lbl">(a)</b>
+<ol class="steps">
+<li><span class="en">(F16) Exponential: \(E(X)=\frac1\lambda\).</span><span class="km">មធ្យមនៃ Exponential គឺ \(1/\lambda\)។</span></li>
+<li><span class="en">(F14) Set \(\bar X=\frac1\lambda\) → \(\hat\lambda=\frac1{\bar X}\).</span><span class="km">ដាក់មធ្យមគំរូស្មើមធ្យមប្រជាជន រួចដោះស្រាយរក \(\lambda\)។</span></li>
+<li><span class="en">\(\bar x=\frac{17.4}{5}=3.48\) min → \(\hat\lambda=\frac{1}{3.48}=0.287\).</span><span class="km">គណនាលេខ។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">\(\hat\lambda\approx0.287\) per minute: about 0.29 customers are served per minute, i.e. the mean waiting time is 3.48 minutes.</span><span class="km">\(\hat\lambda\approx0.287\) ក្នុងមួយនាទី៖ ប្រហែល 0.29 អតិថិជនក្នុងមួយនាទី ឬរង់ចាំជាមធ្យម 3.48 នាទី។</span></div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(E(\bar X)=E(X)=\theta\) → unbiased. (F9) \(\mathrm{Var}(\bar X)=\frac{\mathrm{Var}(X)}{n}=\frac{\theta^2}{n}\).</span><span class="km">\(E(\bar X)=\theta\) → គ្មានលម្អៀង; \(\mathrm{Var}(\bar X)=\theta^2/n\)។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">Unbiased and \(\theta^2/n\to0\) → consistent (F8).</span><span class="km">គ្មានលម្អៀង ហើយវ៉ារ្យង់ → 0 → ស៊ីសង្វាក់។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\bar X\) consistent; \(\hat\theta=3.48\) min</div></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 23. Maximum likelihood ក្នុង R (ផ្ទៀងលំហាត់ 11 និង 13)</h3>
+<div class="ex"><h3>Exercise 10. Weld strength (MOM, two parameters) <span class="km">លំហាត់ 10. កម្លាំងផ្សារ (MOM ពីរ parameter)</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F17</span>Percentile of a normal distribution <span class="km">· ភាគរយទីនៃច្បាប់ណរម៉ាល់</span></div>
+<div class="f">\(x_p=\mu+z_p\,\sigma\qquad(z_{0.95}=1.645)\)</div>
+<p class="en"><span class="lab">Meaning:</span> the value below which a fraction \(p\) of the population falls.</p>
+<p class="km"><span class="lab">អត្ថន័យ៖</span> តម្លៃដែលមានសមាមាត្រ \(p\) នៃប្រជាជននៅខាងក្រោមវា។</p></div>
+<div class="q"><b class="lbl">(a)</b>
+<ol class="steps">
+<li><span class="en">1st moment (F14): \(\hat\mu=\bar x=\frac{3844}{10}=384.4\) psi.</span><span class="km">Moment ទី 1៖ \(\hat\mu=\bar x\)។</span></li>
+<li><span class="en">2nd moment (F13): \(\frac1n\sum x_i^2=\hat\sigma^2+\hat\mu^2\) → \(\hat\sigma^2=148119-384.4^2=148119-147763.36=355.64\).</span><span class="km">Moment ទី 2៖ \(\hat\sigma^2=\frac1n\sum x_i^2-\bar x^2\)។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu=384.4\) psi, \(\hat\sigma^2=355.64\) (\(\hat\sigma\approx18.86\))</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">The MOM estimator divides by \(n\), so it is biased (F11). \(s^2=\frac{10}{9}\times355.64=395.16\).</span><span class="km">MOM ចែកនឹង \(n\) → មានលម្អៀង។ គុណនឹង \(\frac{n}{n-1}\) ដើម្បីបាន \(s^2\)។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>Biased; \(s^2\approx395.16\) (\(s\approx19.88\))</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">(F17) \(384.4+1.645\times18.86=415.4\) psi (with \(s\): 417.1 psi).</span><span class="km">ដាក់តម្លៃប៉ាន់ស្មានក្នុងរូបមន្ត \(\mu+1.645\sigma\)។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>≈ 415.4 psi: 95% of welds are weaker than this / 95% នៃការផ្សារខ្សោយជាងតម្លៃនេះ</div></div>
+</div>
+
+<div class="ex"><h3>Exercise 11. Flaws in tape (MLE, Poisson) <span class="km">លំហាត់ 11. ស្នាមខូចលើខ្សែអាត់ (MLE, Poisson)</span></h3>
+<div class="q"><b class="lbl">(a)</b>
+<ol class="steps">
+<li><span class="en">(F15, F16) \(L(\lambda)=\prod\frac{e^{-\lambda}\lambda^{x_i}}{x_i!}=\frac{e^{-n\lambda}\lambda^{\sum x_i}}{\prod x_i!}\).</span><span class="km">គុណ \(f(x_i)\) ទាំងអស់។</span></li>
+<li><span class="en">\(\ell(\lambda)=-n\lambda+(\sum x_i)\ln\lambda-\sum\ln(x_i!)\).</span><span class="km">យក \(\ln\)។</span></li>
+<li><span class="en">\(\ell'(\lambda)=-n+\frac{\sum x_i}{\lambda}=0\) → \(\hat\lambda=\bar X\).</span><span class="km">ដេរីវេស្មើ 0 → \(\hat\lambda=\bar X\)។</span></li>
+<li><span class="en">\(\ell''(\lambda)=-\frac{\sum x_i}{\lambda^2}&lt;0\) → maximum.</span><span class="km">ដេរីវេទីពីរអវិជ្ជមាន → អតិបរមា។</span></li>
+</ol></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(E(\bar X)=\lambda\) → unbiased. MOM: \(E(X)=\lambda=\bar X\) → the same estimator.</span><span class="km">គ្មានលម្អៀង; MOM ផ្តល់ \(\bar X\) ដូចគ្នា។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">\(\sum x_i=0(5)+1(7)+2(12)+3(9)+4(5)+5(1)+6(1)=89\), \(n=40\).</span><span class="km">គុណតម្លៃនឹងប្រេកង់ រួចបូក។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\lambda=89/40=2.225\) flaws per 100 feet / ស្នាមខូចក្នុង 100 feet</div></div>
+</div>
+
+<div class="ex"><h3>Exercise 12. False positives (MLE, proportion) <span class="km">លំហាត់ 12. លទ្ធផលវិជ្ជមានក្លែងក្លាយ</span></h3>
+<div class="q"><b class="lbl">(a)</b>
+<ol class="steps">
+<li><span class="en">(F15, F16) \(\ell(p)=\ln\binom nx+x\ln p+(n-x)\ln(1-p)\).</span><span class="km">យក \(\ln\) នៃ Binomial។</span></li>
+<li><span class="en">\(\ell'(p)=\frac xp-\frac{n-x}{1-p}=0\) → \(x(1-p)=(n-x)p\) → \(\hat p=\frac xn\) (and \(\ell''&lt;0\)).</span><span class="km">ដេរីវេស្មើ 0 → \(\hat p=x/n\)។</span></li>
+<li><span class="en">\(\hat p=\frac{3}{20}=0.15\).</span><span class="km">ដាក់លេខ។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat p=0.15\)</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">Yes, by Exercise 6(a): \(E(X/n)=p\).</span><span class="km">បាទ/ចាស តាមលំហាត់ 6(a)។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>Unbiased / គ្មានលម្អៀង</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">\((1-\hat p)^5=0.85^5=0.444\) (invariance: plug the MLE into the function).</span><span class="km">ដាក់ \(\hat p\) ក្នុងកន្សោម។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>≈ 0.444 (44%)</div></div>
+</div>
+
+<div class="ex"><h3>Exercise 13. API response time (MLE, Exponential) <span class="km">លំហាត់ 13. ពេលឆ្លើយតប API</span></h3>
+<div class="q"><b class="lbl">(a)</b><span class="en">(F15, F16) \(L(\lambda)=\prod\lambda e^{-\lambda x_i}=\lambda^ne^{-\lambda\sum x_i}\); \(\ell(\lambda)=n\ln\lambda-\lambda\sum x_i\).</span><span class="km">សរសេរ likelihood និង log-likelihood។</span></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(\ell'(\lambda)=\frac n\lambda-\sum x_i=0\) → \(\hat\lambda=\frac{n}{\sum x_i}=\frac1{\bar X}\); \(\ell''=-\frac{n}{\lambda^2}&lt;0\) → maximum.</span><span class="km">ដេរីវេស្មើ 0; ដេរីវេទីពីរអវិជ្ជមាន → អតិបរមា។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">\(\sum x_i=1706\), \(\bar x=213.25\) ms → \(\hat\lambda=\frac{1}{213.25}=0.00469\).</span><span class="km">គណនាលេខ។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">\(\hat\lambda\approx0.00469\) requests per ms (≈ 4.7 per second); mean response time 213.25 ms.</span><span class="km">ប្រហែល 0.00469 សំណើក្នុងមួយ ms (≈ 4.7 ក្នុងមួយវិនាទី); ពេលឆ្លើយតបមធ្យម 213.25 ms។</span></div></div>
+<div class="q"><b class="lbl">(d)</b><span class="en">(F14) \(E(X)=1/\lambda=\bar X\) → \(\hat\lambda_{MOM}=1/\bar X\): the two methods agree.</span><span class="km">MOM ផ្តល់លទ្ធផលដូច MLE។</span></div>
+<div class="q"><b class="lbl">(e)</b><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">Not appropriate. An exponential variable has SD = mean (≈ 213 ms) and most values near 0, but these data all lie in 208–219 ms (\(s\approx3.7\) ms). A normal (or shifted) model fits better.</span><span class="km">មិនសមរម្យ។ Exponential មាន SD = mean (≈ 213 ms) ហើយតម្លៃភាគច្រើននៅជិត 0 តែទិន្នន័យនៅចន្លោះ 208–219 ms ប៉ុណ្ណោះ (\(s\approx3.7\))។ Normal សមជាង។</span></div></div>
+</div>
+
+<h2 class="part">Part B. Confidence Intervals for the Mean <span class="km">· ចន្លោះទំនុកចិត្តសម្រាប់មធ្យមភាគ</span></h2>
+
+<div class="fn"><div class="fh"><span class="tag">F18</span>z-interval (σ known) <span class="km">· ចន្លោះ z (ស្គាល់ σ)</span></div>
+<div class="f">\(\displaystyle \bar x\pm z_{\alpha/2}\frac{\sigma}{\sqrt n},\qquad E=z_{\alpha/2}\frac{\sigma}{\sqrt n}\ \ (\text{margin of error})\)</div>
+<p class="en"><span class="lab">Symbols:</span> confidence level \(1-\alpha\); \(z_{\alpha/2}\) = value with area \(\alpha/2\) to its right: 1.645 (90%), 1.960 (95%), 2.576 (99%). <span class="lab">Use:</span> σ known, population normal or \(n\) large.</p>
+<p class="km"><span class="lab">និមិត្តសញ្ញា៖</span> កម្រិតទំនុកចិត្ត \(1-\alpha\); \(z_{\alpha/2}\) = តម្លៃដែលមានផ្ទៃ \(\alpha/2\) នៅខាងស្តាំ៖ 1.645 (90%), 1.960 (95%), 2.576 (99%)។ <span class="lab">ប្រើ៖</span> ស្គាល់ σ ហើយប្រជាជន normal ឬ \(n\) ធំ។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F19</span>t-interval (σ unknown) <span class="km">· ចន្លោះ t (មិនស្គាល់ σ)</span></div>
+<div class="f">\(\displaystyle \bar x\pm t_{\alpha/2,\,n-1}\frac{s}{\sqrt n},\qquad df=n-1\)</div>
+<p class="en"><span class="lab">Use:</span> σ unknown (replaced by \(s\)), population approximately normal. The t value is larger than z because \(s\) adds uncertainty; it approaches z as \(n\) grows.</p>
+<p class="km"><span class="lab">ប្រើ៖</span> មិនស្គាល់ σ (ជំនួសដោយ \(s\)) ហើយប្រជាជនប្រហែល normal។ តម្លៃ t ធំជាង z ព្រោះ \(s\) បន្ថែមភាពមិនប្រាកដ; វាខិតជិត z ពេល \(n\) ធំ។</p></div>
+<div class="fn"><div class="fh"><span class="tag">F20</span>Sample size for a given margin of error <span class="km">· ទំហំគំរូសម្រាប់ margin of error</span></div>
+<div class="f">\(\displaystyle n=\left(\frac{z_{\alpha/2}\,\sigma}{E}\right)^2\quad\text{(always round up)}\)</div>
+<p class="en"><span class="lab">Note:</span> \(n\propto1/E^2\): halving \(E\) needs 4 times the sample; doubling \(E\) needs about a quarter.</p>
+<p class="km"><span class="lab">ចំណាំ៖</span> បង្គត់ឡើងជានិច្ច។ \(n\propto1/E^2\)៖ បន្ថយ \(E\) ពាក់កណ្តាល ត្រូវការគំរូ 4 ដង។</p></div>
+
+<div class="ex"><h3>Exercise 14. Conceptual understanding <span class="km">លំហាត់ 14. ការយល់ដឹងគោលគំនិត</span></h3>
+<div class="q"><b class="lbl">(a)</b><span class="en">We are 99% confident in the <b>method</b>: if we repeated the sampling many times, about 99% of the intervals built this way would contain the fixed true \(\mu\).</span><span class="km">យើងជឿជាក់ 99% លើ<b>វិធីសាស្ត្រ</b>៖ បើយកគំរូច្រើនដង ប្រហែល 99% នៃចន្លោះដែលសង់តាមរបៀបនេះនឹងមាន \(\mu\) ពិត (ចំនួនថេរ)។</span></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">The 99% interval is wider: it uses a larger critical value (2.576 vs 1.645). More confidence needs a wider net.</span><span class="km">99% ធំទូលាយជាង ព្រោះ critical value ធំជាង។ ចង់ជឿជាក់ច្រើន ត្រូវបើកចន្លោះឲ្យធំ។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">Use \(z\) (F18) when σ is known (or \(n\) is large, ≥ 30, as an approximation). Use \(t\) (F19, df \(=n-1\)) when σ is unknown and the population is approximately normal, especially for small \(n\).</span><span class="km">ប្រើ z ពេលស្គាល់ σ (ឬ \(n\ge30\) ប្រហាក់ប្រហែល)។ ប្រើ t ពេលមិនស្គាល់ σ ហើយប្រជាជនប្រហែល normal ជាពិសេសពេល \(n\) តូច។</span></div>
+<div class="q"><b class="lbl">(d)</b><span class="en">\(E=z\sigma/\sqrt n\): larger \(n\) → narrower interval. Multiplying \(n\) by 4 multiplies \(\sqrt n\) by 2, so the margin of error is halved.</span><span class="km">\(n\) ធំ → ចន្លោះតូច។ \(n\times4\) → \(\sqrt n\times2\) → margin of error ថយពាក់កណ្តាល។</span></div>
+<div class="q"><b class="lbl">(e)</b><span class="en">Incorrect. Once computed, [52.3, 55.7] either contains \(\mu\) or not; \(\mu\) is not random. The 95% describes the procedure (95% of such intervals contain \(\mu\)), not this one interval.</span><span class="km">មិនត្រឹមត្រូវ។ ក្រោយគណនារួច ចន្លោះនេះមាន ឬមិនមាន \(\mu\); \(\mu\) មិនមែនចៃដន្យទេ។ 95% សំដៅលើវិធីសាស្ត្រ មិនមែនលើចន្លោះមួយនេះទេ។</span></div>
+</div>
+
+<div class="ex"><h3>Exercise 15. Number of faculty (σ = 165.1, 92%) <span class="km">លំហាត់ 15. ចំនួនសាស្ត្រាចារ្យ</span></h3>
+<ol class="steps">
+<li><span class="en">\(\bar x=\frac{11080}{32}=346.25\).</span><span class="km">គណនាមធ្យមភាគ។</span></li>
+<li><span class="en">\(1-\alpha=0.92\) → \(\alpha/2=0.04\) → \(z_{0.04}=1.75\) (table; more precisely 1.7507).</span><span class="km">រក \(z_{0.04}\) ពីតារាង normal (ផ្ទៃ 0.96 នៅខាងឆ្វេង)។</span></li>
+<li><span class="en">(F18) \(E=1.7507\times\frac{165.1}{\sqrt{32}}=1.7507\times29.186=51.10\).</span><span class="km">គណនា margin of error។</span></li>
+<li><span class="en">\(346.25\pm51.10\).</span><span class="km">បូក និងដក \(E\)។</span></li>
+</ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b>92% CI: [295.15, 397.35] faculty members / នាក់ &nbsp;<span class="muted">(with z = 1.75: [295.2, 397.3])</span></div>
+</div>
+
+<div class="ex"><h3>Exercise 16. Tea packet weight <span class="km">លំហាត់ 16. ទម្ងន់កញ្ចប់តែ</span></h3>
+<div class="q"><b class="lbl">(a)</b><span class="en">(F18) \(E=1.96\times\frac{0.59}{\sqrt{50}}=1.96\times0.0834=0.1635\) → \(15.65\pm0.16\).</span><span class="km">σ ស្គាល់ → ប្រើ z = 1.96។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>95% CI: [15.49, 15.81] ounces</div></div>
+<div class="q"><b class="lbl">(b)</b><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">No. 16 is not in the interval (the whole interval is below 16), so the true mean weight is probably less than 16 ounces.</span><span class="km">ទេ។ 16 មិននៅក្នុងចន្លោះ (ចន្លោះទាំងមូលតិចជាង 16) ដូច្នេះទម្ងន់មធ្យមពិតទំនងជាតិចជាង 16 ounces។</span></div></div>
+</div>
+
+<div class="ex"><h3>Exercise 17. Sample size (99% → \(z_{0.005}=2.576\)) <span class="km">លំហាត់ 17. ទំហំគំរូ</span></h3>
+<div class="q"><b class="lbl">(a)</b><span class="en">(F20) \(\sigma=\sqrt{28}=5.292\), \(E=3\): \(n=\left(\frac{2.576\times5.292}{3}\right)^2=(4.544)^2=20.64\).</span><span class="km">σ = ឫសការេនៃវ៉ារ្យង់ 28; រួចបង្គត់ឡើង។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(n=21\) days / ថ្ងៃ</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(n=\left(\frac{2.576\times2.6}{0.5}\right)^2=(13.395)^2=179.4\).</span><span class="km">បង្គត់ឡើង (មិនមែនបង្គត់ធម្មតា)។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(n=180\) students / និស្សិត</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">\(E=1\): \(n=(2.576\times2.6)^2=44.86\) → 45. Doubling \(E\) divides \(n\) by about 4.</span><span class="km">\(E\) ធំ 2 ដង → \(n\) តូចប្រហែល 4 ដង។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(n=45\)</div></div>
+</div>
+
+<div class="ex"><h3>Exercise 18. Reaction time (\(n=16\), \(\bar x=0.214\), \(s=0.036\)) <span class="km">លំហាត់ 18. ពេលប្រតិកម្ម</span></h3>
+<div class="q"><b class="lbl">(a)</b><span class="en">σ unknown → t (F19). df \(=15\), \(t_{0.05,15}=1.753\). \(E=1.753\times\frac{0.036}{4}=0.0158\).</span><span class="km">មិនស្គាល់ σ → ប្រើ t ជាមួយ df = 15។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>90% CI: [0.198, 0.230] s</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">We are 90% confident that the system's true mean reaction time is between 0.198 s and 0.230 s (about 0.2 s).</span><span class="km">យើងជឿជាក់ 90% ថាពេលប្រតិកម្មមធ្យមពិតស្ថិតនៅចន្លោះ 0.198 និង 0.230 វិនាទី។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">Length \(=2E\le0.02\) → \(E=0.01\). (F20 with \(s\)) \(n=\left(\frac{1.645\times0.036}{0.01}\right)^2=35.07\).</span><span class="km">ប្រវែង = 2E → E = 0.01; រួចបង្គត់ឡើង។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(n=36\)</div></div>
+</div>
+
+<div class="ex"><h3>Exercise 19. Employee ages (\(n=20\)) <span class="km">លំហាត់ 19. អាយុបុគ្គលិក</span></h3>
+<ol class="steps">
+<li><span class="en">(F1) \(\bar x=\frac{881}{20}=44.05\).</span><span class="km">មធ្យមភាគ។</span></li>
+<li><span class="en">(F5) \(s^2=\frac{41573-881^2/20}{19}=\frac{2764.95}{19}=145.52\), \(s=12.06\).</span><span class="km">វ៉ារ្យង់ និងគម្លាតស្តង់ដារ។</span></li>
+<li><span class="en">(F19) df \(=19\), \(t_{0.025,19}=2.093\); \(E=2.093\times\frac{12.06}{\sqrt{20}}=5.65\).</span><span class="km">ប្រើ t ព្រោះមិនស្គាល់ σ។</span></li>
+</ol>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">95% CI: [38.40, 49.70] years. We are 95% confident that the mean age of all the university's employees is between 38.4 and 49.7 years.</span><span class="km">យើងជឿជាក់ 95% ថាអាយុមធ្យមនៃបុគ្គលិកទាំងអស់ស្ថិតនៅចន្លោះ 38.4 និង 49.7 ឆ្នាំ។</span></div>
+</div>
+
+<div class="ex"><h3>Exercise 20. Newt skin healing rate (\(n=20\)) <span class="km">លំហាត់ 20. ល្បឿនជាសះស្បែក</span></h3>
+<div class="fn"><div class="fh"><span class="tag">F21</span>Box plot (five-number summary) <span class="km">· ប្រអប់ (សង្ខេបលេខប្រាំ)</span></div>
+<div class="f">min — \(Q_1\) — median — \(Q_3\) — max &nbsp;(+ fences of F7 to mark outliers)</div>
+<p class="en"><span class="lab">Reading:</span> the box spans \(Q_1\) to \(Q_3\), the line is the median, whiskers go to the most extreme non-outliers. A roughly symmetric box with no outliers suggests approximate normality.</p>
+<p class="km"><span class="lab">អាន៖</span> ប្រអប់ពី \(Q_1\) ដល់ \(Q_3\), បន្ទាត់ = មេដ្យាន, whiskers ដល់តម្លៃចុងដែលមិនមែន outlier។ ប្រអប់ស៊ីមេទ្រី គ្មាន outlier → ប្រហែល normal។</p></div>
+<div class="q"><b class="lbl">(a)</b>
+<ol class="steps">
+<li><span class="en">Sorted: 12, 14, 18, 18, 20, 21, 21, 22, 23, 23, 23, 24, 25, 25, 28, 28, 31, 32, 33, 39.</span><span class="km">តម្រៀប។</span></li>
+<li><span class="en">(F3) min 12, \(Q_1=\frac{20+21}{2}=20.5\), median \(=23\), \(Q_3=\frac{28+28}{2}=28\), max 39.</span><span class="km">សង្ខេបលេខប្រាំ។</span></li>
+<li><span class="en">(F7) \(IQR=7.5\), fences 9.25 and 39.25 → no outliers (39 is just inside).</span><span class="km">គ្មាន outlier (39 នៅក្នុងរបង)។</span></li>
+<li><span class="en">The right part (23→28→39) is a little longer than the left (12→20.5→23): slight right skew.</span><span class="km">ផ្នែកខាងស្តាំវែងជាងបន្តិច៖ skew ស្តាំតិចតួច។</span></li>
+</ol><div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">Approximately normal is acceptable: roughly symmetric, no outliers.</span><span class="km">អាចទទួលយកថាប្រហែល normal៖ ស៊ីមេទ្រីប្រហាក់ប្រហែល គ្មាន outlier។</span></div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">\(\sum x_i=480\), \(\sum x_i^2=12330\) → \(\bar x=24\), \(s^2=\frac{12330-11520}{19}=42.63\), \(s=6.529\). (F19) \(t_{0.025,19}=2.093\), \(E=2.093\times\frac{6.529}{\sqrt{20}}=3.06\).</span><span class="km">គណនា \(\bar x\), \(s\), រួចចន្លោះ t។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>95% CI: [20.94, 27.06] μm/h</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">\(t_{0.005,19}=2.861\), \(E=2.861\times1.460=4.18\).</span><span class="km">ប្តូរ t ទៅ 2.861។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>99% CI: [19.82, 28.18] μm/h</div></div>
+<div class="q"><b class="lbl">(d)</b><span class="en">The 99% interval is wider because \(t_{0.005}=2.861&gt;t_{0.025}=2.093\).</span><span class="km">99% ធំទូលាយជាង ព្រោះតម្លៃ t ធំជាង។</span></div>
+</div>
+
+<div class="ex"><h3>Exercise 21. From point estimate to interval (\(n=25\)) <span class="km">លំហាត់ 21. ពីការប៉ាន់ស្មានចំណុច ទៅចន្លោះ</span></h3>
+<div class="q"><b class="lbl">(a)</b><span class="en">\(\sum x_i=2431\), \(\sum x_i^2=239953\). \(\bar x=97.24\); \(s^2=\frac{239953-2431^2/25}{24}=\frac{3562.56}{24}=148.44\) (\(s=12.18\)).</span><span class="km">\(\bar x\) និង \(s^2\) ជាអង្គប៉ាន់ស្មានគ្មានលម្អៀង។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>\(\hat\mu=97.24\), \(s^2=148.44\)</div></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">(F19) df \(=24\), \(t_{0.005,24}=2.797\), \(E=2.797\times\frac{12.18}{5}=6.82\).</span><span class="km">ប្រើ t ជាមួយ df = 24។</span><div class="ans"><b class="h">Answer / ចម្លើយ</b>99% CI: [90.42, 104.06]</div></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">z-interval: \(E=2.576\times\frac{12.18}{5}=6.28\) → [90.96, 103.52], <b>narrower</b>. But it ignores the extra uncertainty from estimating σ with \(s\) (small \(n=25\)), so its real coverage is below 99%. The t-interval is correct for a normal population with unknown σ.</span><span class="km">ចន្លោះ z <b>តូចជាង</b> តែមិនគិតពីភាពមិនប្រាកដពីការប្រើ \(s\) ជំនួស σ ដូច្នេះ coverage ពិតតិចជាង 99%។ ចន្លោះ t ត្រឹមត្រូវ។</span></div>
+</div>
+
+<h2 class="part">Part C. Practice with Excel and R <span class="km">· អនុវត្តជាមួយ Excel និង R</span></h2>
+
+<div class="ex"><h3>Exercise 22. Point estimates in Excel <span class="km">លំហាត់ 22. ការប៉ាន់ស្មានចំណុចក្នុង Excel</span></h3>
+<table>
+<tr><th>Formula</th><th>Result</th><th>Meaning (EN)</th><th>អត្ថន័យ (ខ្មែរ)</th></tr>
+<tr><td><code>=COUNT(A2:A27)</code></td><td>26</td><td>\(n\)</td><td class="km">ចំនួនទិន្នន័យ</td></tr>
+<tr><td><code>=AVERAGE(A2:A27)</code></td><td>75.615</td><td>\(\bar x\) (F1)</td><td class="km">មធ្យមភាគ</td></tr>
+<tr><td><code>=MEDIAN(A2:A27)</code></td><td>75.2</td><td>median (F2)</td><td class="km">មេដ្យាន</td></tr>
+<tr><td><code>=VAR.S(A2:A27)</code></td><td>2.738</td><td>\(s^2\), divisor \(n-1\)</td><td class="km">វ៉ារ្យង់គំរូ</td></tr>
+<tr><td><code>=STDEV.S(A2:A27)</code></td><td>1.655</td><td>\(s\)</td><td class="km">គម្លាតស្តង់ដារ</td></tr>
+<tr><td><code>=STDEV.S(A2:A27)/SQRT(COUNT(A2:A27))</code></td><td>0.3245</td><td>SE (F9)</td><td class="km">កំហុសស្តង់ដារ</td></tr>
+<tr><td>(b) <code>=COUNTIF(A2:A27,"&lt;73")/COUNT(A2:A27)</code></td><td>0.0385</td><td>\(\hat p\) (F10)</td><td class="km">សមាមាត្រ &lt; 73</td></tr>
+<tr><td>(c) <code>=VAR.S(asphalt)</code></td><td>0.000793</td><td>\(S^2\) (F11)</td><td class="km">ចែកនឹង \(n-1\)</td></tr>
+<tr><td>(c) <code>=VAR.P(asphalt)</code></td><td>0.000694</td><td>\(\hat\sigma_1^2\) (F11)</td><td class="km">ចែកនឹង \(n\)</td></tr>
+</table>
+<p class="en"><b>(c)</b> Check: \(\frac{7}{8}\times0.000793=0.000694\) = VAR.P ✓. <b>(d)</b> Data → Data Analysis → Descriptive Statistics (tick “Summary statistics”): Mean 75.615, Standard Error 0.3245 (= SE), Median 75.2, Mode 75.1, Standard Deviation 1.655 (= \(s\)), Sample Variance 2.738 (= \(s^2\)), Range 6.4, Minimum 72.9, Maximum 79.3, Sum 1966, Count 26 (= \(n\)). If Data Analysis is missing: File → Options → Add-ins → Analysis ToolPak.</p>
+<p class="km"><b>(c)</b> ផ្ទៀង៖ \(\frac78\times\)VAR.S = VAR.P ✓។ <b>(d)</b> Data → Data Analysis → Descriptive Statistics៖ Standard Error = SE, Standard Deviation = \(s\), Sample Variance = \(s^2\), Count = \(n\)។ បើគ្មាន Data Analysis៖ File → Options → Add-ins → Analysis ToolPak។</p>
+</div>
+
+<div class="ex"><h3>Exercise 23. Maximum likelihood in R <span class="km">លំហាត់ 23. MLE ក្នុង R</span></h3>
 <pre>x &lt;- rep(0:6, times = c(5, 7, 12, 9, 5, 1, 1))   <span class="c"># 40 observations</span>
 mean(x)                                          <span class="c"># (a) 2.225</span>
-loglik &lt;- function(lam) sum(dpois(x, lambda = lam, log = TRUE))
-optimize(loglik, interval = c(0.01, 10), maximum = TRUE)$maximum   <span class="c"># (b) ≈ 2.225 = mean(x)</span>
+loglik &lt;- function(lam) sum(dpois(x, lambda = lam, log = TRUE))   <span class="c"># l(lambda), F15</span>
+optimize(loglik, interval = c(0.01, 10), maximum = TRUE)$maximum   <span class="c"># (b) about 2.225</span>
 
-<span class="c"># (c) response times: λ is about 0.0047, so the search interval must contain it</span>
+<span class="c"># (c) response times: lambda is about 0.0047, so the interval must contain it</span>
 y &lt;- c(212, 208, 219, 215, 210, 211, 214, 217)
 loglik2 &lt;- function(lam) sum(dexp(y, rate = lam, log = TRUE))
-optimize(loglik2, interval = c(1e-5, 0.1), maximum = TRUE)$maximum <span class="c"># ≈ 0.00469</span>
+optimize(loglik2, interval = c(1e-5, 0.1), maximum = TRUE)$maximum <span class="c"># about 0.00469</span>
 1 / mean(y)                                                        <span class="c"># 0.004689</span></pre>
-<p class="note">សម្គាល់៖ បើប្រើ <code>interval = c(0.01, 10)</code> សម្រាប់ (c) <code>optimize()</code> នឹងផ្តល់ 0.01 (ចុងខាងឆ្វេង) ព្រោះ \(\hat\lambda\approx0.0047\) នៅក្រៅចន្លោះ។</p>
-<span class="ans">optimize() ផ្តល់លទ្ធផលដូច \(\bar x=2.225\) និង \(1/\bar y=0.00469\)</span>
+<p class="en muted">Note: with <code>interval = c(0.01, 10)</code> in (c), <code>optimize()</code> returns about 0.01 (the left end) because \(\hat\lambda\approx0.0047\) is outside the interval.</p>
+<p class="km muted">ចំណាំ៖ បើប្រើ <code>c(0.01, 10)</code> សម្រាប់ (c) នឹងបាន 0.01 (ចុងខាងឆ្វេង) ព្រោះ \(\hat\lambda\approx0.0047\) នៅក្រៅចន្លោះ។</p>
+<div class="ans"><b class="h">Answer / ចម្លើយ</b><span class="en">The numerical maximum agrees with the formulas \(\hat\lambda=\bar x=2.225\) and \(\hat\lambda=1/\bar y=0.00469\).</span><span class="km">អតិបរមាដែលគណនាដោយលេខ ត្រូវនឹងរូបមន្ត។</span></div>
 </div>
 
-<div class="ex"><h3>លំហាត់ 24. Confidence intervals ក្នុង Excel (ផ្ទៀងលំហាត់ 15, 19, 20)</h3>
+<div class="ex"><h3>Exercise 24. Confidence intervals in Excel <span class="km">លំហាត់ 24. ចន្លោះទំនុកចិត្តក្នុង Excel</span></h3>
 <table>
-<tr><th></th><th>Formula</th><th>លទ្ធផល</th><th>Interval</th></tr>
-<tr><td>(a)</td><td><code>=NORM.S.INV(0.96)</code><br><code>=CONFIDENCE.NORM(0.08, 165.1, 32)</code></td><td>1.7507<br>51.10</td><td>\(346.25\pm51.10\) = [295.15, 397.35]</td></tr>
-<tr><td>(b)</td><td><code>=T.INV.2T(0.05, 19)</code><br><code>=CONFIDENCE.T(0.05, STDEV.S(...), COUNT(...))</code></td><td>2.093<br>5.646</td><td>\(44.05\pm5.65\) = [38.40, 49.70]</td></tr>
-<tr><td>(c)</td><td>Descriptive Statistics → Confidence Level for Mean 95% / 99%</td><td>3.056 / 4.177</td><td>[20.94, 27.06] / [19.82, 28.18]</td></tr>
+<tr><th></th><th>Formula</th><th>Result</th><th>Interval</th></tr>
+<tr><td>(a)</td><td><code>=NORM.S.INV(0.96)</code><br><code>=CONFIDENCE.NORM(0.08, 165.1, 32)</code></td><td>1.7507<br>51.10 = \(E\)</td><td>[295.15, 397.35]</td></tr>
+<tr><td>(b)</td><td><code>=T.INV.2T(0.05, 19)</code><br><code>=CONFIDENCE.T(0.05, STDEV.S(...), COUNT(...))</code></td><td>2.093<br>5.646 = \(E\)</td><td>[38.40, 49.70]</td></tr>
+<tr><td>(c)</td><td>Descriptive Statistics, Confidence Level for Mean 95% / 99%</td><td>3.056 / 4.177</td><td>[20.94, 27.06] / [19.82, 28.18]</td></tr>
 </table>
-<p>“Confidence Level(95.0%)” ក្នុងលទ្ធផល Excel គឺ margin of error \(E\) (មិនមែន interval ទេ)៖ interval \(=\) Mean ± តម្លៃនោះ។ ត្រូវគ្នានឹងលំហាត់ 20 ✓។</p>
+<p class="en">CONFIDENCE.NORM / CONFIDENCE.T and the “Confidence Level” line return the margin of error \(E\), not the interval: the interval is mean ± \(E\). The results match Exercises 15, 19 and 20 ✓.</p>
+<p class="km">CONFIDENCE.NORM / CONFIDENCE.T និង “Confidence Level” ផ្តល់ margin of error \(E\) មិនមែនចន្លោះទេ៖ ចន្លោះ = មធ្យមភាគ ± \(E\)។ ត្រូវនឹងលំហាត់ 15, 19, 20 ✓។</p>
 </div>
 
-<div class="ex"><h3>លំហាត់ 25. Confidence intervals ក្នុង R (ផ្ទៀងលំហាត់ 17–21)</h3>
+<div class="ex"><h3>Exercise 25. Confidence intervals in R <span class="km">លំហាត់ 25. ចន្លោះទំនុកចិត្តក្នុង R</span></h3>
 <pre>xbar &lt;- 0.214; s &lt;- 0.036; n &lt;- 16
-E &lt;- qt(0.95, df = n - 1) * s / sqrt(n)     <span class="c"># 0.01578</span>
+E &lt;- qt(0.95, df = n - 1) * s / sqrt(n)     <span class="c"># 0.01578   (F19)</span>
 c(xbar - E, xbar + E)                        <span class="c"># (a) 0.1982 0.2298</span>
 
 ages &lt;- c(24, 31, 28, 43, 28, 56, 48, 39, 52, 32,
@@ -492,20 +621,22 @@ x21 &lt;- c(90, 87, 121, 96, 106, 107, 89, 107, 83, 92, 117, 93, 98,
          120, 97, 109, 78, 87, 99, 79, 104, 85, 91, 107, 89)
 t.test(x21, conf.level = 0.99)$conf.int      <span class="c">#     90.42 104.06</span>
 
-<span class="c"># (c) sample sizes of Exercise 17</span>
+<span class="c"># (c) sample sizes of Exercise 17 (F20)</span>
 ceiling((qnorm(0.995) * sqrt(28) / 3)^2)     <span class="c"># 21</span>
 ceiling((qnorm(0.995) * 2.6 / 0.5)^2)        <span class="c"># 180</span>
 ceiling((qnorm(0.995) * 2.6 / 1)^2)          <span class="c"># 45</span></pre>
+<p class="en"><code>qt(0.95, df)</code> = \(t_{0.05,df}\) (area 0.95 to the left); <code>qnorm(0.995)</code> = \(z_{0.005}=2.576\); <code>ceiling()</code> rounds up.</p>
+<p class="km"><code>qt(0.95, df)</code> = \(t_{0.05}\) (ផ្ទៃ 0.95 នៅខាងឆ្វេង); <code>qnorm(0.995)</code> = 2.576; <code>ceiling()</code> បង្គត់ឡើង។</p>
 </div>
 
-<div class="ex"><h3>លំហាត់ 26. Simulation: មើលលក្ខណៈឲ្យឃើញផ្ទាល់</h3>
+<div class="ex"><h3>Exercise 26. Simulation: seeing the properties <span class="km">លំហាត់ 26. ការក្លែងធ្វើ</span></h3>
 <pre>set.seed(2026)
-<span class="c"># (a) bias of the variance</span>
+<span class="c"># (a) bias of the variance (F11)</span>
 S2 &lt;- replicate(10000, var(rnorm(5, mean = 50, sd = 10)))
-mean(S2)            <span class="c"># ≈ 100  (S^2, divisor n-1)</span>
-mean(S2 * 4 / 5)    <span class="c"># ≈ 80   (sigma1^2, divisor n)</span>
+mean(S2)            <span class="c"># about 100 (S^2, divisor n-1)</span>
+mean(S2 * 4 / 5)    <span class="c"># about 80  (sigma1^2, divisor n)</span>
 
-<span class="c"># (b), (c) coverage and width of the 95% t-interval</span>
+<span class="c"># (b), (c) coverage and width of the 95% t-interval (F19)</span>
 ci_sim &lt;- function(n, B = 1000) {
   res &lt;- replicate(B, {
     ci &lt;- t.test(rnorm(n, mean = 50, sd = 10), conf.level = 0.95)$conf.int
@@ -513,14 +644,42 @@ ci_sim &lt;- function(n, B = 1000) {
   })
   rowMeans(res)
 }
-ci_sim(25)     <span class="c"># cover ≈ 0.95, width ≈ 8.2</span>
-ci_sim(100)    <span class="c"># cover ≈ 0.95, width ≈ 4.0</span></pre>
-<div class="q"><b class="lbl">(a)</b> មធ្យមនៃ \(S^2\) ≈ 100 = \(\sigma^2\) (unbiased)។ មធ្យមនៃ \(\hat\sigma_1^2\) ≈ 80 = \(\frac{4}{5}\sigma^2\) → ប៉ាន់ស្មានទាប (bias \(=-\sigma^2/n=-20\))។ ត្រូវនឹងទ្រឹស្តីក្នុងលំហាត់ 4។</div>
-<div class="q"><b class="lbl">(b)</b> សមាមាត្រ intervals ដែលមាន \(\mu=50\) ≈ 0.95 (ការក្លែងធ្វើរបស់យើងបាន 0.948)។ <span class="ans">ជិត 0.95 — នេះជាអត្ថន័យនៃ “95% confidence”</span></div>
-<div class="q"><b class="lbl">(c)</b> \(n=100\)៖ coverage នៅតែ ≈ 0.95 (មិនប្រែប្រួល) តែទទឹងមធ្យមថយពីប្រហែល 8.2 ទៅ 4.0 (ពាក់កណ្តាល) ព្រោះទទឹង \(\propto1/\sqrt n\) ហើយ \(\sqrt{100/25}=2\)។ <span class="muted">(លេខពិតប្រាកដអាស្រ័យលើ seed។)</span></div>
+ci_sim(25)     <span class="c"># cover about 0.95, width about 8.2</span>
+ci_sim(100)    <span class="c"># cover about 0.95, width about 4.0</span></pre>
+<div class="q"><b class="lbl">(a)</b><span class="en">The average of \(S^2\) is about 100 \(=\sigma^2\) (unbiased); the average of \(\hat\sigma_1^2\) is about 80 \(=\frac45\sigma^2\), too small by \(\sigma^2/n=20\). This confirms F11.</span><span class="km">មធ្យមនៃ \(S^2\) ≈ 100 (គ្មានលម្អៀង); មធ្យមនៃ \(\hat\sigma_1^2\) ≈ 80 (តូចពេក 20)។ បញ្ជាក់ F11។</span></div>
+<div class="q"><b class="lbl">(b)</b><span class="en">About 95% of the intervals contain \(\mu=50\) (our run: 0.948). This is exactly what “95% confidence” means.</span><span class="km">ប្រហែល 95% នៃចន្លោះមាន \(\mu=50\) (យើងបាន 0.948)។ នេះជាអត្ថន័យនៃ “95% confidence”។</span></div>
+<div class="q"><b class="lbl">(c)</b><span class="en">With \(n=100\) the coverage stays about 0.95, but the average width falls from about 8.2 to about 4.0 (halved), because width \(\propto1/\sqrt n\) and \(\sqrt{100/25}=2\). Exact numbers depend on the seed.</span><span class="km">ពេល \(n=100\) coverage នៅតែ ≈ 0.95 តែទទឹងមធ្យមថយពី ≈ 8.2 ទៅ ≈ 4.0 (ពាក់កណ្តាល) ព្រោះទទឹង \(\propto1/\sqrt n\)។ លេខពិតអាស្រ័យលើ seed។</span></div>
 </div>
 
-<p class="muted" style="margin-top:14px">ចំណាំ៖ តម្លៃ \(t\) និង \(z\) យកពីតារាងស្តង់ដារ (1.645, 1.96, 2.576; \(t_{0.05,15}=1.753\), \(t_{0.025,19}=2.093\), \(t_{0.005,19}=2.861\), \(t_{0.005,24}=2.797\))។ ការបង្គត់លេខអាចខុសគ្នាបន្តិចបន្តួចពីចម្លើយរបស់គ្រូ។</p>
+<!-- =================================================================== -->
+<h1 class="td">Formula summary <span class="km">តារាងសង្ខេបរូបមន្ត</span></h1>
+<table class="sum">
+<tr><th>Note</th><th>Formula</th><th>What it is / when to use (EN)</th><th>អត្ថន័យ / ពេលប្រើ (ខ្មែរ)</th></tr>
+<tr><td>F1</td><td>\(\bar x=\frac{\sum x_i}{n}\)</td><td>Sample mean; centre of the data.</td><td class="km">មធ្យមភាគគំរូ</td></tr>
+<tr><td>F2</td><td>median \(=x_{((n+1)/2)}\) or average of the two middle values</td><td>Middle value; resistant to outliers. Mode = most frequent value.</td><td class="km">មេដ្យាន (តម្លៃកណ្តាល); ម៉ូត (ញឹកញាប់បំផុត)</td></tr>
+<tr><td>F3</td><td>\(i=nk/100\): integer → average \(x_{(i)},x_{(i+1)}\); else \(x_{(\lceil i\rceil)}\)</td><td>Percentile \(P_k\); \(Q_1=P_{25}\), \(Q_3=P_{75}\) (R type 2).</td><td class="km">ភាគរយទី និងក្វាទីល</td></tr>
+<tr><td>F4</td><td>\(R=\max-\min\); midrange \(=\frac{\min+\max}2\); \(IQR=Q_3-Q_1\)</td><td>Measures of spread / position.</td><td class="km">វិសាលភាព និង IQR</td></tr>
+<tr><td>F5</td><td>\(s^2=\frac{\sum x_i^2-(\sum x_i)^2/n}{n-1}\), \(s=\sqrt{s^2}\)</td><td>Sample variance and SD.</td><td class="km">វ៉ារ្យង់ និងគម្លាតស្តង់ដារគំរូ</td></tr>
+<tr><td>F6</td><td>\(z=\frac{x-\bar x}{s}\)</td><td>Standard score; compare positions.</td><td class="km">ពិន្ទុស្តង់ដារ</td></tr>
+<tr><td>F7</td><td>\(Q_1-1.5IQR,\ Q_3+1.5IQR\); \(|z|&gt;3\)</td><td>Outlier rules.</td><td class="km">ច្បាប់រក outlier</td></tr>
+<tr><td>F8</td><td>bias \(=E(\hat\theta)-\theta\); MSE \(=\mathrm{Var}+\text{bias}^2\)</td><td>Quality of an estimator.</td><td class="km">លម្អៀង និង MSE</td></tr>
+<tr><td>F9</td><td>\(E(\bar X)=\mu\), \(\mathrm{Var}(\bar X)=\frac{\sigma^2}{n}\), \(SE=\frac{s}{\sqrt n}\)</td><td>Precision of the sample mean.</td><td class="km">កំហុសស្តង់ដារនៃមធ្យមភាគ</td></tr>
+<tr><td>F10</td><td>\(\hat p=\frac Xn\), \(SE=\sqrt{\frac{\hat p(1-\hat p)}{n}}\)</td><td>Sample proportion.</td><td class="km">សមាមាត្រគំរូ</td></tr>
+<tr><td>F10b</td><td>\(\hat\tau=N\bar X\)</td><td>Population total.</td><td class="km">ចំនួនសរុបនៃប្រជាជន</td></tr>
+<tr><td>F11</td><td>\(E(S^2)=\sigma^2\); \(E(\hat\sigma_1^2)=\frac{n-1}n\sigma^2\)</td><td>Why divide by \(n-1\).</td><td class="km">ហេតុអ្វីចែកនឹង \(n-1\)</td></tr>
+<tr><td>F12</td><td>\(E(\sum a_iX_i)=\mu\sum a_i\); \(\mathrm{Var}(\sum a_iX_i)=\sigma^2\sum a_i^2\)</td><td>Linear combinations of independent \(X_i\).</td><td class="km">បន្សំលីនេអ៊ែរ</td></tr>
+<tr><td>F13</td><td>\(E(Y^2)=\mathrm{Var}(Y)+[E(Y)]^2\)</td><td>Second moment identity.</td><td class="km">រូបមន្ត moment ទីពីរ</td></tr>
+<tr><td>F14</td><td>\(E(X)=\bar X\), \(E(X^2)=\frac1n\sum X_i^2\)</td><td>Method of moments.</td><td class="km">វិធី moment</td></tr>
+<tr><td>F15</td><td>\(L=\prod f(x_i;\theta)\), \(\ell=\ln L\), \(\ell'=0\), \(\ell''&lt;0\)</td><td>Maximum likelihood.</td><td class="km">likelihood អតិបរមា</td></tr>
+<tr><td>F16</td><td>Exp: \(1/\lambda\); Poisson: \(\lambda\); Bin: \(np\)</td><td>Means of common distributions.</td><td class="km">មធ្យមនៃច្បាប់ប្រូបាបសំខាន់ៗ</td></tr>
+<tr><td>F17</td><td>\(x_p=\mu+z_p\sigma\)</td><td>Normal percentile.</td><td class="km">ភាគរយទីនៃ normal</td></tr>
+<tr><td>F18</td><td>\(\bar x\pm z_{\alpha/2}\frac{\sigma}{\sqrt n}\)</td><td>CI, σ known.</td><td class="km">ចន្លោះទំនុកចិត្ត ស្គាល់ σ</td></tr>
+<tr><td>F19</td><td>\(\bar x\pm t_{\alpha/2,n-1}\frac{s}{\sqrt n}\)</td><td>CI, σ unknown.</td><td class="km">ចន្លោះទំនុកចិត្ត មិនស្គាល់ σ</td></tr>
+<tr><td>F20</td><td>\(n=\left(\frac{z_{\alpha/2}\sigma}{E}\right)^2\), round up</td><td>Sample size.</td><td class="km">ទំហំគំរូ</td></tr>
+<tr><td>F21</td><td>min, \(Q_1\), median, \(Q_3\), max</td><td>Box plot.</td><td class="km">ប្រអប់ (box plot)</td></tr>
+</table>
+<p class="en muted">Critical values used: \(z\): 1.645 (90%), 1.751 (92%), 1.960 (95%), 2.576 (99%); \(t_{0.05,15}=1.753\), \(t_{0.025,19}=2.093\), \(t_{0.005,19}=2.861\), \(t_{0.005,24}=2.797\).</p>
+<p class="km muted">តម្លៃ critical ដែលប្រើ៖ ដូចខាងលើ (យកពីតារាង normal និងតារាង t)។</p>
 
 </div>
 </body>
