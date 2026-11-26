@@ -4,10 +4,11 @@
  *   Lessons-Module-1..4.pdf   lessons, exercises, answers and solutions
  *   Exam-Sheet-01..20.pdf     48-question sheet modelled on the real paper,
  *                             answer sheet, answer key and solutions
+ *   Lesson-Conics-Feynman.pdf  conic sections explained simply, with pictures
  *   Solutions-Sheet-01..20.pdf  answer key and step-by-step solutions in
  *                             English and Khmer, one card per question
  * Uses MathJax CHTML with its own font files so the PDFs stay small.
- *   npm i mathjax@3 playwright && node tools/build-bilingual.js [lessons|sheets|solutions|all] [first] [last]
+ *   npm i mathjax@3 playwright && node tools/build-bilingual.js [lessons|sheets|solutions|conics|all] [first] [last]
  */
 'use strict';
 const http = require('http');
@@ -67,6 +68,8 @@ const server = http
       for (let n = first; n <= last; n++) await render(`doc=sheet&n=${n}`, path.join(OUT, `Exam-Sheet-${pad(n)}.pdf`), `Exam Sheet ${n}`);
     if (what === 'all' || what === 'solutions')
       for (let n = first; n <= last; n++) await render(`n=${n}`, path.join(OUT, `Solutions-Sheet-${pad(n)}.pdf`), `Solutions · Exam Sheet ${n}`, 'print-solutions.html');
+    if (what === 'all' || what === 'conics')
+      await render('', path.join(OUT, 'Lesson-Conics-Feynman.pdf'), 'Conic sections · the Feynman way', 'print-conics.html');
     if (errors.length) console.log('page errors:', errors);
     await browser.close();
     server.close();
