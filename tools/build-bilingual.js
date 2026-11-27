@@ -8,7 +8,7 @@
  *   Solutions-Sheet-01..20.pdf  answer key and step-by-step solutions in
  *                             English and Khmer, one card per question
  * Uses MathJax CHTML with its own font files so the PDFs stay small.
- *   npm i mathjax@3 playwright && node tools/build-bilingual.js [lessons|sheets|solutions|conics|all] [first] [last]
+ *   npm i mathjax@3 playwright && node tools/build-bilingual.js [lessons|sheets|solutions|conics|explain|all] [first] [last]
  */
 'use strict';
 const http = require('http');
@@ -70,6 +70,8 @@ const server = http
       for (let n = first; n <= last; n++) await render(`n=${n}`, path.join(OUT, `Solutions-Sheet-${pad(n)}.pdf`), `Solutions · Exam Sheet ${n}`, 'print-solutions.html');
     if (what === 'all' || what === 'conics')
       await render('', path.join(OUT, 'Lesson-Conics-Feynman.pdf'), 'Conic sections · the Feynman way', 'print-conics.html');
+    if (what === 'all' || what === 'explain')
+      await render('', path.join(OUT, 'Explain-Q9-Subsets.pdf'), 'Question 9 explained · subsets', 'print-explain-subsets.html');
     if (errors.length) console.log('page errors:', errors);
     await browser.close();
     server.close();

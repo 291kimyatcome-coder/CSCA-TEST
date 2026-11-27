@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<title>CSCA 2026 — Question 9 explained: number of subsets</title>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/fonts-km.css">
+<style>
+  :root {
+    --navy: #173a5e; --teal: #23897f; --teal-2: #2fa597; --teal-soft: #e8f5f2; --teal-line: #bfe2db;
+    --ink: #1c2433; --muted: #5d6a7c; --line: #dde5ee; --km: #1f4e79;
+    --gold: #b7791f; --gold-soft: #fdf5e6; --red: #c8472e; --red-soft: #fbeae6; --ok: #1d8a5a; --ok-soft: #e6f6ee;
+  }
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "IBM Plex Sans", "Kantumruy Pro", sans-serif; font-size: 9.6pt; line-height: 1.45; color: var(--ink); }
+  p { margin: 0 0 3px; }
+  .km { font-family: "Kantumruy Pro", "IBM Plex Sans", sans-serif; line-height: 1.7; color: var(--km); }
+  mjx-container { font-size: 104% !important; }
+  mjx-container[display="true"] { margin: 3px 0 !important; }
+  svg text { font-family: "IBM Plex Sans", sans-serif; }
+
+  .head { position: relative; overflow: hidden; border: 1.6px solid var(--teal-line); border-radius: 18px; padding: 12px 18px 12px; text-align: center; margin-bottom: 8px; }
+  .head .bg { position: absolute; color: #d9ece8; font-family: "Times New Roman", serif; font-style: italic; font-size: 14pt; white-space: nowrap; }
+  .head img { width: 62px; height: 62px; display: block; margin: 0 auto 6px; position: relative; }
+  .pill { display: inline-block; background: linear-gradient(90deg, var(--navy), var(--teal)); color: #fff; border-radius: 999px; padding: 3px 16px; font-weight: 700; font-size: 10pt; position: relative; }
+  .pill .km { color: #fff; }
+  h1 { position: relative; font-family: "Kantumruy Pro", sans-serif; color: var(--navy); font-size: 22pt; line-height: 1.45; margin: 4px 0 0; }
+  h1 + p { position: relative; font-family: "IBM Plex Sans Condensed", sans-serif; color: var(--teal); font-size: 12pt; font-weight: 600; }
+
+  .qbox { background: var(--teal-soft); border: 1.8px solid var(--teal-2); border-radius: 14px; padding: 8px 14px; margin-bottom: 6px; }
+  .qbox .en { font-size: 11pt; font-weight: 500; }
+  .qbox .km { font-size: 10.5pt; }
+  .lab { display: inline-block; font-size: 7.6pt; font-weight: 700; color: var(--teal); background: #fff; border: 1px solid var(--teal-line); border-radius: 6px; padding: 0 5px; margin-right: 6px; vertical-align: 1px; font-family: "IBM Plex Sans", sans-serif; }
+  .lab.k { color: var(--km); font-family: "Kantumruy Pro", sans-serif; }
+  .opts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 8px; }
+  .opt { display: flex; align-items: center; gap: 8px; border: 1.4px solid var(--line); border-radius: 12px; padding: 4px 10px 4px 5px; font-size: 11pt; }
+  .badge { flex: none; width: 25px; height: 25px; border-radius: 50%; background: var(--navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-family: "Kantumruy Pro", sans-serif; font-weight: 700; font-size: 10.5pt; }
+  .opt small { color: var(--muted); font-family: "IBM Plex Mono", monospace; font-size: 8pt; }
+  .opt.right { border-color: var(--ok); background: var(--ok-soft); }
+  .opt.right .badge { background: var(--ok); }
+  .opt .tick { margin-left: auto; color: var(--ok); font-weight: 700; }
+
+  .step { border: 1.5px solid var(--teal-line); border-radius: 14px; padding: 7px 12px; margin-bottom: 7px; break-inside: avoid; }
+  .step > .t { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--navy); font-size: 10.6pt; margin-bottom: 4px; }
+  .step > .t .km { color: var(--navy); font-weight: 700; }
+  .step > .t i { font-style: normal; width: 24px; height: 24px; border-radius: 50%; background: var(--navy); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 10pt; flex: none; }
+  .bi { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .fig { text-align: center; margin: 4px 0; }
+  .fig svg { display: inline-block; max-width: 100%; height: auto; }
+  .hl { background: var(--teal-soft); border: 1.4px solid var(--teal-2); border-radius: 10px; padding: 3px 10px; text-align: center; margin: 4px 0; }
+  .simple { background: var(--gold-soft); border-color: #f0d9b0; }
+  .simple > .t, .simple > .t .km { color: var(--gold); }
+  table.tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 9.4pt; }
+  table.tbl th, table.tbl td { border-bottom: 1px solid var(--line); padding: 4px 8px; text-align: left; vertical-align: middle; }
+  table.tbl th { background: var(--navy); color: #fff; }
+  table.tbl th .km { color: #fff; }
+  table.tbl th:first-child { border-radius: 9px 0 0 0; } table.tbl th:last-child { border-radius: 0 9px 0 0; }
+  table.tbl tr.sum td { font-weight: 700; color: var(--ok); background: var(--ok-soft); }
+  .chips span { display: inline-block; border: 1.3px solid var(--teal-line); background: #fff; border-radius: 8px; padding: 0 7px; margin: 1px 2px; font-family: "IBM Plex Mono", monospace; font-size: 9pt; }
+  .chips span.e { border-color: var(--gold); background: var(--gold-soft); }
+  .chips span.f { border-color: var(--teal); background: var(--teal-soft); }
+  .warn { background: var(--red-soft); border-color: #f0c5ba; }
+  .warn > .t, .warn > .t .km { color: var(--red); }
+  .warn > .t i { background: var(--red); }
+  .formula { background: var(--teal-soft); border-color: var(--teal-2); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .grid3 div { background: #fff; border: 1.4px solid var(--teal-line); border-radius: 12px; padding: 5px 8px; text-align: center; }
+  .grid3 b { display: block; color: var(--navy); }
+  .final { display: flex; align-items: center; gap: 10px; background: linear-gradient(90deg, var(--navy), var(--teal)); color: #fff; border-radius: 14px; padding: 6px 14px 6px 7px; margin: 6px 0; break-inside: avoid; }
+  .final .badge { background: #fff; color: var(--ok); width: 30px; height: 30px; font-size: 12pt; }
+  .final b { font-size: 12pt; }
+  .final .km { color: #e3f4f0; }
+  .final mjx-container { color: #fff; }
+  .tip { border: 1.5px dashed var(--teal-2); border-radius: 12px; padding: 6px 12px; break-inside: avoid; }
+  footer { margin-top: 6px; font-size: 7.8pt; color: var(--muted); text-align: center; }
+</style>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+    chtml: { fontURL: '/__mjfonts', scale: 1, mtextInheritFont: true },
+    startup: { typeset: false },
+  };
+</script>
+<script src="/__mj/tex-chtml.js"></script>
+</head>
+<body>
+
+<section class="head">
+  <span class="bg" style="left:4%;top:8%">2ⁿ</span>
+  <span class="bg" style="left:84%;top:10%">A ⊆ B</span>
+  <span class="bg" style="left:6%;top:70%">∅</span>
+  <span class="bg" style="left:86%;top:70%">{1,2,3,4}</span>
+  <img src="../logo/csca-2026-logo-circle.svg" alt="CSCA 2026">
+  <span class="pill">QCM · CSCA 2026 · <span class="km">សំណុំ · សំណួរទី ៩</span></span>
+  <h1>ពន្យល់ចម្លើយលម្អិត៖ ចំនួនសំណុំរង</h1>
+  <p>Question 9 explained step by step · Number of subsets</p>
+</section>
+
+<div class="qbox">
+  <p class="en"><span class="lab">EN</span>Let \(A=\{x\in\mathbb{Z}\mid 1\le x&lt;5\}\). The number of subsets of \(A\) is</p>
+  <p class="km"><span class="lab k">ខ្មែរ</span>គេឲ្យ \(A=\{x\in\mathbb{Z}\mid 1\le x&lt;5\}\)។ ចំនួនសំណុំរងនៃ \(A\) គឺ</p>
+</div>
+<div class="opts">
+  <div class="opt"><span class="badge">ក</span><small>A</small>\(32\)</div>
+  <div class="opt right"><span class="badge">ខ</span><small>B</small>\(16\)<span class="tick">✓</span></div>
+  <div class="opt"><span class="badge">គ</span><small>C</small>\(14\)</div>
+  <div class="opt"><span class="badge">ឃ</span><small>D</small>\(15\)</div>
+</div>
+
+<div class="step">
+  <div class="t"><i>1</i>Find the elements of \(A\) · <span class="km">រកធាតុនៃ \(A\)</span></div>
+  <div class="bi">
+    <div><p>\(x\in\mathbb{Z}\): \(x\) is a <b>whole number</b> (integer).</p><p>\(1\le x\): start at \(1\), and \(1\) <b>is included</b> (sign \(\le\)).</p><p>\(x&lt;5\): smaller than \(5\), so \(5\) <b>is not included</b> (sign \(&lt;\)).</p></div>
+    <div class="km"><p>\(x\in\mathbb{Z}\)៖ \(x\) ជា<b>ចំនួនគត់</b>។</p><p>\(1\le x\)៖ ចាប់ពី \(1\) ហើយ<b>រាប់បញ្ចូល</b> \(1\) (សញ្ញា \(\le\))។</p><p>\(x&lt;5\)៖ តូចជាង \(5\) ដូច្នេះ<b>មិនរាប់បញ្ចូល</b> \(5\) (សញ្ញា \(&lt;\))។</p></div>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 560 92" width="520">
+      <line x1="20" y1="45" x2="540" y2="45" stroke="#5d6a7c" stroke-width="2"/>
+      <polygon points="540,45 530,40 530,50" fill="#5d6a7c"/>
+      <rect x="130" y="35" width="340" height="20" rx="10" fill="#e8f5f2" stroke="none"/>
+      <g font-size="15" text-anchor="middle" fill="#1c2433">
+        <text x="70" y="80">0</text><text x="150" y="80">1</text><text x="230" y="80">2</text><text x="310" y="80">3</text><text x="390" y="80">4</text><text x="470" y="80">5</text>
+      </g>
+      <line x1="70" y1="38" x2="70" y2="52" stroke="#5d6a7c" stroke-width="2"/>
+      <circle cx="150" cy="45" r="9" fill="#1d8a5a"/><circle cx="230" cy="45" r="9" fill="#1d8a5a"/><circle cx="310" cy="45" r="9" fill="#1d8a5a"/><circle cx="390" cy="45" r="9" fill="#1d8a5a"/>
+      <circle cx="470" cy="45" r="9" fill="#fff" stroke="#c8472e" stroke-width="3"/>
+      <text x="150" y="20" font-size="12" text-anchor="middle" fill="#1d8a5a">1 ≤ x (included)</text>
+      <text x="470" y="20" font-size="12" text-anchor="middle" fill="#c8472e">x &lt; 5 (5 excluded)</text>
+    </svg>
+  </div>
+  <div class="hl">\[A=\{1,\ 2,\ 3,\ 4\}\qquad n=4\]</div>
+</div>
+
+<div class="step simple">
+  <div class="t"><i>2</i>Why the number of subsets is \(2^n\) · <span class="km">ហេតុអ្វីចំនួនសំណុំរងគឺ \(2^n\)</span></div>
+  <div class="bi">
+    <p>To build a subset, go through the elements one by one and decide for each: <b>take it</b> or <b>leave it</b>. That is 2 choices for every element, and the choices are independent.</p>
+    <p class="km">ដើម្បីបង្កើតសំណុំរងមួយ ពិនិត្យធាតុម្តងមួយៗ ហើយសម្រេចចិត្តថា <b>យក</b> ឬ <b>មិនយក</b>។ ធាតុនីមួយៗមានជម្រើស ២ ហើយការសម្រេចចិត្តនីមួយៗឯករាជ្យពីគ្នា។</p>
+  </div>
+  <div class="fig">
+    <svg viewBox="0 0 560 96" width="500">
+      <g font-size="14" text-anchor="middle">
+        <rect x="20" y="10" width="110" height="46" rx="12" fill="#fff" stroke="#173a5e" stroke-width="1.6"/><text x="75" y="31" fill="#173a5e" font-weight="700">1</text><text x="75" y="49" fill="#5d6a7c" font-size="12">take / leave</text>
+        <rect x="150" y="10" width="110" height="46" rx="12" fill="#fff" stroke="#173a5e" stroke-width="1.6"/><text x="205" y="31" fill="#173a5e" font-weight="700">2</text><text x="205" y="49" fill="#5d6a7c" font-size="12">take / leave</text>
+        <rect x="280" y="10" width="110" height="46" rx="12" fill="#fff" stroke="#173a5e" stroke-width="1.6"/><text x="335" y="31" fill="#173a5e" font-weight="700">3</text><text x="335" y="49" fill="#5d6a7c" font-size="12">take / leave</text>
+        <rect x="410" y="10" width="110" height="46" rx="12" fill="#fff" stroke="#173a5e" stroke-width="1.6"/><text x="465" y="31" fill="#173a5e" font-weight="700">4</text><text x="465" y="49" fill="#5d6a7c" font-size="12">take / leave</text>
+        <text x="75" y="84" fill="#23897f" font-size="20" font-weight="700">2</text><text x="140" y="84" fill="#5d6a7c" font-size="18">×</text>
+        <text x="205" y="84" fill="#23897f" font-size="20" font-weight="700">2</text><text x="270" y="84" fill="#5d6a7c" font-size="18">×</text>
+        <text x="335" y="84" fill="#23897f" font-size="20" font-weight="700">2</text><text x="400" y="84" fill="#5d6a7c" font-size="18">×</text>
+        <text x="465" y="84" fill="#23897f" font-size="20" font-weight="700">2</text>
+      </g>
+    </svg>
+  </div>
+  <div class="hl">\[2\times2\times2\times2=2^4=16\]</div>
+  <div class="bi">
+    <p>Example: take 1, leave 2, take 3, leave 4 gives \(\{1,3\}\). Leave all four gives \(\varnothing\). Take all four gives \(A\) itself.</p>
+    <p class="km">ឧទាហរណ៍៖ យក 1 មិនយក 2 យក 3 មិនយក 4 បាន \(\{1,3\}\)។ មិនយកទាំងបួន បាន \(\varnothing\)។ យកទាំងបួន បាន \(A\) ខ្លួនឯង។</p>
+  </div>
+</div>
+
+<div class="step">
+  <div class="t"><i>3</i>Check: list all 16 subsets · <span class="km">ផ្ទៀងផ្ទាត់៖ រាយសំណុំរងទាំង ១៦</span></div>
+  <table class="tbl">
+    <tr><th>Size · <span class="km">ចំនួនធាតុ</span></th><th>Subsets · <span class="km">សំណុំរង</span></th><th>Count · <span class="km">ចំនួន</span></th></tr>
+    <tr><td>0</td><td class="chips"><span class="e">∅</span></td><td>1</td></tr>
+    <tr><td>1</td><td class="chips"><span>{1}</span><span>{2}</span><span>{3}</span><span>{4}</span></td><td>4</td></tr>
+    <tr><td>2</td><td class="chips"><span>{1,2}</span><span>{1,3}</span><span>{1,4}</span><span>{2,3}</span><span>{2,4}</span><span>{3,4}</span></td><td>6</td></tr>
+    <tr><td>3</td><td class="chips"><span>{1,2,3}</span><span>{1,2,4}</span><span>{1,3,4}</span><span>{2,3,4}</span></td><td>4</td></tr>
+    <tr><td>4</td><td class="chips"><span class="f">{1,2,3,4}</span></td><td>1</td></tr>
+    <tr class="sum"><td colspan="2">Total · <span class="km">សរុប</span>: \(1+4+6+4+1\)</td><td>16 ✓</td></tr>
+  </table>
+  <div class="bi" style="margin-top:4px">
+    <p>Do not forget the two "edge" subsets: the empty set \(\varnothing\) (yellow) and \(A\) itself (green). Both count as subsets.</p>
+    <p class="km">កុំភ្លេចសំណុំរង "ចុង" ទាំងពីរ៖ សំណុំទទេ \(\varnothing\) (ពណ៌លឿង) និង \(A\) ខ្លួនឯង (ពណ៌បៃតង)។ ទាំងពីរត្រូវរាប់ជាសំណុំរង។</p>
+  </div>
+</div>
+
+<div class="final"><span class="badge">ខ</span><b>Answer · <span class="km">ចម្លើយ</span>: ខ (B) \(=16\)</b><span class="km">ព្រោះ \(A\) មាន ៤ ធាតុ ហើយ \(2^4=16\)</span></div>
+
+<div class="step warn">
+  <div class="t"><i>!</i>Why the other choices are traps · <span class="km">ហេតុអ្វីជម្រើសផ្សេងទៀតជាអន្ទាក់</span></div>
+  <table class="tbl">
+    <tr><th>Choice · <span class="km">ជម្រើស</span></th><th>Where it comes from · <span class="km">មកពីណា</span></th><th>The mistake · <span class="km">កំហុស</span></th></tr>
+    <tr><td><b>ក (A) 32</b></td><td>\(2^5\)</td><td>Counting \(5\) as an element. The sign is \(x&lt;5\), not \(x\le5\).<br><span class="km">រាប់ \(5\) ជាធាតុ។ សញ្ញាគឺ \(x&lt;5\) មិនមែន \(x\le5\) ទេ។</span></td></tr>
+    <tr><td><b>ឃ (D) 15</b></td><td>\(2^4-1\)</td><td>That is the number of <b>proper</b> subsets (leaving out \(A\) itself).<br><span class="km">ជាចំនួន<b>សំណុំរងផ្ទាល់</b> (មិនរាប់ \(A\) ខ្លួនឯង)។</span></td></tr>
+    <tr><td><b>គ (C) 14</b></td><td>\(2^4-2\)</td><td>That is the number of <b>non-empty proper</b> subsets (leaving out \(A\) and \(\varnothing\)).<br><span class="km">ជាចំនួន<b>សំណុំរងផ្ទាល់មិនទទេ</b> (មិនរាប់ \(A\) និង \(\varnothing\))។</span></td></tr>
+  </table>
+</div>
+
+<div class="step formula">
+  <div class="t"><i>✓</i>Remember: a set with \(n\) elements · <span class="km">ត្រូវចាំ៖ សំណុំដែលមាន \(n\) ធាតុ</span></div>
+  <div class="grid3">
+    <div><b>Subsets · <span class="km">សំណុំរង</span></b>\(2^n\)<br><small>\(n=4\): 16</small></div>
+    <div><b>Proper · <span class="km">សំណុំរងផ្ទាល់</span></b>\(2^n-1\)<br><small>\(n=4\): 15</small></div>
+    <div><b>Non-empty proper · <span class="km">ផ្ទាល់មិនទទេ</span></b>\(2^n-2\)<br><small>\(n=4\): 14</small></div>
+  </div>
+</div>
+
+<div class="tip">
+  <div class="bi">
+    <p><b style="color:var(--teal)">Exam tip.</b> Two quick checks before you answer: (1) read the exact words, "subsets", "proper subsets" or "non-empty proper subsets"; (2) look at \(&lt;\) and \(\le\) before you count the elements.</p>
+    <p class="km"><b style="color:var(--teal)">គន្លឹះប្រឡង។</b> ពិនិត្យពីរចំណុចមុនឆ្លើយ៖ (១) អានពាក្យឲ្យច្បាស់ "subsets", "proper subsets" ឬ "non-empty proper subsets"; (២) មើលសញ្ញា \(&lt;\) និង \(\le\) មុនពេលរាប់ធាតុ។</p>
+  </div>
+</div>
+<footer>CSCA 2026 · Mathematics · Sets · Practice material, not official. <span class="km">ឯកសារហ្វឹកហាត់ មិនមែនឯកសារផ្លូវការ។</span></footer>
+
+<script>
+  MathJax.startup.promise.then(function () { return MathJax.typesetPromise(); }).then(function () { return document.fonts.ready; }).then(function () {
+    return Promise.all(Array.prototype.map.call(document.images, function (im) { return im.complete ? 0 : new Promise(function (r) { im.onload = im.onerror = r; }); }));
+  }).then(function () { window.__done = true; });
+</script>
+</body>
+</html>
