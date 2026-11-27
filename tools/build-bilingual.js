@@ -72,6 +72,8 @@ const server = http
       await render('', path.join(OUT, 'Lesson-Conics-Feynman.pdf'), 'Conic sections · the Feynman way', 'print-conics.html');
     if (what === 'all' || what === 'explain')
       await render('', path.join(OUT, 'Explain-Q9-Subsets.pdf'), 'Question 9 explained · subsets', 'print-explain-subsets.html');
+    if (what === 'all' || what === 'explain')
+      await render('', path.join(OUT, 'Explain-Q9-Subsets-Standard.pdf'), 'Question 9 · standard solution', 'print-explain-subsets-standard.html');
     if (errors.length) console.log('page errors:', errors);
     await browser.close();
     server.close();
